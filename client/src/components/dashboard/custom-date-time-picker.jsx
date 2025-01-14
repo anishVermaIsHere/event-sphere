@@ -52,41 +52,36 @@ ButtonField.propTypes = {
   setOpen: PropTypes.func,
 };
 
-export default function CustomDateTimePicker({ label, name, control }) {
-
+export default function CustomDateTimePicker({ label, name, control, errors }) {
   return (
     <Controller
-        label={label}
-        name={name}
-        control={control}
-
-        render={({ field })=>(
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+      label={label}
+      name={name}
+      control={control}
+      render={({ field }) => {
+        return (
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={["DateTimePicker"]} sx={{ pt: 1 }}>
               <DateTimePicker
-                size="small"
-                // name={name}
-                // label={label}
-                control={control}
-                
                 {...field}
-              //   onChange={(newValue) => setValue(newValue)}
-              //   slots={{ field: ButtonField }}
-              //   slotProps={{
-              //     field: { setOpen },
-              //     nextIconButton: { size: "small" },
-              //     previousIconButton: { size: "small" },
-              //   }}
-              //   size="small"
-              //   open={open}
-              //   onClose={() => setOpen(false)}
-              //   onOpen={() => setOpen(true)}
-              //   views={["day", "month", "year"]}
+                size="small"
+                // format="MM/DD/YYYY HH:mm"
+                // views={['month', 'day', 'year', 'hours', 'minutes']}
+                // renderInput={(props) => <input {...props} />}
+                //   slots={{ field: ButtonField }}
+                //   slotProps={{
+                //     field: { setOpen },
+                //     nextIconButton: { size: "small" },
+                //     previousIconButton: { size: "small" },
+                //   }}
+                //   open={open}
+                //   onClose={() => setOpen(false)}
+                //   onOpen={() => setOpen(true)}
               />
             </DemoContainer>
           </LocalizationProvider>
-        )}
+        );
+      }}
     />
-
   );
 }

@@ -1,6 +1,7 @@
-import { UserModel } from "../database/models/index.js";
-import { demoUsers } from "./data.js";
+import { LocationModel, UserModel } from "../database/models/index.js";
+import { demoLocations, demoUsers } from "./data.js";
 import encrypt from "./encrypt.js";
+import slugify from "slugify";
 
 export async function createUsers(){
 
@@ -15,4 +16,17 @@ export async function createUsers(){
         console.log('api error', error);
         
     }
-}
+};
+
+
+export async function createLocations(){
+   try {
+    const newLocs = demoLocations.map((loc)=>({
+        ...loc,
+        slug: slugify(loc.venueName.toLowerCase()),
+    }))
+    await LocationModel.insertMany(newLocs);
+   } catch (error) {
+        console.log('api error', error);
+   }
+};

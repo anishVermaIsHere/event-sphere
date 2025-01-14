@@ -1,11 +1,22 @@
-import { create } from 'zustand'
+import { create } from "zustand";
 
 const useAppStore = create((set) => ({
-  bears: 0,
-  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-  removeAllBears: () => set({ bears: 0 }),
-  updateBears: (newBears) => set({ bears: newBears }),
-}))
+  snackbarOpen: true,
+  snackbarVertical: "top",
+  snackbarHorizontal: "center",
+  snackbarMessage: "Hello",
+  setSnackbar: (message) =>
+    set((state) => ({
+      ...state,
+      snackbarMessage: message,
+      snackbarOpen: true
+    })),
+  closeSnackbar: () =>
+    set((state) => ({
+      ...state,
+      snackbarMessage: "Hello",
+      snackbarOpen: false
+    }))
+}));
 
-
-export default useAppStore
+export default useAppStore;

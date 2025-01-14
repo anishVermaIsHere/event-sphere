@@ -1,11 +1,17 @@
 import { UserModel } from "../../database/models/index.js";
+import tokenObject from "../../utils/token.js";
+import encrypt from "../../utils/encrypt.js";
+import { HTTP_CODES } from "../../utils/constants.js";
+
+
+const { SUCCESS, BAD_REQUEST, UNAUTHORIZE } = HTTP_CODES;
 
 const authController = {
     async login(req, res){
         try {
-            const { email,password }=req.body;
+            const { email, password }=req.body;
             const { tokenEncode }=tokenObject;
-            const user=await UserModel.findOne({email}).exec();
+            const user=await UserModel.findOne({ email }).exec();
             if(user && user.email) {
                 let dbPassword = user.password;
                 let plainPassword = password;
@@ -14,18 +20,19 @@ const authController = {
                     user.refreshToken=refreshToken;
 
                     return res.status(SUCCESS).json({
-                        message: resMessage.readMessage("user", "hi") + user.firstName,
-                        firstName: user.firstName,
-                        lastName:user.lastName,
-                        email: user.email,
-                        gender: user.gender,
+                        user: {
+                            id: user._id,
+                            firstName: user.firstName,
+                            lastName:user.lastName,
+                            email: user.email,
+                            gender: user.gender,
+                        },
                         accessToken: accessToken,
                         refreshToken: refreshToken,
-                        id: user._id
                     });
                 } 
                 else {
-                    return res.status(BAD_REQUEST).json({ message: resMessage.readMessage("user", "invalid") });
+                    return res.status(BAD_REQUEST).json({ message: "Invalid crendentials" });
                 }
             } 
         } catch (error) {
@@ -38,13 +45,13 @@ const authController = {
         try {
            const userDoc=await UserModel.findOne({email:user.email}).exec();
             if(userDoc&&userDoc.email){
-                return res.status(CONFLICT).json({message:resMessage.readMessage('user','exist')});
+                return res.status(CONFLICT).json({message: "User already exist" });
             }
             else {
                 const encryptedPassword=encrypt.hashPassword(user.password);
                const doc= await UserModel.create({...user,password:encryptedPassword});
                if(doc&&doc._id){
-                return res.status(CREATE).json({message:resMessage.readMessage('user','register')});
+                return res.status(CREATE).json({message: "User registred successfully"});
                }
             }
         } catch (error) {

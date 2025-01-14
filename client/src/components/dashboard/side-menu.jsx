@@ -9,6 +9,9 @@ import MenuContent from './menu-content';
 import OptionsMenu from './options-menu';
 import logo from '../../assets/event-sphere.png'
 import { CardMedia } from '@mui/material';
+import useAuthStore from '../../store/auth.store';
+
+
 
 const drawerWidth = 240;
 
@@ -24,6 +27,8 @@ const Drawer = styled(MuiDrawer)({
 });
 
 export default function SideMenu() {
+  const { user } = useAuthStore(state=>state);
+  
   return (
     <Drawer
       variant="permanent"
@@ -56,21 +61,21 @@ export default function SideMenu() {
           gap: 1,
           alignItems: 'center',
           borderTop: '1px solid',
-          borderColor: 'divider',
+          borderColor: 'divider'
         }}
       >
         <Avatar
           sizes="small"
-          alt="Riley Carter"
+          alt={user?.firstName}
           src="/static/images/avatar/7.jpg"
           sx={{ width: 36, height: 36 }}
         />
         <Box sx={{ mr: 'auto' }}>
           <Typography variant="body2" sx={{ fontWeight: 500, lineHeight: '16px' }}>
-            Riley Carter
+            { user?.firstName+" "+user?.lastName || "David Paul" }
           </Typography>
           <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-            riley@email.com
+            { user?.email || "davidpaul@test.com" }
           </Typography>
         </Box>
         <OptionsMenu />

@@ -15,16 +15,15 @@ import {
   Stack,
 } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
-import { joiResolver } from "@hookform/resolvers/joi";
 import dayjs from "dayjs";
 import CustomDateTimePicker from "../dashboard/custom-date-time-picker";
 import CancelIcon from "@mui/icons-material/Cancel";
 import userAPI from "../../shared/services/api/user";
 import { useQuery } from "@tanstack/react-query";
 import { eventSchema } from "../../shared/validation/schema";
-
-
-
+import useAppStore from "../../store/app.store";
+import eventAPI from "../../shared/services/api/event";
+import locationAPI from "../../shared/services/api/location";
 
 const style = {
   position: "absolute",
@@ -37,44 +36,76 @@ const style = {
   p: 4,
 };
 
+const fetchData = async () => { 
 
-const fetchGuests = async () => {
-  return await userAPI.findGuests();
+  const prom = await Promise.all([
+    userAPI.findGuests(),
+    locationAPI.find()
+  ]);
+
+  return {
+    guests: prom[0].data,
+    locations: prom[1].data,
+  }
+
 };
 
-
 const EventForm = () => {
-  const { isLoading, isError, error, data } = useQuery({ queryKey: ['guests'], queryFn: fetchGuests });
-  const [open, setOpen] = useState(false);
-  const guests = data?.data;
+  const { setSnackbar } = useAppStore(state=>state);
+  const { isLoading, isError, error, data } = useQuery({
+    queryKey: ["guests"],
+    queryFn: fetchData
+  });
 
-  // const [data, setData] = useState([]);
-  const { control, register, reset, handleSubmit, formState: { errors} } = useForm({
+  const [open, setOpen] = useState(false);
+
+
+  const {
+    control,
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
     defaultValues: {
-      eventName: "",
-      description: "",
+      name: "dsssssss",
+      description: "sdfsfsf",
       startTime: dayjs(),
       endTime: dayjs(),
-      location: "",
-      guests: []
+      location: "gbgjdjgjdj",
+      guests: [],
     },
-    resolver: joiResolver(eventSchema)
   });
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const validation = eventSchema.validate({
+      ...data,
+      guests: data.guests.map((g)=>(g._id)),
+      startTime: new Date(data.startTime).toISOString(),
+      endTime: new Date(data.endTime).toISOString(),
+    });
+    if (validation.error) {
+      console.error(validation);
+      setSnackbar(validation.error)
+      return;
+    }
+    console.log(validation);
+    await eventAPI.create(validation.value)
     reset();
     handleClose();
   };
+
+
 
   return (
     <>
       <Button
         variant="contained"
         color="primary"
+        size="small"
         sx={{ mt: 2 }}
         onClick={handleOpen}
       >
@@ -87,114 +118,158 @@ const EventForm = () => {
         aria-describedby="add event form"
       >
         <Box sx={style}>
-          <FormControl fullWidth component="form" onSubmit={handleSubmit(onSubmit)}>
+          <FormControl
+            fullWidth
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <Typography variant="h6" gutterBottom>
               Create Event
             </Typography>
-              <Grid2 container spacing={3}>
-                <Grid2 item size={{ xs: 12 }}>
-                  <TextField
-                    // required
-                    error={errors?.eventName?.message && true}
-                    id="eventName"
-                    name="eventName"
-                    label="Event Name"
-                    size="small"
-                    helperText={errors?.eventName?.message}
-                    fullWidth
-                    {...register("eventName")}
-                  />
-                </Grid2>
-                <Grid2 item size={{ xs: 12 }}>
-                  <TextField
-                    // required
-                    error={errors?.description?.message && true}
-                    id="description"
-                    name="description"
-                    label="Description"
-                    size="small"
-                    helperText={errors?.description?.message}
-                    multiline
-                    fullWidth
-                    maxRows={6}
-                    minRows={6}
-                    {...register("description")}
-                  />
-                </Grid2>
-                <Grid2 item size={{ xs: 12, sm: 6 }}>
-                  <TextField
-                    // required
-                    id="location"
+            <Grid2 container spacing={3}>
+              <Grid2 item size={{ xs: 12 }}>
+                <TextField
+                  // required
+                  error={errors?.name?.message && true}
+                  id="name"
+                  name="name"
+                  label="Event Name"
+                  size="small"
+                  helperText={errors?.name?.message}
+                  fullWidth
+                  {...register("name")}
+                />
+              </Grid2>
+              <Grid2 item size={{ xs: 12 }}>
+                <TextField
+                  // required
+                  error={errors?.description?.message && true}
+                  id="description"
+                  name="description"
+                  label="Description"
+                  size="small"
+                  helperText={errors?.description?.message}
+                  multiline
+                  fullWidth
+                  maxRows={6}
+                  minRows={6}
+                  {...register("description")}
+                />
+              </Grid2>
+              <Grid2 item size={{ xs: 12, sm: 6 }} sx={{ position: "relative" }}>
+                {/* <TextField
+                  // required
+                  error={errors?.location?.message && true}
+                  id="location"
+                  name="location"
+                  label="Location"
+                  size="small"
+                  helperText={errors?.location?.message}
+                  fullWidth
+                  {...register("location")}
+                /> */}
+                <InputLabel id="demo-select-small-label">Location</InputLabel>
+                  <Select
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    error={errors?.location?.message && true}
+                    helperText={errors?.location?.message}
+                    label="location"
                     name="location"
-                    label="Location"
                     size="small"
                     fullWidth
                     {...register("location")}
-                  />
-                </Grid2>
-                <Grid2 item size={{ xs: 12, sm: 6 }} fullWidth>
-                  <InputLabel>Guests</InputLabel>
-                  <Controller
-                    name="guests"
-                    control={control}
-                    defaultValue={[]}
-                    render={({ field }) => (
-                      <Select
-                        {...field}
-                        multiple
-                        fullWidth
-                        size="small"
-                        labelId="guests-label"
-                        id="guests"
-                        input={<OutlinedInput label="Multiple Guests" />}
-                        renderValue={(selected) => (
-                          <Stack gap={1} direction="row" flexWrap="wrap">
-                            {selected.map((value) => (
-                              <Chip
-                                key={value}
-                                label={value}
-                                onDelete={() => {
-                                  const newValue = field.value.filter(
-                                    (item) => item !== value
-                                  );
-                                  field.onChange(newValue);
-                                }}
-                                deleteIcon={<CancelIcon
-                                    onMouseDown={(event) => event.stopPropagation()}
-                                  />}
-                              />
-                            ))}
-                          </Stack>
-                        )}
-                      >
-                        {guests?.map((guest)=><MenuItem key={guest._id} value={guest.firstName}>{guest.firstName+ " "+guest.lastName }</MenuItem>)}
-                      </Select>
-                    )}
-                  />
-                </Grid2>
-                <Grid2 item size={{ xs: 12, sm: 6 }}>
-                  <CustomDateTimePicker
-                    control={control}
-                    name="startTime"
-                    label="Start Date Time"
-                  />
-                </Grid2>
-                <Grid2 item size={{ xs: 12, sm: 6 }}>
-                  <CustomDateTimePicker
-                    control={control}
-                    name="endTime"
-                    label="End Date Time"
-                  />
-                </Grid2>
+                  >
+                    {data?.locations?.map((loc) => (
+                        <MenuItem key={loc._id} value={loc}>
+                          {loc.venueName +","+loc.city}
+                        </MenuItem>
+                      ))}
+                  </Select>
+
               </Grid2>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  sx={{ mt: 2 }}
-                >
-                  Create Event
-                </Button>
+              <Grid2 item size={{ xs: 12, sm: 6 }} sx={{ position: "relative" }} fullWidth>
+                <InputLabel>Guests</InputLabel>
+                <Controller
+                  name="guests"
+                  control={control}
+                  defaultValue={[]}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      multiple
+                      fullWidth
+                      error={errors?.guests?.message && true}
+                      size="small"
+                      labelId="guests-label"
+                      id="guests"
+                      input={<OutlinedInput label="Multiple Guests" />}
+                      renderValue={(selected) => (
+                        <Stack gap={1} direction="row" flexWrap="wrap">
+                          {selected.map((item) => (
+                            <Chip
+                              key={item._id}
+                              label={item.firstName + " " + item.lastName}
+                              onDelete={() => {
+                                const newValue = field.value.filter(
+                                  (v) => v._id !== item._id
+                                );
+                                field.onChange(newValue);
+                              }}
+                              deleteIcon={
+                                <CancelIcon
+                                  onMouseDown={(event) =>
+                                    event.stopPropagation()
+                                  }
+                                />
+                              }
+                            />
+                          ))}
+                        </Stack>
+                      )}
+                    >
+                      {data?.guests?.map((guest) => (
+                        <MenuItem key={guest._id} value={guest}>
+                          {guest.firstName + " " + guest.lastName}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  )}
+                />
+                
+                <Typography component="small" variant="p" color="error.main">
+                  {errors?.guests?.message}
+                </Typography>
+                <Typography component="small" variant="p" color="error.main">
+                    {data?.guests?.length === 0 && "No guests" }
+                </Typography>
+              </Grid2>
+
+              <Grid2 item size={{ xs: 12, sm: 6 }}>
+                <CustomDateTimePicker
+                  control={control}
+                  errors={errors}
+                  name="startTime"
+                  label="Start Date Time"
+                />
+              </Grid2>
+              <Grid2 item size={{ xs: 12, sm: 6 }}>
+                <CustomDateTimePicker
+                  control={control}
+                  errors={errors}
+                  name="endTime"
+                  label="End Date Time"
+                />
+              </Grid2>
+            </Grid2>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{ mt: 2 }}
+            >
+              Create Event
+            </Button>
           </FormControl>
         </Box>
       </Modal>

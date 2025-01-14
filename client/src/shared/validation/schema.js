@@ -21,15 +21,23 @@ export const loginSchema = Joi.object({
 });
 
 export const eventSchema = Joi.object({
-  eventName: Joi.string().min(5).max(100).required().messages({
+  name: Joi.string().min(5).max(100).required().messages({
     "any.required": "Event name is required.",
     "string.empty": "Event name must not be empty.",
   }),
-  description: Joi.string().min(2).max(200).message({
-    "string.max": "Event description limit exceeded (max 200 characters).",
+  description: Joi.string().min(2).max(200).required().messages({
+    "any.required": "Event description is required.",
+    "string.empty": "Event description must not be empty.",
+    "string.max": "Event description limit exceeded (max 200 characters are allowed).",
   }),
-  location: Joi.string().min(5).max(100).required(),
-  guests: Joi.array().items(Joi.string()).required(),
-  startTime: Joi.date().iso().min("now").required(),
-  endTime: Joi.date().iso().required(),
+  location: Joi.array().items(Joi.string()).required().messages({
+    "any.required": "Location are required for the event.",
+  }),
+  guests: Joi.array().items(Joi.string()).min(1).max(20).required().messages({
+    "any.required": "Guests are required for the event.",
+    "array.min": "At least one guest must be selected.",
+    "array.max": "Maximum of 20 guests allowed.",
+  }),
+  startTime: Joi.date().iso().required(),
+  endTime: Joi.date().iso().min(Joi.ref('startTime')).required()
 });

@@ -14,14 +14,16 @@ const eventController = {
     }
   },
   async create(req, res) {
-    const event = req.body;
+    const event = {
+      ...req.body,
+      createdBy: req.decode.id
+    };
     try {
-      const eventDoc = await EventModel.create(event);
-      if (eventDoc && eventDoc._id) {
-        return res
-          .status(CREATE)
-          .json({ message: "Event created successfully" });
-      }
+      console.log(event);
+      // const eventDoc = await EventModel.create(event);
+      // if (eventDoc && eventDoc._id) {
+      //   return res.status(CREATE).json({ message: "Event created successfully" });
+      // }
     } catch (error) {
       console.log("API: event creation error", error.message);
     }

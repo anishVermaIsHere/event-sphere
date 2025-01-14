@@ -9,7 +9,7 @@ export const ROUTES={
     RESET_PWD: '/resetpassword',
     LOGOUT:'logout',
     /* protected routes */
-    admin: {
+    ADMIN: {
         DASHBOARD:'dashboard',
         CREATE_EVENT:'event/create',
         ACCOUNT:'account',
