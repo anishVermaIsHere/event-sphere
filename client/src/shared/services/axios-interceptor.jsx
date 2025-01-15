@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import useAuthStore from "../../store/auth.store";
 import AppConfig from "../../config/app.config";
-import { parsePersistedData } from "../utils";
+import { getAuth } from "../utils";
 
 
 
@@ -24,15 +24,9 @@ const AxiosInterceptor = ({ children }) => {
   };
 
   useEffect(() => {
-    const getAuth = () => {
-      const auth = localStorage.getItem("_auth") || "{}";
-      const parsedData = parsePersistedData(JSON.parse(auth));
-      return parsedData?.state;
-    };
+    
     async function refreshAccessToken() {
       const auth = getAuth();
-      console.log(auth)
-      // try {
       if (auth.refreshToken) {
         const resp = await axios.post(
           `${AppConfig.baseUrl}/api/v1/auth/refresh`,
@@ -49,9 +43,6 @@ const AxiosInterceptor = ({ children }) => {
       } else {
         throw new Error("Logout");
       }
-      // } catch (err) {
-      //   throw err;
-      // }
     }
 
     const requestInterceptor = axiosInstance.interceptors.request.use(

@@ -5,6 +5,10 @@ const useAppStore = create((set) => ({
   snackbarVertical: "top",
   snackbarHorizontal: "center",
   snackbarMessage: "Hello",
+  dialogOpen: false,
+  dialogTitle: "",
+  dialogContent: "",
+  setDialog: ({ dialogOpen, dialogTitle, dialogContent })=> set({ dialogOpen, dialogContent, dialogTitle }),
   setSnackbar: (message) =>
     set((state) => ({
       ...state,

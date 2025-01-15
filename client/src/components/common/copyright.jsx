@@ -1,5 +1,6 @@
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
+import AppConfig from '../../config/app.config';
 
 export default function Copyright(props) {
   return (
@@ -15,8 +16,8 @@ export default function Copyright(props) {
       ]}
     >
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Sitemark
+      <Link color="inherit" href="/">
+        {AppConfig.appName}
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}

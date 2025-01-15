@@ -9,6 +9,9 @@ const eventAPI = {
     async find() {
         return await axiosInstance.get(`${URL}/`);        
     },
+    async delete(eventId){
+        return await axiosInstance.delete(`${URL}/${eventId}`);        
+    }
 };
 
 export default eventAPI;

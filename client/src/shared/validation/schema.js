@@ -30,8 +30,11 @@ export const eventSchema = Joi.object({
     "string.empty": "Event description must not be empty.",
     "string.max": "Event description limit exceeded (max 200 characters are allowed).",
   }),
-  location: Joi.array().items(Joi.string()).required().messages({
+  location: Joi.string().required().messages({
     "any.required": "Location are required for the event.",
+  }),
+  category: Joi.string().required().messages({
+    "any.required": "Category are required for the event.",
   }),
   guests: Joi.array().items(Joi.string()).min(1).max(20).required().messages({
     "any.required": "Guests are required for the event.",

@@ -13,66 +13,57 @@ import {
   InputLabel,
   Chip,
   Stack,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import dayjs from "dayjs";
 import CustomDateTimePicker from "../dashboard/custom-date-time-picker";
 import CancelIcon from "@mui/icons-material/Cancel";
-import userAPI from "../../shared/services/api/user";
+import CachedIcon from "@mui/icons-material/Cached";
+import AddIcon from "@mui/icons-material/Add";
+import eventAPI from "../../shared/services/api/event";
 import { useQuery } from "@tanstack/react-query";
 import { eventSchema } from "../../shared/validation/schema";
 import useAppStore from "../../store/app.store";
-import eventAPI from "../../shared/services/api/event";
-import locationAPI from "../../shared/services/api/location";
+import { queryClient } from "../../providers/query-provider";
+import { fetchEventsData } from "../../shared/utils";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: { xs: "100%", md: 700 },
+  width: { xs: "100%", md: 800 },
   bgcolor: "background.paper",
   boxShadow: 0,
   p: 4,
 };
 
-const fetchData = async () => { 
-
-  const prom = await Promise.all([
-    userAPI.findGuests(),
-    locationAPI.find()
-  ]);
-
-  return {
-    guests: prom[0].data,
-    locations: prom[1].data,
-  }
-
-};
 
 const EventForm = () => {
-  const { setSnackbar } = useAppStore(state=>state);
-  const { isLoading, isError, error, data } = useQuery({
-    queryKey: ["guests"],
-    queryFn: fetchData
+  const { setSnackbar } = useAppStore((state) => state);
+  const { data } = useQuery({
+    queryKey: ["event-data"],
+    queryFn: fetchEventsData,
   });
 
   const [open, setOpen] = useState(false);
-
 
   const {
     control,
     register,
     reset,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm({
     defaultValues: {
-      name: "dsssssss",
-      description: "sdfsfsf",
+      name: "",
+      description: "",
       startTime: dayjs(),
-      endTime: dayjs(),
-      location: "gbgjdjgjdj",
+      endTime: dayjs().add(2, "hour"),
+      location: "",
+      category: "",
       guests: [],
     },
   });
@@ -83,34 +74,47 @@ const EventForm = () => {
   const onSubmit = async (data) => {
     const validation = eventSchema.validate({
       ...data,
-      guests: data.guests.map((g)=>(g._id)),
       startTime: new Date(data.startTime).toISOString(),
       endTime: new Date(data.endTime).toISOString(),
     });
     if (validation.error) {
       console.error(validation);
-      setSnackbar(validation.error)
+      setSnackbar(validation.error);
       return;
     }
-    console.log(validation);
-    await eventAPI.create(validation.value)
+    const res = await eventAPI.create(validation.value);
+    if (res.status === 201) {
+      queryClient.invalidateQueries("events");
+    }
     reset();
     handleClose();
   };
 
-
-
   return (
     <>
-      <Button
-        variant="contained"
-        color="primary"
-        size="small"
-        sx={{ mt: 2 }}
-        onClick={handleOpen}
-      >
-        Add Event
-      </Button>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={handleOpen}
+        >
+          <AddIcon />
+          Add Event
+        </Button>
+        <Tooltip title="Refetch">
+          <IconButton
+            size="small"
+            color="primary"
+            onClick={async () => {
+              queryClient.invalidateQueries("events");
+            }}
+          >
+            <CachedIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -156,39 +160,64 @@ const EventForm = () => {
                   {...register("description")}
                 />
               </Grid2>
-              <Grid2 item size={{ xs: 12, sm: 6 }} sx={{ position: "relative" }}>
-                {/* <TextField
-                  // required
-                  error={errors?.location?.message && true}
-                  id="location"
-                  name="location"
-                  label="Location"
+              <Grid2
+                item
+                size={{ xs: 12, md: 4 }}
+                sx={{ position: "relative" }}
+              >
+                <InputLabel id="demo-select-small-label">Category</InputLabel>
+                <Select
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  error={errors?.category?.message && true}
+                  helperText={errors?.category?.message}
+                  defaultValue=""
                   size="small"
+                  fullWidth
+                  {...register("category")}
+                >
+                  {data?.categories?.map((cat) => (
+                    <MenuItem key={cat._id} value={cat?._id}>
+                      {cat.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <Typography component="small" variant="p" color="error.main">
+                  {data?.categories?.length === 0 && "No categories"}
+                </Typography>
+              </Grid2>
+              <Grid2
+                item
+                size={{ xs: 12, md: 4 }}
+                sx={{ position: "relative" }}
+              >
+                <InputLabel id="demo-select-small-label">Location</InputLabel>
+                <Select
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  error={errors?.location?.message && true}
                   helperText={errors?.location?.message}
+                  defaultValue=""
+                  size="small"
                   fullWidth
                   {...register("location")}
-                /> */}
-                <InputLabel id="demo-select-small-label">Location</InputLabel>
-                  <Select
-                    labelId="demo-select-small-label"
-                    id="demo-select-small"
-                    error={errors?.location?.message && true}
-                    helperText={errors?.location?.message}
-                    label="location"
-                    name="location"
-                    size="small"
-                    fullWidth
-                    {...register("location")}
-                  >
-                    {data?.locations?.map((loc) => (
-                        <MenuItem key={loc._id} value={loc}>
-                          {loc.venueName +","+loc.city}
-                        </MenuItem>
-                      ))}
-                  </Select>
-
+                >
+                  {data?.locations?.map((loc) => (
+                    <MenuItem key={loc._id} value={loc?._id}>
+                      {loc.venueName + "," + loc.city}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <Typography component="small" variant="p" color="error.main">
+                  {data?.locations?.length === 0 && "No locations"}
+                </Typography>
               </Grid2>
-              <Grid2 item size={{ xs: 12, sm: 6 }} sx={{ position: "relative" }} fullWidth>
+              <Grid2
+                item
+                size={{ xs: 12, md: 4 }}
+                sx={{ position: "relative" }}
+                fullWidth
+              >
                 <InputLabel>Guests</InputLabel>
                 <Controller
                   name="guests"
@@ -206,42 +235,45 @@ const EventForm = () => {
                       input={<OutlinedInput label="Multiple Guests" />}
                       renderValue={(selected) => (
                         <Stack gap={1} direction="row" flexWrap="wrap">
-                          {selected.map((item) => (
-                            <Chip
-                              key={item._id}
-                              label={item.firstName + " " + item.lastName}
-                              onDelete={() => {
-                                const newValue = field.value.filter(
-                                  (v) => v._id !== item._id
-                                );
-                                field.onChange(newValue);
-                              }}
-                              deleteIcon={
-                                <CancelIcon
-                                  onMouseDown={(event) =>
-                                    event.stopPropagation()
-                                  }
-                                />
-                              }
-                            />
-                          ))}
+                          {selected.map((value) => {
+                            const item = data?.guestsKeys[value];
+                            return (
+                              <Chip
+                                key={value}
+                                label={item.firstName + " " + item.lastName}
+                                onDelete={() => {
+                                  const newValue = field.value.filter(
+                                    (v) => v._id !== item._id
+                                  );
+                                  field.onChange(newValue);
+                                }}
+                                deleteIcon={
+                                  <CancelIcon
+                                    onMouseDown={(event) =>
+                                      event.stopPropagation()
+                                    }
+                                  />
+                                }
+                              />
+                            );
+                          })}
                         </Stack>
                       )}
                     >
                       {data?.guests?.map((guest) => (
-                        <MenuItem key={guest._id} value={guest}>
+                        <MenuItem key={guest._id} value={guest._id}>
                           {guest.firstName + " " + guest.lastName}
                         </MenuItem>
                       ))}
                     </Select>
                   )}
                 />
-                
+
                 <Typography component="small" variant="p" color="error.main">
                   {errors?.guests?.message}
                 </Typography>
                 <Typography component="small" variant="p" color="error.main">
-                    {data?.guests?.length === 0 && "No guests" }
+                  {data?.guests?.length === 0 && "No guests"}
                 </Typography>
               </Grid2>
 
