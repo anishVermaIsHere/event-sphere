@@ -7,6 +7,7 @@ const eventSchema = {
   name: { type: String, required: [true, "Please provide event name"] },
   slug: { type: String, index: true, required: true },
   description: { type: String, required: [true, "Please provide event name"] },
+  category: { type: SchemaTypes.ObjectId, ref: "Categories", required: [true, "Please provide event category"] },
   startTime: { type: Date, required: true },
   endTime: { type: Date, required: true },
   location: { type: SchemaTypes.ObjectId, ref:"Locations", required: true },

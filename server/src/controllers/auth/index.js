@@ -1,5 +1,5 @@
 import { UserModel } from "../../database/models/index.js";
-import tokenObject from "../../utils/token.js";
+import tokenObject, { TOKEN } from "../../utils/token.js";
 import encrypt from "../../utils/encrypt.js";
 import { HTTP_CODES } from "../../utils/constants.js";
 
@@ -24,6 +24,7 @@ const authController = {
                             id: user._id,
                             firstName: user.firstName,
                             lastName:user.lastName,
+                            fullName: user.firstName+" "+user.lastName,
                             email: user.email,
                             gender: user.gender,
                         },

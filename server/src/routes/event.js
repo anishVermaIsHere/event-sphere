@@ -8,7 +8,7 @@ const eventRouter = Router();
 
 eventRouter.get("/", tokenVerify, eventController.find);
 eventRouter.post("/", tokenVerify, eventController.create);
-eventRouter.delete("/:id", tokenVerify);
+eventRouter.delete("/:id", tokenVerify, eventController.delete);
 
 
 export default eventRouter;
