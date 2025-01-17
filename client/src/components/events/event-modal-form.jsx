@@ -245,7 +245,7 @@ const LazyEventForm = ({ handleClose, open }) => {
                       renderValue={(selected) => (
                         <Stack gap={1} direction="row" flexWrap="wrap">
                           {selected.map((value) => {
-                            const item = data?.userKeys.speakers[value];
+                            const item = data?.userKeys?.speakers[value];
                             return (
                               <Chip
                                 key={value}
@@ -311,7 +311,7 @@ const LazyEventForm = ({ handleClose, open }) => {
                         renderValue={(selected) => (
                           <Stack gap={1} direction="row" flexWrap="wrap">
                             {selected.map((value) => {
-                              const item = data?.userKeys.guests[value];
+                              const item = data?.userKeys?.guests[value];
                               return (
                                 <Chip
                                   key={value}

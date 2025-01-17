@@ -30,16 +30,28 @@ export const eventSchema = Joi.object({
     "string.empty": "Event description must not be empty.",
     "string.max": "Event description limit exceeded (max 200 characters are allowed).",
   }),
+  isPrivate: Joi.boolean().required().messages({
+    "any.required": "Event type are required.",
+  }),
   location: Joi.string().required().messages({
     "any.required": "Location are required for the event.",
   }),
   category: Joi.string().required().messages({
     "any.required": "Category are required for the event.",
   }),
-  guests: Joi.array().items(Joi.string()).min(1).max(20).required().messages({
-    "any.required": "Guests are required for the event.",
-    "array.min": "At least one guest must be selected.",
-    "array.max": "Maximum of 20 guests allowed.",
+  guests: Joi.array().items(Joi.string()).when('isPrivate', {
+    is: true,
+    then: Joi.array().items(Joi.string()).min(1).max(20).required().messages({
+      "any.required": "Guests are required for the event.",
+      "array.min": "At least one guest must be selected.",
+      "array.max": "Maximum of 20 guests allowed.",
+    }),
+    otherwise: Joi.array().items(Joi.string()) // No validation when isPrivate is false
+  }),
+  speakers: Joi.array().items(Joi.string()).min(1).max(5).required().messages({
+    "any.required": "Speakers are required for the event.",
+    "array.min": "At least one speaker must be selected.",
+    "array.max": "Maximum of 5 speakers allowed.",
   }),
   startTime: Joi.date().iso().required(),
   endTime: Joi.date().iso().min(Joi.ref('startTime')).required()

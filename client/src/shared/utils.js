@@ -33,19 +33,19 @@ export const fetchEventsData = async () => {
       locationAPI.find(),
       categoryAPI.find(),
     ]);
-    const guestsKeys = {
+    const userKeys = {
         guests: {},
         speakers: {}
     };
-    prom[0]?.data?.forEach((d) => (guestsKeys.guests[d._id] = d));
-    prom[1]?.data?.forEach((d) => (guestsKeys.speakers[d._id] = d));
+    prom[0]?.data?.forEach((d) => (userKeys.guests[d._id] = d));
+    prom[1]?.data?.forEach((d) => (userKeys.speakers[d._id] = d));
 
     return {
       guests: prom[0].data,
       speakers: prom[1].data,
       locations: prom[2].data,
       categories: prom[3].data,
-      guestsKeys,
+      userKeys,
     };
   };
 

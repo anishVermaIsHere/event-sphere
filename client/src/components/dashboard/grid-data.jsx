@@ -113,13 +113,12 @@ export const columns = [
     minWidth: 120,
   },
   {
-    field: "createdBy",
-    headerName: "Created By",
+    field: "createdAt",
+    headerName: "Added At",
     headerAlign: "center",
     align: "center",
     flex: 1,
     minWidth: 100,
-    renderCell: (params) => renderTags(params),
   },
   {
     // field: '',
