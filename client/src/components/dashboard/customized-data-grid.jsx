@@ -1,46 +1,57 @@
-import { DataGrid } from '@mui/x-data-grid';
-import { columns, rows } from './grid-data'
-import { useQuery } from '@tanstack/react-query';
-import eventAPI from '../../shared/services/api/event';
-import dayjs from 'dayjs';
-import Spinner from '../common/spinner';
-import { getAuth } from '../../shared/utils';
+import { DataGrid } from "@mui/x-data-grid";
+import { columns } from "./grid-data";
+import { useQuery } from "@tanstack/react-query";
+import eventAPI from "../../shared/services/api/event";
+import dayjs from "dayjs";
+import Spinner from "../common/spinner";
+import { getAuth } from "../../shared/utils";
+import { Grid2 as Grid } from "@mui/material";
+import useAppStore from "../../store/app.store";
+import EventCard from "../events/event-card";
+import AlertCard from "../common/alert-card";
 
 
 
-const fetchEvents = async()=>{
+const fetchEvents = async () => {
   const res = await eventAPI.find();
   const auth = getAuth();
   return {
-    rows: res.data.map((e)=>({
+    rows: res.data.map((e) => ({
       ...e,
       id: e._id,
       location: e.location.venueName,
       createdBy: e.createdBy._id === auth.user.id ? "You" : e.createdBy.fullName,
-      startTime: dayjs(e.startTime).format('DD/MM/YYYY HH:mm'),
-      endTime: dayjs(e.endTime).format('DD/MM/YYYY HH:mm')
+      startTime: dayjs(e.startTime).format("DD/MM/YYYY HH:mm"),
+      endTime: dayjs(e.endTime).format("DD/MM/YYYY HH:mm"),
+      createdAt: dayjs(e.createdAt).format("DD/MM/YYYY HH:mm"),
     })),
-    columns: []
-    }
+    columns: [],
+  };
 };
 
 export default function CustomizedDataGrid({ type }) {
-  const { isPending, isLoading, isError, error, data } = useQuery({ queryKey: ["events"], queryFn: fetchEvents });
+  const { isLoading, isError, data } = useQuery({
+    queryKey: ["events"],
+    queryFn: fetchEvents,
+  });
+  const { dataView } = useAppStore((state) => state);
   const events = data;
 
-
-  if(isLoading){
-    return <Spinner />
+  if (isLoading) {
+    return <Spinner />;
+  }
+  if(isError){
+    return <AlertCard color="error" message="Something error"/>
   }
 
-  return (
+  return dataView === "list" ? (
     <DataGrid
       autoHeight
       checkboxSelection
       rows={events?.rows}
       columns={columns}
       getRowClassName={(params) =>
-        params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
+        params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
       }
       initialState={{
         pagination: { paginationModel: { pageSize: 20 } },
@@ -75,5 +86,13 @@ export default function CustomizedDataGrid({ type }) {
       //   },
       // }}
     />
+  ) : (
+    <Grid container spacing={2}>
+      {events?.rows?.map((event) => (
+        <Grid key={event._id} size={{ xs: 12, sm: 6, lg: 4, xl: 3 }}>
+          <EventCard {...event} />
+        </Grid>
+      ))}
+    </Grid>
   );
 }

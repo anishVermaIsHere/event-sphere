@@ -13,9 +13,14 @@ const userController = {
       throw new Error(error.message);
     }
   },
-  async find(req, res) {
-    const user = req.body;
-    
+  async findSpeakers(req, res) {
+    try {
+      const speakers = await UserModel.find({ role: "speaker" }, [""]).select(['-password', '-__v','-createdAt', '-updatedAt']).exec();
+      return res.status(SUCCESS).json(speakers);
+    } catch (error) {
+      console.log("API: find speakers error", error.message);
+      throw new Error(error.message);
+    }
   },
  
 };

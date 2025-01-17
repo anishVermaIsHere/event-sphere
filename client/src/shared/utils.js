@@ -3,6 +3,8 @@ import eventAPI from "./services/api/event";
 import locationAPI from "./services/api/location";
 import userAPI from "./services/api/user";
 
+
+
 export function parsePersistedData(data) {
     const parsedData = {};
     for (const key in data) {
@@ -26,17 +28,23 @@ export function getAuth() {
 
 export const fetchEventsData = async () => {
     const prom = await Promise.all([
-      userAPI.findGuests(),
+      userAPI.findByRole('guest'),
+      userAPI.findByRole('speaker'),
       locationAPI.find(),
       categoryAPI.find(),
     ]);
-    const guestsKeys = {};
-    prom[0]?.data?.forEach((d) => (guestsKeys[d._id] = d));
-  
+    const guestsKeys = {
+        guests: {},
+        speakers: {}
+    };
+    prom[0]?.data?.forEach((d) => (guestsKeys.guests[d._id] = d));
+    prom[1]?.data?.forEach((d) => (guestsKeys.speakers[d._id] = d));
+
     return {
       guests: prom[0].data,
-      locations: prom[1].data,
-      categories: prom[2].data,
+      speakers: prom[1].data,
+      locations: prom[2].data,
+      categories: prom[3].data,
       guestsKeys,
     };
   };

@@ -36,6 +36,18 @@ const style = {
   p: 4,
 };
 
+const ITEM_HEIGHT = 60;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+
 const LazyEventForm = ({ handleClose, open }) => {
   const { data } = useQuery({
     queryKey: ["event-data"],
@@ -163,6 +175,7 @@ const LazyEventForm = ({ handleClose, open }) => {
                   id="category"
                   error={errors?.category?.message && true}
                   helperText={errors?.category?.message}
+                  MenuProps={MenuProps}
                   defaultValue=""
                   size="small"
                   fullWidth
@@ -190,6 +203,7 @@ const LazyEventForm = ({ handleClose, open }) => {
                   id="location"
                   error={errors?.location?.message && true}
                   helperText={errors?.location?.message}
+                  MenuProps={MenuProps}
                   defaultValue=""
                   size="small"
                   fullWidth
@@ -223,6 +237,7 @@ const LazyEventForm = ({ handleClose, open }) => {
                       multiple
                       fullWidth
                       error={errors?.speakers?.message && true}
+                      MenuProps={MenuProps}
                       size="small"
                       labelId="speakers-label"
                       id="speakers"
@@ -288,6 +303,7 @@ const LazyEventForm = ({ handleClose, open }) => {
                         multiple
                         fullWidth
                         error={errors?.guests?.message && true}
+                        MenuProps={MenuProps}
                         size="small"
                         labelId="guests-label"
                         id="guests"

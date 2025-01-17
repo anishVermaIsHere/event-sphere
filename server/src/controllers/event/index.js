@@ -2,13 +2,56 @@ import { EventModel } from "../../database/models/index.js";
 import { HTTP_CODES } from "../../utils/constants.js";
 import slugify from "slugify";
 
-
 const { SUCCESS, CREATE, CONFLICT, UNAUTHORIZE } = HTTP_CODES;
 
 const eventController = {
+  async findByFilter(req, res){
+    try {
+      const query = {};
+      const currentTime = new Date();
+      const { category, startDate, endDate, status } = req.query;
+
+      if(category){
+        query.category = category;
+      }
+      if (startDate) {
+        query.startTime = { ...query.startTime, $gte: new Date(startDate) };
+      }
+      if (endDate) {
+        query.endTime = { ...query.endTime, $lte: new Date(endDate) };
+      }
+      if (status) {
+        if (status === "upcoming") {
+          query.startTime = { ...query.startTime, $gt: currentTime };
+        } else if (status === "ongoing") {
+          query.startTime = { ...query.startTime, $lte: currentTime };
+          query.endTime = { ...query.endTime, $gte: currentTime };
+        } else if (status === "past") {
+          query.endTime = { ...query.endTime, $lt: currentTime };
+        }
+      }
+      const events = await EventModel.find(query, {
+        $elemMatch: { $gte: new Date() }
+      })
+        .populate("guests")
+        .populate("speakers")
+        .populate("location")
+        .populate("createdBy");
+
+      console.log(events);
+      return res.status(SUCCESS).json(events);
+    } catch (error) {
+      console.log("API: events filtering error", error.message);
+      throw new Error(error.message);
+    }
+  },
   async find(req, res) {
     try {
-      const events = await EventModel.find().populate("guests").populate("location").populate("category").populate("createdBy");
+      const events = await EventModel.find()
+        .populate("guests")
+        .populate("speakers")
+        .populate("location")
+        .populate("createdBy");
       return res.status(SUCCESS).json(events);
     } catch (error) {
       console.log("API: events find error", error.message);
@@ -19,12 +62,14 @@ const eventController = {
     const event = {
       ...req.body,
       slug: slugify(req.body.name.toLowerCase()),
-      createdBy: req.decode.id
+      createdBy: req.decode.id,
     };
     try {
       const eventDoc = await EventModel.create(event);
       if (eventDoc && eventDoc._id) {
-        return res.status(CREATE).json({ message: "Event created successfully" });
+        return res
+          .status(CREATE)
+          .json({ message: "Event created successfully" });
       }
     } catch (error) {
       console.log("API: event creation error", error.message);
@@ -33,21 +78,25 @@ const eventController = {
   async delete(req, res) {
     try {
       const eventId = req.params.id;
-      await EventModel.deleteOne({_id: eventId});
-      return res.status(SUCCESS).json({ message: "Event deleted successfully" });
+      await EventModel.deleteOne({ _id: eventId });
+      return res
+        .status(SUCCESS)
+        .json({ message: "Event deleted successfully" });
     } catch (error) {
       console.log("API: event deletion error", error.message);
     }
   },
   async update(req, res) {
     try {
-        const eventId = req.params.id;
-        const data = req.body;
-        await EventModel.updateOne({ _id: eventId }, data);
-        return res.status(SUCCESS).json({ message: "Event deleted successfully" });
-      } catch (error) {
-        console.log("API: event updation error", error.message);
-      }
+      const eventId = req.params.id;
+      const data = req.body;
+      await EventModel.updateOne({ _id: eventId }, data);
+      return res
+        .status(SUCCESS)
+        .json({ message: "Event deleted successfully" });
+    } catch (error) {
+      console.log("API: event updation error", error.message);
+    }
   },
 };
 

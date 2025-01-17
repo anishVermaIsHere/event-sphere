@@ -6,8 +6,11 @@ const eventAPI = {
     async create(event){
         return await axiosInstance.post(`${URL}/`, event);
     },
-    async find() {
-        return await axiosInstance.get(`${URL}/`);        
+    async find(query="") {
+        return await axiosInstance.get(`${URL}?category=${query}`);        
+    },
+    async findByTime(){
+
     },
     async delete(eventId){
         return await axiosInstance.delete(`${URL}/${eventId}`);        

@@ -25,10 +25,13 @@ const styles = {
     // WebkitLineClamp: 3,
   },
   content: {
-    display: "-webkit-box",
-    WebkitBoxOrient: "vertical",
-    WebkitLineClamp: 3,
-    overflow: "hidden",
+    // display: "-webkit-box",
+    // WebkitBoxOrient: "vertical",
+    // WebkitLineClamp: 3,
+    // overflow: "hidden",
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap'
   },
 };
 
@@ -41,7 +44,7 @@ export default function EventCard({
   guests,
 }) {
   const [expanded, setExpanded] = useState(false);
-  const guestList = guests?.map(({ firstName, lastName }) => firstName + " " + lastName).join(", ");
+  const guestList = [...guests, ...guests]?.map(({ firstName, lastName }) => firstName + " " + lastName).join(", ");
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -53,12 +56,12 @@ export default function EventCard({
         <Box mb={2}>
           <Chip
             sx={{ mr: 1 }}
-            label={category?.name}
+            label={category}
             color="default"
             size="small"
           />
         </Box>
-        <Typography gutterBottom variant="h5" component="h5" color="primary">
+        <Typography title={name} gutterBottom variant="h5" component="h5" color="primary" sx={styles.content}>
           {name}
         </Typography>
         {/* <Typography
@@ -77,8 +80,6 @@ export default function EventCard({
           component="div"
           color="text.secondary"
           sx={{
-            ...styles.content,
-            WebkitLineClamp: expanded ? "unset" : 3,
             display: "flex",
             alignItems: "center",
             mb: 1,
@@ -95,8 +96,6 @@ export default function EventCard({
           component="div"
           color="text.secondary"
           sx={{
-            ...styles.content,
-            WebkitLineClamp: expanded ? "unset" : 3,
             display: "flex",
             alignItems: "start",
             mb: 2,
@@ -117,7 +116,7 @@ export default function EventCard({
                 color="text.secondary"
                 sx={{
                   ...styles.content,
-                  WebkitLineClamp: expanded ? "unset" : 3,
+                  whiteSpace: expanded ? "nowrap" : "normal",
                   display: "flex",
                   alignItems: "start",
                   mb: 2,
