@@ -1,4 +1,4 @@
 # Event Sphere in MERN
 ##### Event Management App 
 
-![](screenshot.jng)
+![](screenshot.jpg)
