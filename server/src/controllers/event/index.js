@@ -30,26 +30,13 @@ const eventController = {
           query.endTime = { $lt: currentTime } ;
         }
       }
-      console.log(query);
 
-
-      // const events = await EventModel.find(query, {
-      //   $elemMatch: { $gte: new Date() }
-      // })
-      //   .populate("guests")
-      //   .populate("speakers")
-      //   .populate("location")
-      //   .populate("createdBy");
-      // console.log({ ...query.startTime, ...query.endTime })
-
-
-      const events = await EventModel.find(req.query.category === "All" ? {} : query)
+      const events = await EventModel.find(query)
         .populate("guests", ["-__v", "-password", "-createdAt", "-updatedAt"])
         .populate("speakers", ["-__v", "-password", "-createdAt", "-updatedAt"])
         .populate("location")
-        .populate("createdBy");
+        .populate("createdBy").sort();
 
-      // console.log(events);
       return res.status(SUCCESS).json(events);
     } catch (error) {
       console.log("API: events filtering error", error.message);

@@ -24,28 +24,9 @@ import { useQuery } from "@tanstack/react-query";
 import eventAPI from "../../shared/services/api/event";
 import { queryClient } from "../../providers/query-provider";
 import { eventSchema } from "../../shared/validation/schema";
+import { formBoxStyle, SelectMenuProps as MenuProps } from "./styles";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: { xs: "100%", md: 800 },
-  bgcolor: "background.paper",
-  boxShadow: 0,
-  p: 4,
-};
 
-const ITEM_HEIGHT = 60;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
 
 
 const LazyEventForm = ({ handleClose, open }) => {
@@ -101,7 +82,7 @@ const LazyEventForm = ({ handleClose, open }) => {
         aria-labelledby="add event form"
         aria-describedby="add event form"
       >
-        <Box sx={style}>
+        <Box sx={formBoxStyle}>
           <FormControl
             fullWidth
             component="form"
@@ -182,7 +163,7 @@ const LazyEventForm = ({ handleClose, open }) => {
                   {...register("category")}
                 >
                   {data?.categories?.map((cat) => (
-                    <MenuItem key={cat._id} value={cat?._id}>
+                    <MenuItem key={cat._id} value={cat?.name}>
                       {cat.name}
                     </MenuItem>
                   ))}

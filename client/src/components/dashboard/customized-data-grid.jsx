@@ -18,9 +18,9 @@ export default function CustomizedDataGrid({ events }) {
         params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
       }
       initialState={{
-        pagination: { paginationModel: { pageSize: 20 } },
+        pagination: { paginationModel: { pageSize: 50 } },
       }}
-      pageSizeOptions={[10, 20, 50]}
+      pageSizeOptions={[10, 20, 50, 100, 150]}
       disableColumnResize
       density="compact"
       // slotProps={{
@@ -53,7 +53,7 @@ export default function CustomizedDataGrid({ events }) {
   ) : (
     <Grid container spacing={2}>
       {events?.rows?.map((event) => (
-        <Grid key={event._id} size={{ xs: 12, sm: 6, lg: 4, xl: 3 }}>
+        <Grid key={event._id} size={{ xs: 12, sm: 6, lg: 4 }}>
           <EventCard {...event} />
         </Grid>
       ))}

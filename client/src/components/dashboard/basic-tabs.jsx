@@ -10,28 +10,35 @@ import Spinner from "../common/spinner";
 import eventAPI from "../../shared/services/api/event";
 import dayjs from "dayjs";
 import { getAuth } from "../../shared/utils";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { Typography } from "@mui/material";
+
 
 const fetchEvents = async (query) => {
   const res = await eventAPI.findByFilter(query);
   const auth = getAuth();
   return {
-    rows: res.data.map((e) => ({
-      ...e,
-      id: e._id,
-      location: e.location.venueName,
-      createdBy:
-        e.createdBy._id === auth.user.id ? "You" : e.createdBy.fullName,
-      startTime: dayjs(e.startTime).format("DD/MM/YYYY HH:mm"),
-      endTime: dayjs(e.endTime).format("DD/MM/YYYY HH:mm"),
-      createdAt: dayjs(e.createdAt).format("DD/MM/YYYY HH:mm"),
-    })),
+    rows: res.data.map((e) => {
+      const startTime = dayjs(e.startTime);
+      const endTime = dayjs(e.endTime);
+      const isLive = (dayjs().unix() >= startTime.unix()) && (dayjs().unix() <= endTime.unix())
+      return {      
+        ...e,
+        id: e._id,
+        location: e.location.venueName,
+        createdBy: e.createdBy._id === auth.user.id ? "You" : e.createdBy.fullName,
+        startTime: startTime.format("DD/MM/YYYY HH:mm"),
+        endTime: endTime.format("DD/MM/YYYY HH:mm"),
+        createdAt: dayjs(e.createdAt).format("DD/MM/YYYY HH:mm"),
+        isLive
+      }
+    }),
   };
 };
 
 function EventList({ events, isError, isLoading }) {
-  return (
+  return events?.rows?.length ? 
     <Grid container spacing={2} columns={12}>
       <Grid size={{ xs: 12 }}>
         <CustomizedDataGrid
@@ -41,7 +48,8 @@ function EventList({ events, isError, isLoading }) {
         />
       </Grid>
     </Grid>
-  );
+    :
+    <Typography variant="body2" component="p" align="center" my={2}>No events</Typography>
 }
 
 function CustomTabPanel(props) {
@@ -74,9 +82,9 @@ function tabProps(index) {
 }
 
 export default function BasicTabs() {
-  const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [value, setValue] = useState(1);
   const query = {
     category: queryParams.get("category"),
@@ -86,10 +94,11 @@ export default function BasicTabs() {
   };
   const {
     isLoading,
+    isFetching,
     isError,
     data: events,
   } = useQuery({
-    queryKey: ["events", { category: query.category, status: value  }],
+    queryKey: ["events", { status: query.status, category: query.category }],
     queryFn: async () => await fetchEvents(query),
   });
 
@@ -100,6 +109,9 @@ export default function BasicTabs() {
 
   useEffect(() => {
     let status = "";
+    if(searchParams.get("category") === "All"){
+      searchParams.delete("category");
+    }
     if (!value) {
       status = "past";
     }
@@ -109,13 +121,16 @@ export default function BasicTabs() {
     if (value === 2) {
       status = "upcoming";
     }
-    queryParams.set("status", status);
-    navigate({ search: queryParams.toString() });
-  }, [value]);
+    searchParams.set("status", status);
+    if (value === 3) {
+      searchParams.delete("status");
+    }
+    setSearchParams(searchParams);
+  }, [value, searchParams]);
 
 
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return <Spinner />;
   }
   if(isError){
@@ -133,6 +148,7 @@ export default function BasicTabs() {
           <Tab label="Past" {...tabProps(0)} />
           <Tab label="Ongoing" {...tabProps(1)} />
           <Tab label="Upcoming" {...tabProps(2)} />
+          <Tab label="All" {...tabProps(3)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -142,6 +158,9 @@ export default function BasicTabs() {
         <EventList events={events} isError={isError} isLoading={isLoading} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
+        <EventList events={events} isError={isError} isLoading={isLoading} />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={3}>
         <EventList events={events} isError={isError} isLoading={isLoading} />
       </CustomTabPanel>
     </Box>

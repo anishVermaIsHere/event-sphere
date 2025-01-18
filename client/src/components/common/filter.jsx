@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import { useLocation, useNavigate }  from "react-router-dom";
-
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -18,26 +17,26 @@ const MenuProps = {
   },
 };
 
-
 export default function Filter({ filterList }) {
-  const [selectedFilter, setSeletedFilter] = useState('All');
-  const location = useLocation();
-  const navigate = useNavigate();
-  const queryParams = new URLSearchParams(location.search);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedFilter, setSeletedFilter] = useState(searchParams.get('category'));
+
 
   const handleChange = (event) => {
     setSeletedFilter(event.target.value);
   };
 
+  useEffect(() => {
+    if(selectedFilter || searchParams.get("category")){
+      searchParams.set("category", selectedFilter);
+      setSearchParams(searchParams);
+    }
 
-  useEffect(()=>{
-    queryParams.set("category", selectedFilter);
-    navigate({ search: queryParams.toString()})
+    return () => {};
   }, [selectedFilter]);
 
-
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ minWidth: 120, display: "flex", alignItems: "center", gap: 1 }}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Filter</InputLabel>
         <Select
@@ -49,8 +48,12 @@ export default function Filter({ filterList }) {
           label="Filter"
           onChange={handleChange}
         >
-            <MenuItem value={"All"}>All</MenuItem>
-          {filterList?.map((f)=>(<MenuItem key={f} value={f?.name}>{f.name}</MenuItem>))}
+          <MenuItem value={"All"}>All</MenuItem>
+          {filterList?.map((f) => (
+            <MenuItem key={f} value={f?.name}>
+              {f.name}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </Box>

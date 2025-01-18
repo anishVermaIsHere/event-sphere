@@ -4,7 +4,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Box, Chip } from "@mui/material";
+import { Box, Chip, Divider, Stack } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ScheduleIcon from "@mui/icons-material/Schedule";
@@ -15,7 +15,7 @@ const styles = {
   card: {
     width: "100%",
     height: "100%",
-    overflow: "hidden",
+    // overflow: "hidden",
     textOverflow: "ellipsis",
     display: "flex",
     flexDirection: "column",
@@ -25,13 +25,9 @@ const styles = {
     // WebkitLineClamp: 3,
   },
   content: {
-    // display: "-webkit-box",
-    // WebkitBoxOrient: "vertical",
-    // WebkitLineClamp: 3,
-    // overflow: "hidden",
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap'
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
   },
 };
 
@@ -39,76 +35,143 @@ export default function EventCard({
   name,
   category,
   isPrivate,
+  isLive,
   startTime,
+  endTime,
   location,
+  speakers,
   guests,
 }) {
   const [expanded, setExpanded] = useState(false);
-  const guestList = [...guests, ...guests]?.map(({ firstName, lastName }) => firstName + " " + lastName).join(", ");
+  const chars = 150;
+  const guestList = guests?.map(({ firstName, lastName }) => firstName + " " + lastName).join(", ");
+  const speakerList = speakers?.map(({ firstName, lastName }) => firstName + " " + lastName).join(", ");
 
+  
   const toggleExpanded = () => {
     setExpanded(!expanded);
   };
 
   return (
     <Card sx={styles.card}>
-      <CardContent>
-        <Box mb={2}>
+      <CardContent sx={{ ...styles.card, justifyContent: "start", alignItems: "start" }}>
+        <Box mb={2} sx={{ width: '100%' }}>
+          <Stack sx={{ display: 'flex', justifyContent: 'space-between'}} direction="row" spacing={1} mb={1}>
           <Chip
-            sx={{ mr: 1 }}
+            sx={{ mr: 2, mb: 2 }}
             label={category}
             color="default"
             size="small"
           />
+           {isLive && <Chip
+            sx={{ 
+              mr: 1, mb: 2, 
+              backgroundColor: 'rgb(53, 149, 110)',
+              color: "#fff",
+              boxShadow: "0px 0px 1px 1px #0000001a",
+              animation: "pulse-animation 2s infinite"
+            }}
+            label="LIVE"
+            size="small"
+          />}
+          </Stack>
+          <Typography
+            title={name}
+            gutterBottom
+            variant="h5"
+            component="h5"
+            color="primary"
+            sx={{
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 2,
+              overflow: "hidden"
+            }}
+          >
+            {name}
+          </Typography>
+          <Typography
+            variant="body"
+            component="div"
+            color="text.secondary"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              mb: 1,
+            }}
+          >
+            Start:
+            <CalendarMonthIcon sx={{ mx: 1 }} />
+            {dayjs(startTime, "DD/MM/YYYY").format("MMM D, YYYY")}
+            <ScheduleIcon sx={{ mx: 1 }} />
+            {dayjs(startTime, "DD/MM/YYYY HH:mm").format("hh:mm A")}
+          </Typography>
+          
+          <Typography
+            variant="body"
+            component="div"
+            color="text.secondary"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              mb: 1,
+            }}
+          >
+            End:
+            <CalendarMonthIcon sx={{ mx: 1 }} />
+            {dayjs(endTime, "DD/MM/YYYY").format("MMM D, YYYY")}
+            <ScheduleIcon sx={{ mx: 1 }} />
+            {dayjs(endTime, "DD/MM/YYYY HH:mm").format("hh:mm A")}
+          </Typography>
+
+          <Typography
+            variant="body"
+            component="div"
+            color="text.secondary"
+            sx={{
+              display: "flex",
+              alignItems: "start",
+              mb: 2,
+            }}
+          >
+            <LocationOnIcon sx={{ mr: 1 }} /> {location}
+          </Typography>
+          <Divider />
         </Box>
-        <Typography title={name} gutterBottom variant="h5" component="h5" color="primary" sx={styles.content}>
-          {name}
-        </Typography>
-        {/* <Typography
-          variant="body"
-          component="div"
-          color="text.secondary"
-          sx={{
-            ...styles.content,
-            WebkitLineClamp: expanded ? 'unset' : 3,
-          }}
-        >
-          {description}
-        </Typography> */}
-        <Typography
-          variant="body"
-          component="div"
-          color="text.secondary"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            mb: 1,
-          }}
-        >
-          <CalendarMonthIcon sx={{ mr: 1 }} />{" "}
-          {dayjs(startTime, "DD-MM-YYYY").format("MMM D, YYYY")}
-          <ScheduleIcon sx={{ mx: 1 }} />{" "}
-          {dayjs(startTime, "HH:mm").format("hh:mmA")}
-        </Typography>
+        <Box>
+          {guests?.length ? (
+            <>
+              <Box>
+                <Typography gutterBottom variant="body2" component="div">
+                  Guests:
+                </Typography>
+                <Typography
+                  variant="body"
+                  component="small"
+                  color="text.secondary"
+                  sx={{
+                    ...styles.content,
+                    whiteSpace: expanded ? "normal" : "nowrap",
+                    display: "flex",
+                    alignItems: "start",
+                    mb: isPrivate ? 0 : 2,
+                    fontSize: "0.9rem",
+                  }}
+                >
+                  {guestList.length >= chars
+                    ? guestList.substring(0, chars) + "..."
+                    : guestList}
+                </Typography>
+              </Box>
+            </>
+          ) : (
+            ""
+          )}
 
-        <Typography
-          variant="body"
-          component="div"
-          color="text.secondary"
-          sx={{
-            display: "flex",
-            alignItems: "start",
-            mb: 2,
-          }}
-        >
-          <LocationOnIcon sx={{ mr: 1 }} /> {location}
-        </Typography>
-
-        {guests?.length ? (
-          <>
+          {!isPrivate && (
             <Box>
               <Typography gutterBottom variant="body2" component="div">
-                Guests:
+                Speakers:
               </Typography>
               <Typography
                 variant="body"
@@ -116,44 +179,56 @@ export default function EventCard({
                 color="text.secondary"
                 sx={{
                   ...styles.content,
-                  whiteSpace: expanded ? "nowrap" : "normal",
+                  whiteSpace: expanded ? "normal" : "nowrap",
                   display: "flex",
                   alignItems: "start",
                   mb: 2,
                   fontSize: "0.9rem",
                 }}
               >
-                {guestList.length >= 100 ? guestList.substring(0,100)+"..." : guestList}
+                {speakerList.length >= chars
+                  ? speakerList.substring(0, chars) + "..."
+                  : speakerList}
               </Typography>
             </Box>
-          </>
-        ) : (
-          ""
-        )}
+          )}
 
-        
-        {/* {!expanded && (guestList?.length >= 100 )? (
-          <Button
-            size="small"
-            variant="contained"
-            onClick={toggleExpanded}
-            sx={styles.readMoreButton}
-          >
-            Read More
-          </Button>
-        ) : (
-          guestList?.length >= 100 && <Button
-            size="small"
-            variant="contained"
-            onClick={toggleExpanded}
-            sx={styles.readMoreButton}
-          >
-            Read Less
-          </Button>
-        )} */}
+          {!expanded && guestList?.length >= chars ? (
+            <Chip
+              size="small"
+              label="Read more"
+              color="primary"
+              onClick={toggleExpanded}
+            />
+          ) : (
+            guestList?.length >= chars && (
+              <Chip
+                size="small"
+                label="Read less"
+                color="primary"
+                onClick={toggleExpanded}
+              />
+            )
+          )}
+        </Box>
       </CardContent>
       <CardActions>
-        <DeleteIcon color="action" />
+        {/* <DeleteIcon color="error" /> */}
+        <Chip
+          size="medium"
+          label="Edit"
+          variant="outlined"
+          sx={{
+            fontWeight: 600
+          }}
+        />
+        <Chip
+          size="medium"
+          label="Delete"
+          sx={{
+            fontWeight: 600
+          }}
+        />
       </CardActions>
     </Card>
   );

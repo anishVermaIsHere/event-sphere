@@ -6,7 +6,6 @@ import { Box, IconButton, Tooltip } from "@mui/material";
 import eventAPI from "../../shared/services/api/event";
 import { queryClient } from "../../providers/query-provider";
 
-
 // function renderSparklineCell(params) {
 //   const data = getDaysInMonth(4, 2024);
 //   const { value, colDef } = params;
@@ -41,8 +40,8 @@ function renderTags(slug) {
         key={v._id}
         sx={{ mr: 1 }}
         label={v.firstName + " " + v.lastName}
-        color="primary"
         size="small"
+        variant="outlined"
       />
     ));
   }
@@ -73,10 +72,28 @@ export function renderAvatar(params) {
 export const columns = [
   { field: "name", headerName: "Event Name", flex: 1.5, minWidth: 200 },
   {
-    field: "location",
-    headerName: "Location",
-    flex: 0.5,
-    minWidth: 180,
+    field: "startTime",
+    headerName: "Start Time",
+    headerAlign: "right",
+    align: "right",
+    flex: 1,
+    minWidth: 100,
+  },
+  {
+    field: "endTime",
+    headerName: "End Time",
+    headerAlign: "right",
+    align: "right",
+    flex: 1,
+    minWidth: 120,
+  },
+  {
+    field: "category",
+    headerName: "Category",
+    headerAlign: "center",
+    align: "center",
+    flex: 1,
+    minWidth: 120,
   },
   {
     field: "guests",
@@ -96,21 +113,12 @@ export const columns = [
     minWidth: 250,
     renderCell: (params) => renderTags(params),
   },
+
   {
-    field: "startTime",
-    headerName: "Start Time",
-    headerAlign: "right",
-    align: "right",
-    flex: 1,
-    minWidth: 100,
-  },
-  {
-    field: "endTime",
-    headerName: "End Time",
-    headerAlign: "right",
-    align: "right",
-    flex: 1,
-    minWidth: 120,
+    field: "location",
+    headerName: "Location",
+    flex: 0.5,
+    minWidth: 180,
   },
   {
     field: "createdAt",
@@ -158,4 +166,3 @@ export const columns = [
     ),
   },
 ];
-

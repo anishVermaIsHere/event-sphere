@@ -9,16 +9,20 @@ import ViewHeadlineIcon from "@mui/icons-material/ViewHeadline";
 import useAppStore from "../../store/app.store";
 import Filter from "../common/filter";
 import categoryAPI from "../../shared/services/api/category";
+import useFormStore from "../../store/form.store";
 
 const LazyEventForm = lazy(() => import("./event-modal-form"));
+const LazyEditEventForm = lazy(() => import("./edit-event-modal-form"));
+
 
 
 const EventActionBar = () => {
   const { setDataView } = useAppStore((state) => state);
+  const { event: { isAddOpen, setIsAddOpen }} = useFormStore(state=>state);
   const [filterList, setFilterList] = useState([])
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  // const [open, setOpen] = useState(false);
+  const handleOpen = () => setIsAddOpen(true);
+  const handleClose = () => setIsAddOpen(false);
   const handleView = (view) => setDataView(view);
 
   const style={
@@ -46,6 +50,7 @@ const EventActionBar = () => {
           ...style,
           justifyContent: "space-between",
           alignItems: 'start',
+          gap: 2,
           flexDirection: { xs: "column", sm: "row"},
         }}
       >
@@ -54,6 +59,7 @@ const EventActionBar = () => {
           color="primary"
           size="small"
           onClick={handleOpen}
+          sx={{ width : { xs: '100%', sm: 'auto' }}}
         >
           <AddIcon />
           Add Event
@@ -92,7 +98,7 @@ const EventActionBar = () => {
         </Box>
       </Box>
       <Suspense fallback={<Spinner />}>
-        {open && <LazyEventForm handleClose={handleClose} open={open} />}
+        {isAddOpen && <LazyEventForm handleClose={handleClose} open={isAddOpen} />}
       </Suspense>
     </>
   );

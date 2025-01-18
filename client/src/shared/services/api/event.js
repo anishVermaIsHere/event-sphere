@@ -11,9 +11,6 @@ const eventAPI = {
             params: query
         });        
     },
-    // async find(){
-    //     return await axiosInstance.get(`${URL}`);        
-    // },
     async delete(eventId){
         return await axiosInstance.delete(`${URL}/${eventId}`);        
     }

@@ -9,6 +9,11 @@ const useAppStore = create((set) => ({
   dialogTitle: "",
   dialogContent: "",
   dataView: "list",
+
+  isEditOpen: false,
+  setIsEditOpen: ()=>{
+
+  },
   setDataView: (dataView )=>set({ dataView }),
   setDialog: ({ dialogOpen, dialogTitle, dialogContent })=> set({ dialogOpen, dialogContent, dialogTitle }),
   setSnackbar: (message) =>
