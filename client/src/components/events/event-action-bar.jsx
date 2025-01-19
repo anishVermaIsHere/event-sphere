@@ -1,9 +1,8 @@
-import { lazy, useState, Suspense, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Button, Box, Tooltip, IconButton } from "@mui/material";
 import CachedIcon from "@mui/icons-material/Cached";
 import AddIcon from "@mui/icons-material/Add";
 import { queryClient } from "../../providers/query-provider";
-import Spinner from "../common/spinner";
 import GridViewIcon from "@mui/icons-material/GridView";
 import ViewHeadlineIcon from "@mui/icons-material/ViewHeadline";
 import useAppStore from "../../store/app.store";
@@ -11,18 +10,16 @@ import Filter from "../common/filter";
 import categoryAPI from "../../shared/services/api/category";
 import useFormStore from "../../store/form.store";
 
-const LazyEventForm = lazy(() => import("./event-modal-form"));
-const LazyEditEventForm = lazy(() => import("./edit-event-modal-form"));
+
 
 
 
 const EventActionBar = () => {
   const { setDataView } = useAppStore((state) => state);
-  const { event: { isAddOpen, setIsAddOpen }} = useFormStore(state=>state);
-  const [filterList, setFilterList] = useState([])
-  // const [open, setOpen] = useState(false);
+  const { event: { setIsAddOpen }} = useFormStore(state=>state);
+  const [filterList, setFilterList] = useState([]);
+
   const handleOpen = () => setIsAddOpen(true);
-  const handleClose = () => setIsAddOpen(false);
   const handleView = (view) => setDataView(view);
 
   const style={
@@ -97,9 +94,6 @@ const EventActionBar = () => {
           </Tooltip>
         </Box>
       </Box>
-      <Suspense fallback={<Spinner />}>
-        {isAddOpen && <LazyEventForm handleClose={handleClose} open={isAddOpen} />}
-      </Suspense>
     </>
   );
 };

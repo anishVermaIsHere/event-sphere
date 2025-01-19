@@ -10,6 +10,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import dayjs from "dayjs";
+import useFormStore from "../../store/form.store";
 
 const styles = {
   card: {
@@ -32,10 +33,12 @@ const styles = {
 };
 
 export default function EventCard({
+  id,
   name,
   category,
   isPrivate,
   isLive,
+  isEditable,
   startTime,
   endTime,
   location,
@@ -43,6 +46,7 @@ export default function EventCard({
   guests,
 }) {
   const [expanded, setExpanded] = useState(false);
+  const { event: { setEventId, setIsEditOpen } } = useFormStore(state=>state);
   const chars = 150;
   const guestList = guests?.map(({ firstName, lastName }) => firstName + " " + lastName).join(", ");
   const speakerList = speakers?.map(({ firstName, lastName }) => firstName + " " + lastName).join(", ");
@@ -51,6 +55,11 @@ export default function EventCard({
   const toggleExpanded = () => {
     setExpanded(!expanded);
   };
+
+  const toggleEdit = () => {
+    setEventId(id);
+    setIsEditOpen(true);
+  }
 
   return (
     <Card sx={styles.card}>
@@ -213,15 +222,15 @@ export default function EventCard({
         </Box>
       </CardContent>
       <CardActions>
-        {/* <DeleteIcon color="error" /> */}
-        <Chip
+        {isEditable && <Chip
           size="medium"
           label="Edit"
           variant="outlined"
           sx={{
             fontWeight: 600
           }}
-        />
+          onClick={toggleEdit}
+        />}
         <Chip
           size="medium"
           label="Delete"

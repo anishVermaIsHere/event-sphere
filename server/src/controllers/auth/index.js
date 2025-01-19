@@ -27,6 +27,7 @@ const authController = {
                             fullName: user.firstName+" "+user.lastName,
                             email: user.email,
                             gender: user.gender,
+                            role: user.role
                         },
                         accessToken: accessToken,
                         refreshToken: refreshToken,

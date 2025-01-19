@@ -31,6 +31,7 @@ const fetchEvents = async (query) => {
         startTime: startTime.format("DD/MM/YYYY HH:mm"),
         endTime: endTime.format("DD/MM/YYYY HH:mm"),
         createdAt: dayjs(e.createdAt).format("DD/MM/YYYY HH:mm"),
+        isEditable: !isLive,
         isLive
       }
     }),
@@ -63,7 +64,7 @@ function CustomTabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ pt: 1 }}>{children}</Box>}
+      {value === index && <Box sx={{ p: 1, bgcolor: "rgb(247 246 246)" }}>{children}</Box>}
     </div>
   );
 }
@@ -85,7 +86,7 @@ export default function BasicTabs() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState(2);
   const query = {
     category: queryParams.get("category"),
     startDate: queryParams.get("startDate"),

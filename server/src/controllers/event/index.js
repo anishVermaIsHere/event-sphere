@@ -43,6 +43,20 @@ const eventController = {
       throw new Error(error.message);
     }
   },
+  async findById(req, res){
+    try {
+      const eventId = req.params.id;
+      const event = await EventModel.findById({ _id: eventId })
+        .populate("guests", ["-__v", "-password", "-createdAt", "-updatedAt"])
+        .populate("speakers", ["-__v", "-password", "-createdAt", "-updatedAt"])
+        .populate("location")
+        .populate("createdBy");
+      return res.status(SUCCESS).json(event);
+    } catch (error) {
+      console.log("API: event find error", error.message);
+      throw new Error(error.message);
+    }
+  },
   async find(req, res) {
     try {
       const events = await EventModel.find()
