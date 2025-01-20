@@ -1,3 +1,7 @@
+import { useEffect, useState } from "react";
+import useAppStore from "../../store/app.store";
+import useFormStore from "../../store/form.store";
+import { useQuery } from "@tanstack/react-query";
 import {
   TextField,
   Button,
@@ -20,23 +24,17 @@ import CustomDateTimePicker from "../dashboard/custom-date-time-picker";
 import CancelIcon from "@mui/icons-material/Cancel";
 import dayjs from "dayjs";
 import { fetchEventsData } from "../../shared/utils";
-import { useQuery } from "@tanstack/react-query";
 import eventAPI from "../../shared/services/api/event";
 import { queryClient } from "../../providers/query-provider";
 import { eventSchema } from "../../shared/validation/schema";
 import { formBoxStyle, SelectMenuProps as MenuProps } from "./styles";
-import { useEffect, useState } from "react";
-import useFormStore from "../../store/form.store";
 import Spinner from "../common/spinner";
 
+
 const LazyEditEventForm = ({ handleClose, open }) => {
-  const {
-    event: { eventId },
-  } = useFormStore((state) => state);
-  const { data } = useQuery({
-    queryKey: ["event-data"],
-    queryFn: fetchEventsData,
-  });
+  const { event: { eventId } } = useFormStore((state) => state);
+  const { setSnackbar } = useAppStore(state=>state);
+  const { data } = useQuery({ queryKey: ["event-data"], queryFn: fetchEventsData });
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -73,10 +71,11 @@ const LazyEditEventForm = ({ handleClose, open }) => {
       console.error(validation);
       return;
     }
-    // const res = await eventAPI.create(validation.value);
-    // if (res.status === 201) {
-    //   queryClient.invalidateQueries("events");
-    // }
+    const res = await eventAPI.update(eventId, validation.value);
+    if (res.status === 200) {
+      setSnackbar("Event updated", "success");
+      queryClient.invalidateQueries("events");
+    }
     reset();
     handleClose();
   };
@@ -93,14 +92,8 @@ const LazyEditEventForm = ({ handleClose, open }) => {
         setValue("location", event.location._id);
         setValue("category", event.category);
         setValue("isPrivate", event.isPrivate);
-        setValue(
-          "speakers",
-          event.speakers.map((speaker) => speaker?._id)
-        );
-        setValue(
-          "guests",
-          event.guests.map((guest) => guest?._id)
-        );
+        setValue("speakers", event.speakers.map((speaker) => speaker?._id));
+        setValue("guests", event.guests.map((guest) => guest?._id));
       }
       setIsLoading(false);
     }

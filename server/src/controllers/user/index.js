@@ -4,9 +4,18 @@ import { HTTP_CODES } from "../../utils/constants.js";
 const { SUCCESS } = HTTP_CODES;
 
 const userController = {
+  async find(req, res) {
+    try {
+      const users = await UserModel.find().select(['-password', '-__v','-createdAt', '-updatedAt']).exec();
+      return res.status(SUCCESS).json(users);
+    } catch (error) {
+      console.log("API: find users error", error.message);
+      throw new Error(error.message);
+    }
+  },
   async findGuests(req, res) {
     try {
-      const guests = await UserModel.find({ role: "guest" }, [""]).select(['-password', '-__v','-createdAt', '-updatedAt']).exec();
+      const guests = await UserModel.find({ role: "guest" }).select(['-password', '-__v','-createdAt', '-updatedAt']).exec();
       return res.status(SUCCESS).json(guests);
     } catch (error) {
       console.log("API: find guests error", error.message);
@@ -15,7 +24,7 @@ const userController = {
   },
   async findSpeakers(req, res) {
     try {
-      const speakers = await UserModel.find({ role: "speaker" }, [""]).select(['-password', '-__v','-createdAt', '-updatedAt']).exec();
+      const speakers = await UserModel.find({ role: "speaker" }).select(['-password', '-__v','-createdAt', '-updatedAt']).exec();
       return res.status(SUCCESS).json(speakers);
     } catch (error) {
       console.log("API: find speakers error", error.message);

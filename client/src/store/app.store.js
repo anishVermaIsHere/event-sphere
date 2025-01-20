@@ -1,31 +1,30 @@
 import { create } from "zustand";
 
 const useAppStore = create((set) => ({
-  snackbarOpen: true,
+  snackbarOpen: false,
   snackbarVertical: "top",
   snackbarHorizontal: "center",
-  snackbarMessage: "Hello",
+  snackbarColor: "info",
+  snackbarMessage: "",
   dialogOpen: false,
   dialogTitle: "",
   dialogContent: "",
   dataView: "list",
-
-  isEditOpen: false,
-  setIsEditOpen: ()=>{
-
-  },
+  selectedEventRows: [],
+  setSelectedEventRows: (selectedEventRows)=>set({ selectedEventRows }),
   setDataView: (dataView )=>set({ dataView }),
   setDialog: ({ dialogOpen, dialogTitle, dialogContent })=> set({ dialogOpen, dialogContent, dialogTitle }),
-  setSnackbar: (message) =>
+  setSnackbar: (message, color) =>
     set((state) => ({
       ...state,
       snackbarMessage: message,
+      snackbarColor: color,
       snackbarOpen: true
     })),
   closeSnackbar: () =>
     set((state) => ({
       ...state,
-      snackbarMessage: "Hello",
+      snackbarMessage: "",
       snackbarOpen: false
     }))
 }));

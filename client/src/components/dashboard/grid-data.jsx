@@ -5,6 +5,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import eventAPI from "../../shared/services/api/event";
 import { queryClient } from "../../providers/query-provider";
+import useFormStore from "../../store/form.store";
 
 // function renderSparklineCell(params) {
 //   const data = getDaysInMonth(4, 2024);
@@ -135,8 +136,15 @@ export const columns = [
     align: "center",
     flex: 1,
     minWidth: 100,
-    renderCell: (params) => (
-      <Box
+    renderCell: (params) => {
+      const { event: { setEventId, setIsEditOpen } } = useFormStore(state=>state);
+
+      const toggleEdit = (eventId) => {
+        setEventId(eventId);
+        setIsEditOpen(true);
+      };
+
+      return <Box
         sx={{
           display: "flex",
           justifyContent: "center",
@@ -145,7 +153,7 @@ export const columns = [
       >
         <Tooltip title="Edit">
           <IconButton size="small" color="default">
-            <EditIcon />
+            <EditIcon onClick={()=>toggleEdit(params.id)}/>
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete">
@@ -163,6 +171,6 @@ export const columns = [
           </IconButton>
         </Tooltip>
       </Box>
-    ),
+    },
   },
 ];

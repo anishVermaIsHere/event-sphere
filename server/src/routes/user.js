@@ -4,6 +4,7 @@ import userController from "../controllers/user/index.js";
 
 const userRouter = Router();
 
+userRouter.get("/", userController.find);
 userRouter.get("/guests", userController.findGuests);
 userRouter.get("/speakers", userController.findSpeakers);
 

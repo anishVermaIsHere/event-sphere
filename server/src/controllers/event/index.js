@@ -98,14 +98,26 @@ const eventController = {
       console.log("API: event deletion error", error.message);
     }
   },
+  async deleteAll(req, res) {
+    try {
+      const eventIds = req.body.ids;
+      await EventModel.deleteMany({ _id: { $in: eventIds } });
+      return res
+        .status(SUCCESS)
+        .json({ message: "Events deleted successfully" });
+    } catch (error) {
+      console.log("API: events deletion error", error.message);
+    }
+  },
   async update(req, res) {
     try {
       const eventId = req.params.id;
-      const data = req.body;
-      await EventModel.updateOne({ _id: eventId }, data);
-      return res
-        .status(SUCCESS)
-        .json({ message: "Event deleted successfully" });
+      const event = {
+        ...req.body,
+        slug: slugify(req.body.name.toLowerCase()),
+      };
+      await EventModel.updateOne({ _id: eventId }, event);
+      return res.status(SUCCESS).json({ message: "Event update successfully" });
     } catch (error) {
       console.log("API: event updation error", error.message);
     }

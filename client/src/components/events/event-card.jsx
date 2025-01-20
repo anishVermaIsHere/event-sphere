@@ -1,16 +1,19 @@
 import { useState } from "react";
+import useFormStore from "../../store/form.store";
+import useAppStore from "../../store/app.store";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Box, Chip, Divider, Stack } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import dayjs from "dayjs";
-import useFormStore from "../../store/form.store";
+
+import eventAPI from "../../shared/services/api/event";
+import { queryClient } from "../../providers/query-provider";
+
 
 const styles = {
   card: {
@@ -47,6 +50,7 @@ export default function EventCard({
 }) {
   const [expanded, setExpanded] = useState(false);
   const { event: { setEventId, setIsEditOpen } } = useFormStore(state=>state);
+  const { setSnackbar }  = useAppStore(state=>state);
   const chars = 150;
   const guestList = guests?.map(({ firstName, lastName }) => firstName + " " + lastName).join(", ");
   const speakerList = speakers?.map(({ firstName, lastName }) => firstName + " " + lastName).join(", ");
@@ -59,10 +63,16 @@ export default function EventCard({
   const toggleEdit = () => {
     setEventId(id);
     setIsEditOpen(true);
-  }
+  };
+
+  const handleDelete = async () => {
+    await eventAPI.delete(id);
+    setSnackbar("Event deleted", "info");
+    queryClient.invalidateQueries("events");
+  };
 
   return (
-    <Card sx={styles.card}>
+    <Card sx={styles.card} elevation={0}>
       <CardContent sx={{ ...styles.card, justifyContent: "start", alignItems: "start" }}>
         <Box mb={2} sx={{ width: '100%' }}>
           <Stack sx={{ display: 'flex', justifyContent: 'space-between'}} direction="row" spacing={1} mb={1}>
@@ -109,7 +119,6 @@ export default function EventCard({
               mb: 1,
             }}
           >
-            Start:
             <CalendarMonthIcon sx={{ mx: 1 }} />
             {dayjs(startTime, "DD/MM/YYYY").format("MMM D, YYYY")}
             <ScheduleIcon sx={{ mx: 1 }} />
@@ -126,7 +135,6 @@ export default function EventCard({
               mb: 1,
             }}
           >
-            End:
             <CalendarMonthIcon sx={{ mx: 1 }} />
             {dayjs(endTime, "DD/MM/YYYY").format("MMM D, YYYY")}
             <ScheduleIcon sx={{ mx: 1 }} />
@@ -237,6 +245,7 @@ export default function EventCard({
           sx={{
             fontWeight: 600
           }}
+          onClick={handleDelete}
         />
       </CardActions>
     </Card>

@@ -30,10 +30,8 @@ import { formBoxStyle, SelectMenuProps as MenuProps } from "./styles";
 
 
 const LazyEventForm = ({ handleClose, open }) => {
-  const { data } = useQuery({
-    queryKey: ["event-data"],
-    queryFn: fetchEventsData,
-  });
+  const { data } = useQuery({ queryKey: ["event-data"], queryFn: fetchEventsData });
+
 
   const {
     control,

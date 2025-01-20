@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -6,13 +8,10 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
 import CustomizedDataGrid from "./customized-data-grid";
 import AlertCard from "../common/alert-card";
-import Spinner from "../common/spinner";
 import eventAPI from "../../shared/services/api/event";
 import dayjs from "dayjs";
 import { getAuth } from "../../shared/utils";
-import { useLocation, useSearchParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { Typography } from "@mui/material";
+
 
 
 const fetchEvents = async (query) => {
@@ -39,8 +38,7 @@ const fetchEvents = async (query) => {
 };
 
 function EventList({ events, isError, isLoading }) {
-  return events?.rows?.length ? 
-    <Grid container spacing={2} columns={12}>
+  return <Grid container spacing={2} columns={12}>
       <Grid size={{ xs: 12 }}>
         <CustomizedDataGrid
           events={events}
@@ -49,8 +47,6 @@ function EventList({ events, isError, isLoading }) {
         />
       </Grid>
     </Grid>
-    :
-    <Typography variant="body2" component="p" align="center" my={2}>No events</Typography>
 }
 
 function CustomTabPanel(props) {
@@ -64,7 +60,7 @@ function CustomTabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 1, bgcolor: "rgb(247 246 246)" }}>{children}</Box>}
+      {value === index && <Box sx={{ p: 1, minHeight: "100vh", bgcolor: "rgb(247 246 246)" }}>{children}</Box>}
     </div>
   );
 }
@@ -131,9 +127,7 @@ export default function BasicTabs() {
 
 
 
-  if (isLoading || isFetching) {
-    return <Spinner />;
-  }
+
   if(isError){
     return <AlertCard color="error" message="Something error"/>
   }

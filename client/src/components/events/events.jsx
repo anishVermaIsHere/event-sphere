@@ -22,11 +22,9 @@ const Events = () => {
       <Typography variant="h5" component="h5" sx={{ fontWeight: 600, mb: 2 }}>Events</Typography>
       <EventActionBar />
       <BasicTabs />
-
        <Suspense fallback={<Spinner />}>
           {isAddOpen && <LazyEventForm handleClose={handleAddClose} open={isAddOpen} />}
           {isEditOpen && <LazyEditEventForm handleClose={handleEditClose} open={isEditOpen} />}
-
         </Suspense>
     </Box>
   );

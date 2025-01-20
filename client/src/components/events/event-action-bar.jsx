@@ -2,41 +2,48 @@ import { useState, useEffect } from "react";
 import { Button, Box, Tooltip, IconButton } from "@mui/material";
 import CachedIcon from "@mui/icons-material/Cached";
 import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { queryClient } from "../../providers/query-provider";
 import GridViewIcon from "@mui/icons-material/GridView";
 import ViewHeadlineIcon from "@mui/icons-material/ViewHeadline";
 import useAppStore from "../../store/app.store";
-import Filter from "../common/filter";
+import FilterElement from "../common/filter";
 import categoryAPI from "../../shared/services/api/category";
 import useFormStore from "../../store/form.store";
-
-
-
-
+import SortElement from "../common/sort";
+import { eventSortList } from "../../shared/constant";
+import eventAPI from "../../shared/services/api/event";
 
 const EventActionBar = () => {
-  const { setDataView } = useAppStore((state) => state);
-  const { event: { setIsAddOpen }} = useFormStore(state=>state);
+  const { dataView, selectedEventRows, setDataView, setSnackbar } = useAppStore((state) => state);
+  const { event: { setIsAddOpen } } = useFormStore((state) => state);
   const [filterList, setFilterList] = useState([]);
+  const [sortList, setSortList] = useState(eventSortList);
 
   const handleOpen = () => setIsAddOpen(true);
   const handleView = (view) => setDataView(view);
 
-  const style={
+  const handleDeleteAll = async () => {
+    await eventAPI.deleteAll(selectedEventRows);
+    setSnackbar("Events deleted successfully", "info");
+    queryClient.invalidateQueries("events");
+  };
+
+  const style = {
     display: "flex",
     alignItems: "center",
     gap: 1,
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await categoryAPI.find(); 
-        setFilterList(response.data); 
+        const response = await categoryAPI.find();
+        setFilterList(response.data);
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error("Error fetching categories:", error);
       }
-    }
+    };
     fetchData();
   }, []);
 
@@ -46,23 +53,45 @@ const EventActionBar = () => {
         sx={{
           ...style,
           justifyContent: "space-between",
-          alignItems: 'start',
+          alignItems: "start",
           gap: 2,
-          flexDirection: { xs: "column", sm: "row"},
+          flexDirection: { xs: "column", sm: "row" },
         }}
       >
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          onClick={handleOpen}
-          sx={{ width : { xs: '100%', sm: 'auto' }}}
+        <Box
+          sx={{
+            ...style,
+            width: "100%",
+            display: 'flex',
+            flexDirection: { xs: "column", sm: "row" },
+          }}
         >
-          <AddIcon />
-          Add Event
-        </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={handleOpen}
+            sx={{ width: { xs: "100%", sm: "auto", mb: 0 } }}
+          >
+            <AddIcon sx={{ mr: "0.4rem" }} />
+            Add Event
+          </Button>
+          {selectedEventRows.length ? 
+          <Button
+            variant="contained"
+            color="error"
+            size="small"
+            onClick={handleDeleteAll}
+            sx={{ width: { xs: "100%", sm: "auto", mb: 0 } }}
+          >
+            <DeleteIcon sx={{ mr: "0.4rem" }} />
+            Delete {selectedEventRows.length}
+          </Button> : ""}
+        </Box>
+
         <Box sx={style}>
-          <Filter filterList={filterList}/>
+          {/* <SortElement sortList={sortList}/> */}
+          <FilterElement filterList={filterList} />
           <Tooltip title="Refetch">
             <IconButton
               size="small"
@@ -74,24 +103,27 @@ const EventActionBar = () => {
               <CachedIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title="List">
-            <IconButton
-              size="small"
-              color="default"
-              onClick={() => handleView("list")}
-            >
-              <ViewHeadlineIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Grid">
-            <IconButton
-              size="small"
-              color="default"
-              onClick={() => handleView("grid")}
-            >
-              <GridViewIcon />
-            </IconButton>
-          </Tooltip>
+          {dataView === "grid" ? (
+            <Tooltip title="List">
+              <IconButton
+                size="small"
+                color="default"
+                onClick={() => handleView("list")}
+              >
+                <ViewHeadlineIcon />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            <Tooltip title="Grid">
+              <IconButton
+                size="small"
+                color="default"
+                onClick={() => handleView("grid")}
+              >
+                <GridViewIcon />
+              </IconButton>
+            </Tooltip>
+          )}
         </Box>
       </Box>
     </>

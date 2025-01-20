@@ -7,15 +7,19 @@ const eventAPI = {
         return await axiosInstance.post(`${URL}/`, event);
     },
     async findByFilter(query) {
-        return await axiosInstance.get(`${URL}/`, {
-            params: query
-        });        
+        return await axiosInstance.get(`${URL}/`, { params: query });        
     },
     async findById(eventId){
         return await axiosInstance.get(`${URL}/${eventId}`);
     },
     async delete(eventId){
         return await axiosInstance.delete(`${URL}/${eventId}`);        
+    },
+    async deleteAll(eventIds){
+        return await axiosInstance.delete(`${URL}`, { data: { ids: eventIds} });        
+    },
+    async update(eventId, data){
+        return await axiosInstance.put(`${URL}/${eventId}`, data);   
     }
 };
 

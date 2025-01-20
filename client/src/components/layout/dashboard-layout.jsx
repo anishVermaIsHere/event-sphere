@@ -8,8 +8,18 @@ import AppNavbar from "../common/app-navbar";
 import SideMenu from "../dashboard/side-menu";
 import QueryProvider from "../../providers/query-provider";
 import { AxiosInterceptor } from "../../shared/services/axios-interceptor";
+import useAppStore from "../../store/app.store";
+import { Alert, Snackbar } from "@mui/material";
 
 const DashboardLayout = () => {
+  const {
+    snackbarMessage,
+    snackbarColor,
+    snackbarOpen,
+    snackbarVertical,
+    snackbarHorizontal,
+    closeSnackbar,
+  } = useAppStore((state) => state);
   return (
     <>
       <AxiosInterceptor>
@@ -45,6 +55,27 @@ const DashboardLayout = () => {
           </Box>
         </QueryProvider>
       </AxiosInterceptor>
+      <Box sx={{ width: 500 }}>
+          <Snackbar
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+            open={snackbarOpen}
+            onClose={closeSnackbar}
+            message={snackbarMessage}
+            key={snackbarVertical + snackbarHorizontal}
+            autoHideDuration={3000}
+          >
+            <Alert
+              onClose={closeSnackbar}
+              severity={snackbarColor}
+              sx={{ width: "100%" }}
+            >
+              {snackbarMessage}
+            </Alert>
+          </Snackbar>
+        </Box>
     </>
   );
 };

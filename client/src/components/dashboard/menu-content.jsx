@@ -15,13 +15,12 @@ import { useLocation, NavLink } from 'react-router-dom';
 import { ROUTES } from '../../routes/route-links'
 
 
-const { DASHBOARD, EVENTS, ATTENDEES, GUESTS, TICKETS } = ROUTES.ADMIN;
+const { DASHBOARD, EVENTS, USERS, TICKETS } = ROUTES.ADMIN;
 
 const mainListItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: DASHBOARD },
   { text: 'Events', icon: <AnalyticsRoundedIcon />, path: EVENTS },
-  { text: 'Attendees', icon: <PeopleRoundedIcon />, path: ATTENDEES },
-  { text: 'Guests', icon:  <PeopleRoundedIcon />, path: GUESTS },
+  { text: 'Users', icon: <PeopleRoundedIcon />, path: USERS },
   { text: 'Tickets', icon: <AssignmentRoundedIcon />, path: TICKETS },
 ];
 

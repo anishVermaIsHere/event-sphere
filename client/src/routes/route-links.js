@@ -11,6 +11,7 @@ export const ROUTES={
     /* protected routes */
     ADMIN: {
         DASHBOARD:'dashboard',
+        USERS: 'users',
         CREATE_EVENT:'event/create',
         ACCOUNT:'account',
         PROFILE:'profile',
