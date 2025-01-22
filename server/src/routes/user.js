@@ -1,12 +1,12 @@
 import { Router } from "express";
 import userController from "../controllers/user/index.js";
-
+import { tokenVerify } from "../middlewares/token-verify.js";
 
 const userRouter = Router();
 
-userRouter.get("/", userController.find);
-userRouter.get("/guests", userController.findGuests);
-userRouter.get("/speakers", userController.findSpeakers);
+userRouter.get("/", tokenVerify, userController.find);
+userRouter.get("/guests", tokenVerify, userController.findGuests);
+userRouter.get("/speakers", tokenVerify, userController.findSpeakers);
 
 
 export default userRouter;

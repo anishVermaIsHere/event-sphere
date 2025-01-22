@@ -22,6 +22,7 @@ import authAPI from "../shared/services/api/auth";
 import Spinner from "../components/common/spinner";
 import AppConfig from "../config/app.config";
 import useAuthStore from "../store/auth.store";
+import useAppStore from "../store/app.store";
 
 
 export default function Login() {
@@ -37,8 +38,8 @@ export default function Login() {
     },
     resolver: joiResolver(loginSchema) });
 
-    const { setUser, setAccessToken, setRefreshToken } = useAuthStore(state=>state);
-
+  const { setUser, setAccessToken, setRefreshToken } = useAuthStore(state=>state);
+  const { setSnackbar } = useAppStore(state=>state);
   const [loading, setLoading] = useState(false);
   const [showPwd, setShowPwd] = useState(false);
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ export default function Login() {
         setLoading(false);
       }, 2000);
     } catch (error) {
-      alert("Login error");
+      setSnackbar("Login error", "error");
       setLoading(false);
     }
     reset();

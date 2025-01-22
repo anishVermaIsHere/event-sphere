@@ -10,9 +10,7 @@ import Spinner from "../common/spinner";
 
 
 export default function CustomizedDataGrid({ events, isLoading, isError }) {
-  const { dataView, selectedEventRows, setSelectedEventRows } = useAppStore(
-    (state) => state
-  );
+  const { dataView, selectedEventRows, setSelectedEventRows } = useAppStore((state) => state);
   const apiRef = useGridApiRef();
 
   const handleRowSelectionModelChange = (rowIds) => {

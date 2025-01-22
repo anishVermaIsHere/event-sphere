@@ -11,6 +11,9 @@ const userAPI={
         }
         return await axiosInstance.get(`${URL}/${roleEndPoints[role]}`);
     },
+    async find(){
+        return await axiosInstance.get(`${URL}`);
+    }
 };
 
 export default userAPI;

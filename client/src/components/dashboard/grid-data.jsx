@@ -34,7 +34,7 @@ import useFormStore from "../../store/form.store";
 //   );
 // }
 
-function renderTags(slug) {
+export function renderTags(slug) {
   if (Array.isArray(slug.value)) {
     return slug.value.map((v) => (
       <Chip
@@ -47,7 +47,7 @@ function renderTags(slug) {
     ));
   }
   return (
-    <Chip sx={{ mr: 1 }} label={slug.value} color="success" size="small" />
+    <Chip sx={{ mr: 1 }} label={slug.value} color="primary" size="small" />
   );
 }
 
@@ -136,6 +136,8 @@ export const columns = [
     align: "center",
     flex: 1,
     minWidth: 100,
+    disableColumnMenu: true,
+    sortable: false,
     renderCell: (params) => {
       const { event: { setEventId, setIsEditOpen } } = useFormStore(state=>state);
 

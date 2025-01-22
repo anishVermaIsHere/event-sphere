@@ -5,8 +5,9 @@ const { SUCCESS } = HTTP_CODES;
 
 const userController = {
   async find(req, res) {
+    const userId = req.decode.id;
     try {
-      const users = await UserModel.find().select(['-password', '-__v','-createdAt', '-updatedAt']).exec();
+      const users = await UserModel.find({ _id: { $ne: userId }}).select(['-password', '-__v','-createdAt', '-updatedAt']).exec();
       return res.status(SUCCESS).json(users);
     } catch (error) {
       console.log("API: find users error", error.message);
