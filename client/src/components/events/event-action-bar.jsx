@@ -10,15 +10,14 @@ import useAppStore from "../../store/app.store";
 import FilterElement from "../common/filter";
 import categoryAPI from "../../shared/services/api/category";
 import useFormStore from "../../store/form.store";
-import SortElement from "../common/sort";
-import { eventSortList } from "../../shared/constant";
 import eventAPI from "../../shared/services/api/event";
+
+
 
 const EventActionBar = () => {
   const { dataView, selectedEventRows, setDataView, setSnackbar } = useAppStore((state) => state);
   const { event: { setIsAddOpen } } = useFormStore((state) => state);
   const [filterList, setFilterList] = useState([]);
-  const [sortList, setSortList] = useState(eventSortList);
 
   const handleOpen = () => setIsAddOpen(true);
   const handleView = (view) => setDataView(view);

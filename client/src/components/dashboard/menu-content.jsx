@@ -7,7 +7,6 @@ import Stack from '@mui/material/Stack';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AnalyticsRoundedIcon from '@mui/icons-material/AnalyticsRounded';
 import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
-import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
@@ -15,13 +14,13 @@ import { useLocation, NavLink } from 'react-router-dom';
 import { ROUTES } from '../../routes/route-links'
 
 
-const { DASHBOARD, EVENTS, USERS, TICKETS } = ROUTES.ADMIN;
+const { DASHBOARD, EVENTS, USERS, ATTENDEES } = ROUTES.ADMIN;
 
 const mainListItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: DASHBOARD },
   { text: 'Events', icon: <AnalyticsRoundedIcon />, path: EVENTS },
   { text: 'Users', icon: <PeopleRoundedIcon />, path: USERS },
-  { text: 'Tickets', icon: <AssignmentRoundedIcon />, path: TICKETS },
+  { text: 'Attendees', icon: <PeopleRoundedIcon />, path: ATTENDEES },
 ];
 
 const secondaryListItems = [

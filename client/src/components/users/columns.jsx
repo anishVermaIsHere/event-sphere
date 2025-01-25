@@ -1,35 +1,37 @@
 import { Chip } from "@mui/material";
-import { renderTags } from "../dashboard/grid-data";
 import MenuOption from "../common/menu-option";
 
 
 
 const actionOptions = [
   {
-    label: "Invite as Guest",
+    id:2,
+    label: "Change as Guest",
+    value: "guest",
     onClick: ()=>{}
   },
   {
-    label: "",
-    onClick: ""
-  }
+    id:3,
+    label: "Change as Speaker",
+    value: "speaker",
+    onClick: ()=>{}
+  },
+
 ];
 
 function renderCell(slug) {
   return (
-    <Chip sx={{ mr: 1 }} label={slug.value} color={ slug.value === "admin" ? "primary" : "default" } size="small" />
+    <Chip sx={{ mr: 1 }} label={slug.value} color={ slug.value === "guest".toUpperCase() ? "primary" : "secondary" } size="small" />
   );
 };
 
 export const columns = [
-  { field: "firstName", headerName: "First Name", flex: 1.5, minWidth: 100 },
-  {
-    field: "lastName",
-    headerName: "Last Name",
-    headerAlign: "left",
-    align: "left",
-    flex: 1,
-    minWidth: 100,
+  { 
+    field: "fullName", 
+    headerName: "Name", 
+    flex: 1.5, 
+    minWidth: 100 
+
   },
   {
     field: "username",
@@ -37,7 +39,7 @@ export const columns = [
     headerAlign: "left",
     align: "left",
     flex: 1,
-    minWidth: 120,
+    minWidth: 120
   },
   {
     field: "role",
@@ -54,7 +56,7 @@ export const columns = [
     headerAlign: "center",
     align: "center",
     flex: 1,
-    minWidth: 120,
+    minWidth: 80,
   },
   {
     field: "dob",
@@ -71,7 +73,6 @@ export const columns = [
     align: "center",
     flex: 1,
     minWidth: 250,
-    renderCell: (params) => renderTags(params),
   },
   {
     field: "createdAt",
@@ -87,7 +88,7 @@ export const columns = [
     minWidth: 10,
     disableColumnMenu: true,
     sortable: false,
-    renderCell: (params)=><MenuOption />
+    renderCell: (params)=><MenuOption value={params.row.role} options={actionOptions}/>
   }
 
 ]

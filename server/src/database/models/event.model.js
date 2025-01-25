@@ -12,6 +12,7 @@ const eventSchema = {
   startTime: { type: Date, required: true },
   endTime: { type: Date, required: true },
   location: { type: SchemaTypes.ObjectId, ref:"Locations", required: true },
+  capacity: { type: Number, required: true },
   guests: [{ type: SchemaTypes.ObjectId, ref: "Users", required: true }],
   speakers: [{ type: SchemaTypes.ObjectId, ref: "Users", required: true }],
   createdBy: { type: SchemaTypes.ObjectId, ref: "Users", required: true }

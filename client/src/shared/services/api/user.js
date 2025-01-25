@@ -13,7 +13,7 @@ const userAPI={
     },
     async find(){
         return await axiosInstance.get(`${URL}`);
-    }
+    },
 };
 
 export default userAPI;

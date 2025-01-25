@@ -4,31 +4,16 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-const options = [
-  'None',
-  'Atria',
-  'Callisto',
-  'Dione',
-  'Ganymede',
-  'Hangouts Call',
-  'Luna',
-  'Oberon',
-  'Phobos',
-  'Pyxis',
-  'Sedna',
-  'Titania',
-  'Triton',
-  'Umbriel',
-];
 
 const ITEM_HEIGHT = 28;
 
-export default function MenuOption() {
+export default function MenuOption({ options, value }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -43,7 +28,7 @@ export default function MenuOption() {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <MoreVertIcon />
+        <MoreVertIcon fontSize="small"/>
       </IconButton>
       <Menu
         id="long-menu"
@@ -59,14 +44,20 @@ export default function MenuOption() {
               maxHeight: ITEM_HEIGHT * 4.5,
               width: '20ch',
             },
-          },
+          }
         }}
       >
-        {options.map((option) => (
-          <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
-            {option}
-          </MenuItem>
-        ))}
+        {options.filter((opt)=>opt.value !== value.toLowerCase()).map((option) => (
+          <MenuItem 
+            key={option} 
+            sx={{ fontSize: '.9rem'}} 
+            onClick={()=>{
+              option.onClick();
+              handleClose();
+            }}>
+              {option.label}
+            </MenuItem>
+          ))}
       </Menu>
     </div>
   );

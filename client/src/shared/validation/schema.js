@@ -39,6 +39,11 @@ export const eventSchema = Joi.object({
   category: Joi.string().required().messages({
     "any.required": "Category are required for the event.",
   }),
+  capacity: Joi.number().min(100).max(10000).required().messages({
+    "any.required": "Seating capacity are required for the event.",
+    "number.min": "At least 100 seats must be selected.",
+    "number.max": "Capacity exceeded - max 10000 seats available.",
+  }),
   guests: Joi.array().items(Joi.string()).when('isPrivate', {
     is: true,
     then: Joi.array().items(Joi.string()).min(1).max(20).required().messages({

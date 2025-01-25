@@ -3,6 +3,7 @@ import app from "./app.js";
 import AppConfig from "./config/app.config.js";
 
 
+
 const server = createServer(app);
 // 
 server.listen(AppConfig.port, AppConfig.host, () => {
@@ -10,4 +11,5 @@ server.listen(AppConfig.port, AppConfig.host, () => {
     `***** SERVER started at ${AppConfig.host}:${AppConfig.port} *****`
   );
 });
+
 

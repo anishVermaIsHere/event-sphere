@@ -25,14 +25,13 @@ import eventAPI from "../../shared/services/api/event";
 import { queryClient } from "../../providers/query-provider";
 import { eventSchema } from "../../shared/validation/schema";
 import { formBoxStyle, SelectMenuProps as MenuProps } from "./styles";
-
+import useAppStore from "../../store/app.store";
 
 
 
 const LazyEventForm = ({ handleClose, open }) => {
   const { data } = useQuery({ queryKey: ["event-data"], queryFn: fetchEventsData });
-
-
+  const { setSnackbar } = useAppStore(state=>state);
   const {
     control,
     register,
@@ -48,6 +47,7 @@ const LazyEventForm = ({ handleClose, open }) => {
       endTime: dayjs().add(2, "hour"),
       location: "",
       category: "",
+      capacity: 500,
       isPrivate: false,
       guests: [],
       speakers: [],
@@ -62,7 +62,7 @@ const LazyEventForm = ({ handleClose, open }) => {
       endTime: new Date(data.endTime).toISOString(),
     });
     if (validation.error) {
-      console.error(validation);
+      setSnackbar(validation.error.message, "warning");
       return;
     }
     const res = await eventAPI.create(validation.value);
@@ -145,7 +145,7 @@ const LazyEventForm = ({ handleClose, open }) => {
               </Grid2>
               <Grid2
                 item
-                size={{ xs: 12, md: 6 }}
+                size={{ xs: 12, md: 4 }}
                 sx={{ position: "relative" }}
               >
                 <InputLabel id="category-label">Category</InputLabel>
@@ -173,7 +173,7 @@ const LazyEventForm = ({ handleClose, open }) => {
 
               <Grid2
                 item
-                size={{ xs: 12, md: 6 }}
+                size={{ xs: 12, md: 4 }}
                 sx={{ position: "relative" }}
               >
                 <InputLabel id="location-label">Location</InputLabel>
@@ -197,6 +197,26 @@ const LazyEventForm = ({ handleClose, open }) => {
                 <Typography component="small" variant="p" color="error.main">
                   {data?.locations?.length === 0 && "No locations"}
                 </Typography>
+              </Grid2>
+
+              <Grid2
+                item
+                size={{ xs: 12, md: 4 }}
+                sx={{ position: "relative" }}
+              >
+                <TextField
+                  // required
+                  error={errors?.capacity?.message && true}
+                  id="capacity"
+                  name="capacity"
+                  label="Seating capacity"
+                  size="small"
+                  type="number"
+                  placeholder="100-10000"
+                  helperText={errors?.capacity?.message}
+                  fullWidth
+                  {...register("capacity")}
+                />
               </Grid2>
 
               <Grid2

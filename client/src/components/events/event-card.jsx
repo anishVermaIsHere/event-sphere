@@ -9,6 +9,7 @@ import { Box, Chip, Divider, Stack } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import GroupsIcon from '@mui/icons-material/Groups';
 import dayjs from "dayjs";
 
 import eventAPI from "../../shared/services/api/event";
@@ -47,6 +48,7 @@ export default function EventCard({
   location,
   speakers,
   guests,
+  capacity
 }) {
   const [expanded, setExpanded] = useState(false);
   const { event: { setEventId, setIsEditOpen } } = useFormStore(state=>state);
@@ -94,6 +96,7 @@ export default function EventCard({
             size="small"
           />}
           </Stack>
+
           <Typography
             title={name}
             gutterBottom
@@ -119,7 +122,7 @@ export default function EventCard({
               mb: 1,
             }}
           >
-            <CalendarMonthIcon sx={{ mx: 1 }} />
+            <CalendarMonthIcon sx={{ mr: 1 }} />
             {dayjs(startTime, "DD/MM/YYYY").format("MMM D, YYYY")}
             <ScheduleIcon sx={{ mx: 1 }} />
             {dayjs(startTime, "DD/MM/YYYY HH:mm").format("hh:mm A")}
@@ -135,7 +138,7 @@ export default function EventCard({
               mb: 1,
             }}
           >
-            <CalendarMonthIcon sx={{ mx: 1 }} />
+            <CalendarMonthIcon sx={{ mr: 1 }} />
             {dayjs(endTime, "DD/MM/YYYY").format("MMM D, YYYY")}
             <ScheduleIcon sx={{ mx: 1 }} />
             {dayjs(endTime, "DD/MM/YYYY HH:mm").format("hh:mm A")}
@@ -148,10 +151,22 @@ export default function EventCard({
             sx={{
               display: "flex",
               alignItems: "start",
-              mb: 2,
+              mb: 1,
             }}
           >
             <LocationOnIcon sx={{ mr: 1 }} /> {location}
+          </Typography>
+          <Typography
+            variant="body"
+            component="div"
+            color="text.secondary"
+            sx={{
+              display: "flex",
+              alignItems: "start",
+              mb: 2,
+            }}
+          >
+            <GroupsIcon sx={{ mr: 1 }} /> {capacity}
           </Typography>
           <Divider />
         </Box>
