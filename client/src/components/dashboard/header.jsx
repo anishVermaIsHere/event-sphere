@@ -3,16 +3,11 @@ import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import CustomDatePicker from './custom-date-picker';
 import MenuButton from './menu-button';
 import Search from './Search';
-import { Typography } from '@mui/material';
-import useAuthStore from '../../store/auth.store';
-import AppConfig from '../../config/app.config';
 import NavbarBreadcrumbs from "./navbar-breadcrumbs";
 
 
 
 export default function Header() {
-  const { user } = useAuthStore(state=>state);
-
   return (
     <Stack
       direction="row"

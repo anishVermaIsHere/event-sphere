@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { generatePassCode } from './passcode.js';
 
 
-// Function to generate random attendee data
+
 export const generateAttendees = () => {
   const attendees = [];
   for (let i = 0; i < 4; i++) { 
@@ -17,18 +17,18 @@ export const generateAttendees = () => {
   return attendees;
 };
 
-// Generating 30 demo tickets
+
 export const generateDemoTickets = () => {
   const demoTickets = [];
   for (let i = 0; i < 10; i++) {
     const attendees = generateAttendees();
     const ticket = {
       // attendees,
-      eventId: "678919b0bcc512e4db28487e", // Same eventId for all tickets
-      userId: "67866d2561bea229c025466f", // Same userId for all tickets
-      date: faker.date.future(1).toISOString().slice(0, 10).replace(/-/g, "/"), // Random future date
+      eventId: "678919b0bcc512e4db28487e", 
+      userId: "67866d2561bea229c025466f", 
+      date: faker.date.future(1).toISOString().slice(0, 10).replace(/-/g, "/"), 
       status: "confirmed",
-      priceInCents: 200
+      
     };
     demoTickets.push(ticket);
   }
@@ -43,56 +43,56 @@ export const demoTickets = [
     userId: '67866d2561bea229c025466f',
     date: '2025/01/31',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '678919b0bcc512e4db28487e',
     userId: '67866d2561bea229c025466d',
     date: '2025/01/31',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '678919b0bcc512e4db28487e',
     userId: '67866d2561bea229c025466e',
     date: '2025/01/31',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '67891ae5bcc512e4db2848af',
     userId: '67866d2561bea229c025466f',
     date: '2025/01/28',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '67891ae5bcc512e4db2848af',
     userId: '6794dd2157bbed541a234a27',
     date: '2025/01/28',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '678919b0bcc512e4db28487e',
     userId: '6794dd2157bbed541a234a27',
     date: '2025/01/31',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '67891ae5bcc512e4db2848af',
     userId: '67866d2561bea229c025466d',
     date: '2025/01/28',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '67891ae5bcc512e4db2848af',
     userId: '67866d2561bea229c025466e',
     date: '2025/01/28',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   //--Nicole34
   {
@@ -100,21 +100,21 @@ export const demoTickets = [
     userId: '6794dd2157bbed541a234a31',
     date: '2025/01/29',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '678919b0bcc512e4db28487e',
     userId: '6794dd2157bbed541a234a31',
     date: '2025/01/31',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '67891ae5bcc512e4db2848af',
     userId: '6794dd2157bbed541a234a31',
     date: '2025/01/28',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
 
   //- Cordy567
@@ -123,14 +123,14 @@ export const demoTickets = [
     userId: '6794dd2157bbed541a234a32',
     date: '2025/01/29',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '678919b0bcc512e4db28487e',
     userId: '6794dd2157bbed541a234a32',
     date: '2025/01/31',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   // - Jeanette67
   {
@@ -138,21 +138,21 @@ export const demoTickets = [
     userId: '6794dd2157bbed541a234a35',
     date: '2025/02/02',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '678aa0f65f59a609f58e88b9',
     userId: '6794dd2157bbed541a234a35',
     date: '2025/01/27',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '67891ae5bcc512e4db2848af',
     userId: '6794dd2157bbed541a234a35',
     date: '2025/01/28',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
 
   //- Wylma23
@@ -161,14 +161,14 @@ export const demoTickets = [
     userId: '6794dd2157bbed541a234a36',
     date: '2025/01/27',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '67891b75bcc512e4db2848c7',
     userId: '6794dd2157bbed541a234a36',
     date: '2025/02/02',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
 
   // -Packston45
@@ -177,7 +177,7 @@ export const demoTickets = [
     userId: '6794dd2157bbed541a234a37',
     date: '2025/02/02',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   //- Melodee56
   {
@@ -185,7 +185,7 @@ export const demoTickets = [
     userId: '6794dd2157bbed541a234a39',
     date: '2025/02/02',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   // -Almeta23
   {
@@ -193,14 +193,14 @@ export const demoTickets = [
     userId: '6794dd2157bbed541a234a3a',
     date: '2025/01/31',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '67891b75bcc512e4db2848c7',
     userId: '6794dd2157bbed541a234a3a',
     date: '2025/02/02',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
 
   //-Deeyn456
@@ -209,7 +209,7 @@ export const demoTickets = [
     userId: '6794dd2157bbed541a234a2d',
     date: '2025/01/29',
     status: 'confirmed',
-    priceInCents: 200
+    
   }, 
   // Frasquito12
   {
@@ -217,14 +217,14 @@ export const demoTickets = [
     userId: '6794dd2157bbed541a234a2f',
     date: '2025/01/29',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '67891b75bcc512e4db2848c7',
     userId: '6794dd2157bbed541a234a2f',
     date: '2025/02/02',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   // - Bonnie23
   {
@@ -232,14 +232,14 @@ export const demoTickets = [
     userId: '6794dd2157bbed541a234a2a',
     date: '2025/02/02',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '67891b23bcc512e4db2848bb',
     userId: '6794dd2157bbed541a234a2a',
     date: '2025/01/29',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   // - Nigel89
   {
@@ -247,21 +247,21 @@ export const demoTickets = [
     userId: '6794dd2157bbed541a234a33',
     date: '2025/01/27',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '67891ae5bcc512e4db2848af',
     userId: '6794dd2157bbed541a234a33',
     date: '2026/01/28',
     status: 'confirmed',
-    priceInCents: 200
+    
   },
   {
     eventId: '678919b0bcc512e4db28487e',
     userId: '6794dd2157bbed541a234a33',
     date: '2025/01/31',
     status: 'confirmed',
-    priceInCents: 200
+    
   }
 ];
 

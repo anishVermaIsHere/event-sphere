@@ -17,7 +17,8 @@ const StyledBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
 
 export default function NavbarBreadcrumbs() {
   const location = useLocation();
-  const paths = location.pathname.split('/');
+  const paths = location.pathname.split('/').filter((p)=> isNaN(parseInt(p)));
+
   return (
     <StyledBreadcrumbs
       aria-label="breadcrumb"

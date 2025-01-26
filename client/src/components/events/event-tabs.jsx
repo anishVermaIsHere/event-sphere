@@ -89,9 +89,9 @@ export default function EventTabs() {
     endDate: queryParams.get("endDate"),
     status: queryParams.get("status"),
   };
+
   const {
     isLoading,
-    isFetching,
     isError,
     data: events,
   } = useQuery({

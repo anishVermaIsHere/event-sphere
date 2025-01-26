@@ -21,6 +21,7 @@ export const ROUTES={
         EVENTS:'events',
         LOCATIONS: 'locations',
         ATTENDEES: 'attendees',
+        ATTENDEE: 'attendees/:id',
         TICKETS: 'tickets',
         MANAGE: 'manage'
     }

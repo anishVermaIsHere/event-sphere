@@ -7,6 +7,11 @@ import { HTTP_CODES } from "../../utils/constants.js";
 const { SUCCESS, BAD_REQUEST, UNAUTHORIZE } = HTTP_CODES;
 
 const authController = {
+    /**
+     * @route POST /auth
+     * @desc Login user
+     * @access Public
+     */
     async login(req, res){
         try {
             const { email, password }=req.body;
@@ -42,24 +47,11 @@ const authController = {
             throw new Error(error.message);
         }
     },
-    async register(req, res){
-        const user=req.body;
-        try {
-           const userDoc=await UserModel.findOne({email:user.email}).exec();
-            if(userDoc&&userDoc.email){
-                return res.status(CONFLICT).json({message: "User already exist" });
-            }
-            else {
-                const encryptedPassword=encrypt.hashPassword(user.password);
-               const doc= await UserModel.create({...user,password:encryptedPassword});
-               if(doc&&doc._id){
-                return res.status(CREATE).json({message: "User registred successfully"});
-               }
-            }
-        } catch (error) {
-            console.log('API: user register error',error.message);
-        }
-    },
+    /**
+     * @route POST /auth/refresh
+     * @desc Refresh token
+     * @access Public
+     */
     async refreshToken(req, res){
         try {
             const token=req.headers.authorization?.split(' ')[1] || req.cookies?.refreshToken;
@@ -72,6 +64,20 @@ const authController = {
         } catch (error) {
             console.log('API: refresh token error', error.message);
             res.status(UNAUTHORIZE).json({ message: "Unauthorized" });
+        }
+    },
+     /**
+     * @route POST /auth/logout
+     * @desc Logout user
+     * @access Public
+     */
+    async logOut(req, res){
+        try {
+            console.log('request', req);
+
+        } catch (error) {
+            console.log('API: logout error', error.message);
+            throw Error("Logout Error >>");
         }
     }
 };

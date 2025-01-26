@@ -39,7 +39,7 @@ export default function MenuContent() {
       <List dense>
         {mainListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block', color: 'inherit' }} component={NavLink} to={item.path}>
-            <ListItemButton selected={item.path === location.pathname.replace('/', '')}>
+            <ListItemButton selected={location.pathname.startsWith(`/${item.path}`)}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>

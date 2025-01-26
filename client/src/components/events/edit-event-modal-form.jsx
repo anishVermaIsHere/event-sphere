@@ -55,6 +55,7 @@ const LazyEditEventForm = ({ handleClose, open }) => {
       location: "",
       category: "",
       capacity: 0,
+      priceInCents: 0,
       isPrivate: false,
       guests: [],
       speakers: [],
@@ -93,6 +94,7 @@ const LazyEditEventForm = ({ handleClose, open }) => {
         setValue("location", event.location._id);
         setValue("category", event.category);
         setValue("capacity", event.capacity);
+        setValue("priceInCents", event.priceInCents);
         setValue("isPrivate", event.isPrivate);
         setValue("speakers", event.speakers.map((speaker) => speaker?._id));
         setValue("guests", event.guests.map((guest) => guest?._id));
@@ -178,7 +180,7 @@ const LazyEditEventForm = ({ handleClose, open }) => {
               </Grid2>
               <Grid2
                 item
-                size={{ xs: 12, md: 4 }}
+                size={{ xs: 12, md: 6 }}
                 sx={{ position: "relative" }}
               >
                 <InputLabel id="category-label">Category</InputLabel>
@@ -207,7 +209,7 @@ const LazyEditEventForm = ({ handleClose, open }) => {
 
               <Grid2
                 item
-                size={{ xs: 12, md: 4 }}
+                size={{ xs: 12, md: 6 }}
                 sx={{ position: "relative" }}
               >
                 <InputLabel id="location-label">Location</InputLabel>
@@ -234,26 +236,6 @@ const LazyEditEventForm = ({ handleClose, open }) => {
                 </Typography>
               </Grid2>
 
-              <Grid2
-                item
-                size={{ xs: 12, md: 4 }}
-                sx={{ position: "relative" }}
-              >
-                <TextField
-                  // required
-                  error={errors?.capacity?.message && true}
-                  id="capacity"
-                  name="capacity"
-                  label="Seating capacity"
-                  size="small"
-                  type="number"
-                  placeholder="100-10000"
-                  helperText={errors?.capacity?.message}
-                  fullWidth
-                  {...register("capacity")}
-                  value={watch("capacity")}
-                />
-              </Grid2>
 
               <Grid2
                 item
@@ -387,6 +369,49 @@ const LazyEditEventForm = ({ handleClose, open }) => {
                   </Typography>
                 </Grid2>
               )}
+
+              
+              <Grid2
+                item
+                size={{ xs: 12, md: 6 }}
+                sx={{ position: "relative" }}
+              >
+                <TextField
+                  // required
+                  error={errors?.priceInCents?.message && true}
+                  id="priceInCents"
+                  name="priceInCents"
+                  label="Price (in cents)"
+                  size="small"
+                  type="number"
+                  placeholder="100-10000"
+                  helperText={errors?.priceInCents?.message}
+                  fullWidth
+                  {...register("priceInCents")}
+                  value={watch("priceInCents")}
+                />
+              </Grid2>
+
+              <Grid2
+                item
+                size={{ xs: 12, md: 6 }}
+                sx={{ position: "relative" }}
+              >
+                <TextField
+                  // required
+                  error={errors?.capacity?.message && true}
+                  id="capacity"
+                  name="capacity"
+                  label="Seating capacity"
+                  size="small"
+                  type="number"
+                  placeholder="100-10000"
+                  helperText={errors?.capacity?.message}
+                  fullWidth
+                  {...register("capacity")}
+                  value={watch("capacity")}
+                />
+              </Grid2>
 
               <Grid2 item size={{ xs: 12, sm: 6 }}>
                 <CustomDateTimePicker

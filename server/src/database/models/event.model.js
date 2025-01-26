@@ -15,7 +15,8 @@ const eventSchema = {
   capacity: { type: Number, required: true },
   guests: [{ type: SchemaTypes.ObjectId, ref: "Users", required: true }],
   speakers: [{ type: SchemaTypes.ObjectId, ref: "Users", required: true }],
-  createdBy: { type: SchemaTypes.ObjectId, ref: "Users", required: true }
+  createdBy: { type: SchemaTypes.ObjectId, ref: "Users", required: true },
+  priceInCents: { type: Number, default: 0, required: [true, "Please provide event price in cents"] }
 };
 
 const EventModel = createDBModel(eventSchema, "Events");

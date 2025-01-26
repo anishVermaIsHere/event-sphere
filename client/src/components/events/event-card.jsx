@@ -9,11 +9,12 @@ import { Box, Chip, Divider, Stack } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import GroupsIcon from '@mui/icons-material/Groups';
+import GroupsIcon from "@mui/icons-material/Groups";
 import dayjs from "dayjs";
-
 import eventAPI from "../../shared/services/api/event";
 import { queryClient } from "../../providers/query-provider";
+import { formatCurrency } from "../../shared/utils";
+
 
 
 const styles = {
@@ -48,16 +49,22 @@ export default function EventCard({
   location,
   speakers,
   guests,
-  capacity
+  capacity,
+  priceInCents
 }) {
   const [expanded, setExpanded] = useState(false);
-  const { event: { setEventId, setIsEditOpen } } = useFormStore(state=>state);
-  const { setSnackbar }  = useAppStore(state=>state);
+  const {
+    event: { setEventId, setIsEditOpen },
+  } = useFormStore((state) => state);
+  const { setSnackbar } = useAppStore((state) => state);
   const chars = 150;
-  const guestList = guests?.map(({ firstName, lastName }) => firstName + " " + lastName).join(", ");
-  const speakerList = speakers?.map(({ firstName, lastName }) => firstName + " " + lastName).join(", ");
+  const guestList = guests
+    ?.map(({ firstName, lastName }) => firstName + " " + lastName)
+    .join(", ");
+  const speakerList = speakers
+    ?.map(({ firstName, lastName }) => firstName + " " + lastName)
+    .join(", ");
 
-  
   const toggleExpanded = () => {
     setExpanded(!expanded);
   };
@@ -75,26 +82,36 @@ export default function EventCard({
 
   return (
     <Card sx={styles.card} elevation={0}>
-      <CardContent sx={{ ...styles.card, justifyContent: "start", alignItems: "start" }}>
-        <Box mb={2} sx={{ width: '100%' }}>
-          <Stack sx={{ display: 'flex', justifyContent: 'space-between'}} direction="row" spacing={1} mb={1}>
-          <Chip
-            sx={{ mr: 2, mb: 2 }}
-            label={category}
-            color="default"
-            size="small"
-          />
-           {isLive && <Chip
-            sx={{ 
-              mr: 1, mb: 2, 
-              backgroundColor: 'rgb(53, 149, 110)',
-              color: "#fff",
-              boxShadow: "0px 0px 1px 1px #0000001a",
-              animation: "pulse-animation 2s infinite"
-            }}
-            label="LIVE"
-            size="small"
-          />}
+      <CardContent
+        sx={{ ...styles.card, justifyContent: "start", alignItems: "start" }}
+      >
+        <Box mb={2} sx={{ width: "100%" }}>
+          <Stack
+            sx={{ display: "flex", justifyContent: "space-between" }}
+            direction="row"
+            spacing={1}
+            mb={1}
+          >
+            <Chip
+              sx={{ mr: 2, mb: 2 }}
+              label={category}
+              color="default"
+              size="small"
+            />
+            {isLive && (
+              <Chip
+                sx={{
+                  mr: 1,
+                  mb: 2,
+                  bgcolor: "rgb(53, 149, 110)",
+                  color: "#fff",
+                  boxShadow: "0px 0px 1px 1px #0000001a",
+                  animation: "pulse-animation 2s infinite",
+                }}
+                label="LIVE"
+                size="small"
+              />
+            )}
           </Stack>
 
           <Typography
@@ -107,7 +124,7 @@ export default function EventCard({
               display: "-webkit-box",
               WebkitBoxOrient: "vertical",
               WebkitLineClamp: 2,
-              overflow: "hidden"
+              overflow: "hidden",
             }}
           >
             {name}
@@ -127,7 +144,7 @@ export default function EventCard({
             <ScheduleIcon sx={{ mx: 1 }} />
             {dayjs(startTime, "DD/MM/YYYY HH:mm").format("hh:mm A")}
           </Typography>
-          
+
           <Typography
             variant="body"
             component="div"
@@ -161,13 +178,27 @@ export default function EventCard({
             component="div"
             color="text.secondary"
             sx={{
-              display: "flex",
-              alignItems: "start",
               mb: 2,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 4,
+              flexDirection: { xs: "column", md: "row" },
             }}
           >
-            <GroupsIcon sx={{ mr: 1 }} /> {capacity}
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <GroupsIcon sx={{ mr: 1 }} /> 
+              {capacity}
+            </div>
+
+            
+            <Chip
+              label={priceInCents > 0 ? formatCurrency({ amount: priceInCents / 100 }) : "Free"}
+              sx={{ fontSize: "1rem" }}
+              variant="outlined"
+            />
           </Typography>
+
           <Divider />
         </Box>
         <Box>
@@ -245,20 +276,22 @@ export default function EventCard({
         </Box>
       </CardContent>
       <CardActions>
-        {isEditable && <Chip
-          size="medium"
-          label="Edit"
-          variant="outlined"
-          sx={{
-            fontWeight: 600
-          }}
-          onClick={toggleEdit}
-        />}
+        {isEditable && (
+          <Chip
+            size="medium"
+            label="Edit"
+            variant="outlined"
+            sx={{
+              fontWeight: 600,
+            }}
+            onClick={toggleEdit}
+          />
+        )}
         <Chip
           size="medium"
           label="Delete"
           sx={{
-            fontWeight: 600
+            fontWeight: 600,
           }}
           onClick={handleDelete}
         />

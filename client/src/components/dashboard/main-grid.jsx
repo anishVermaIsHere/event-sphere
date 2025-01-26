@@ -12,10 +12,19 @@ import CustomizedDataGrid from './customized-data-grid';
 import StatCard from './state-card';
 import { fetchDashboardData } from '../../shared/utils';
 import { useQuery } from '@tanstack/react-query';
+import Spinner from '../common/spinner';
+import AlertCard from '../common/alert-card';
 
 
 export default function MainGrid() {
-  const { data } = useQuery({ queryKey: ["dashboard"], queryFn: fetchDashboardData });
+  const { isLoading, isError, data } = useQuery({ queryKey: ["dashboard"], queryFn: fetchDashboardData });
+
+  if(isLoading){
+    return <Spinner />
+  }
+  if(isError){
+    return <AlertCard message="Error data fetching" color="error" />;
+  }
 
   return (
     <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
@@ -49,7 +58,7 @@ export default function MainGrid() {
       </Typography>
       <Grid container spacing={2} columns={12}>
         <Grid size={{ xs: 12 }}>
-          <CustomizedDataGrid />
+          {/* <CustomizedDataGrid /> */}
         </Grid>
         <Grid size={{ xs: 12, lg: 3 }}>
           <Stack gap={2} direction={{ xs: 'column', sm: 'row', lg: 'column' }}>

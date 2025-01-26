@@ -14,7 +14,6 @@ const ticketSchema = {
   user: { type: SchemaTypes.ObjectId, ref: "Users", required: true },
   date: { type: Date, required: true },
   status: { type: String, enum: ["confirmed", "cancelled", "expired"] },
-  priceInCents: { type: Number, required: true }
 };
 
 const TicketModel = createDBModel(ticketSchema, "Tickets");

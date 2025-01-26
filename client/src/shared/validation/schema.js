@@ -39,6 +39,9 @@ export const eventSchema = Joi.object({
   category: Joi.string().required().messages({
     "any.required": "Category are required for the event.",
   }),
+  priceInCents: Joi.number().required().default(0).messages({
+    "any.required": "Price are required for the event.",
+  }),
   capacity: Joi.number().min(100).max(10000).required().messages({
     "any.required": "Seating capacity are required for the event.",
     "number.min": "At least 100 seats must be selected.",

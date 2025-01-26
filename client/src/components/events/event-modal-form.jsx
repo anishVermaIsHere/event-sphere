@@ -47,6 +47,7 @@ const LazyEventForm = ({ handleClose, open }) => {
       endTime: dayjs().add(2, "hour"),
       location: "",
       category: "",
+      priceInCents: 0,
       capacity: 500,
       isPrivate: false,
       guests: [],
@@ -145,7 +146,7 @@ const LazyEventForm = ({ handleClose, open }) => {
               </Grid2>
               <Grid2
                 item
-                size={{ xs: 12, md: 4 }}
+                size={{ xs: 12, md: 6 }}
                 sx={{ position: "relative" }}
               >
                 <InputLabel id="category-label">Category</InputLabel>
@@ -173,7 +174,7 @@ const LazyEventForm = ({ handleClose, open }) => {
 
               <Grid2
                 item
-                size={{ xs: 12, md: 4 }}
+                size={{ xs: 12, md: 6 }}
                 sx={{ position: "relative" }}
               >
                 <InputLabel id="location-label">Location</InputLabel>
@@ -199,25 +200,7 @@ const LazyEventForm = ({ handleClose, open }) => {
                 </Typography>
               </Grid2>
 
-              <Grid2
-                item
-                size={{ xs: 12, md: 4 }}
-                sx={{ position: "relative" }}
-              >
-                <TextField
-                  // required
-                  error={errors?.capacity?.message && true}
-                  id="capacity"
-                  name="capacity"
-                  label="Seating capacity"
-                  size="small"
-                  type="number"
-                  placeholder="100-10000"
-                  helperText={errors?.capacity?.message}
-                  fullWidth
-                  {...register("capacity")}
-                />
-              </Grid2>
+              
 
               <Grid2
                 item
@@ -351,6 +334,45 @@ const LazyEventForm = ({ handleClose, open }) => {
                   </Typography>
                 </Grid2>
               )}
+              <Grid2
+                item
+                size={{ xs: 12, md: 6 }}
+                sx={{ position: "relative" }}
+              >
+                <TextField
+                  // required
+                  error={errors?.priceInCents?.message && true}
+                  id="priceInCents"
+                  name="priceInCents"
+                  label="Price (in cents)"
+                  size="small"
+                  type="number"
+                  placeholder="2000"
+                  helperText={errors?.priceInCents?.message}
+                  fullWidth
+                  {...register("priceInCents")}
+                />
+              </Grid2>
+
+              <Grid2
+                item
+                size={{ xs: 12, md: 6 }}
+                sx={{ position: "relative" }}
+              >
+                <TextField
+                  // required
+                  error={errors?.capacity?.message && true}
+                  id="capacity"
+                  name="capacity"
+                  label="Seating capacity"
+                  size="small"
+                  type="number"
+                  placeholder="100-10000"
+                  helperText={errors?.capacity?.message}
+                  fullWidth
+                  {...register("capacity")}
+                />
+              </Grid2>
 
               <Grid2 item size={{ xs: 12, sm: 6 }}>
                 <CustomDateTimePicker
