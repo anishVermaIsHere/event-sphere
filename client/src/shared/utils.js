@@ -49,62 +49,102 @@ export const fetchEventsData = async () => {
   };
 };
 
-export const fetchDashboardData = async () => {
+export const formattedValue = (value)=> {
+  if(value >= 1000000000){
+    return (value/1000000000)+'B'
+  }
+  if(value >= 1000000){
+    return (value/1000000)+'M'
+  }
+  if(value >= 1000){
+    return (value/1000)+'K'
+  }
+  return value;
+}
 
+export const formattedAmount = (centsValue)=> {
+  const value = centsValue / 100;
+  if(value >= 1000000000){
+    return formatCurrency({amount: (value/1000000000), decimalDigits: 0 })+'B'
+  }
+  if(value >= 1000000){
+    return formatCurrency({amount: (value/1000000), decimalDigits: 0 })+'M'
+  }
+  if(value >= 1000){
+    return formatCurrency({amount: (value/1000), decimalDigits: 0 })+'K'
+  }
+  return formatCurrency({ amount: value });
+}
+
+
+export const fetchDashboardData = async () => {
   const prom = await Promise.all([
     eventAPI.findByFilter({}),
-    ticketAPI.find()
+    ticketAPI.find(),
+    userAPI.find()
   ]);
-  const res = await fetchEventsData();
   const events = prom[0];
   const tickets = prom[1];
+  const users = prom[2];
+  const totalRevenue = tickets?.data?.reduce((a,p)=>a+p.event.priceInCents, 0);
 
-  return [
-    {
-      title: "Events",
-      value: events.data.length,
-      interval: "Last 30 days",
-      trend: "up",
-    },
-    {
-      title: "Guests",
-      value: res.guests.length,
-      interval: "Last 30 days",
-      trend: "up",
-    },
-    {
-      title: "Attendees",
-      value: tickets.data.length,
-      interval: "Last 30 days",
-      trend: "up",
-    },
-    {
-      title: "Tickets",
-      value: tickets.data.length,
-      interval: "Last 30 days",
-      trend: "up",
-    },
-  ];
+  return {
+    usersByCountry: [
+      { label: 'USA', value:  users?.data?.length },
+      { label: 'Others', value: 0 },
+    ],
+    ticketSales: [
+
+    ],
+    cards: [
+      {
+        title: "Total Revenue",
+        value: formattedAmount(totalRevenue),
+        interval: "Last 30 days",
+        trend: "up",
+      },
+      {
+        title: "Events",
+        value: formattedValue(events.data.length),
+        interval: "Last 30 days",
+        trend: "up",
+      },
+      {
+        title: "Attendees",
+        value: formattedValue(tickets.data.length),
+        interval: "Last 30 days",
+        trend: "up",
+      },
+      {
+        title: "Tickets",
+        value: formattedValue(tickets.data.length),
+        interval: "Last 30 days",
+        trend: "up",
+      },
+    ]
+  }
+  
 };
 
-export const formatCurrency = ({ amount, currency = "USD" }) => {
+export const formatCurrency = ({ amount, currency = "USD", decimalDigits = 2 }) => {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: currency,
+    minimumFractionDigits: decimalDigits
   }).format(amount);
 };
 
-// export function getDaysInMonth(month, year) {
-//   const date = new Date(year, month, 0);
-//   const monthName = date.toLocaleDateString("en-US", {
-//     month: "short",
-//   });
-//   const daysInMonth = date.getDate();
-//   const days = [];
-//   let i = 1;
-//   while (days.length < daysInMonth) {
-//     days.push(`${monthName} ${i}`);
-//     i += 1;
-//   }
-//   return days;
-// }
+export function getDaysInMonth(month, year) {
+  const date = new Date(year, month, 0);
+  const monthName = date.toLocaleDateString("en-US", {
+    month: "short",
+  });
+  const daysInMonth = date.getDate();
+  const days = [];
+  let i = 1;
+  while (days.length < daysInMonth) {
+    days.push(`${monthName} ${i}`);
+    i += 1;
+  }
+  return days;
+}

@@ -20,12 +20,14 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CachedIcon from "@mui/icons-material/Cached";
 import HistoryIcon from "@mui/icons-material/History";
 import ContactsIcon from '@mui/icons-material/Contacts';
 import EmailIcon from '@mui/icons-material/Email';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import dayjs from "dayjs";
 import { formatCurrency } from "../../shared/utils";
+import { queryClient } from "../../providers/query-provider";
 
 
 
@@ -53,6 +55,8 @@ const AttendeeDetails = () => {
 
   const goBack = () => navigate(-1);
 
+  const refetch = () => queryClient.invalidateQueries("attendee");
+
   if (isError) {
     return <AlertCard message="Error data fetching" color="error" />;
   }
@@ -70,11 +74,17 @@ const AttendeeDetails = () => {
         // width: { xs: "100%", md: "700px" },
       }}
     >
-      <Tooltip title="Back" sx={{ mb: 2 }}>
+      <Tooltip title="Back" sx={{ mb: 2, mr: 1 }}>
         <IconButton size="small" color="default" onClick={goBack}>
           <ArrowBackIcon />
         </IconButton>
       </Tooltip>
+      <Tooltip title="Refetch" sx={{ mb: 2 }}>
+        <IconButton size="small" color="default" onClick={refetch}>
+          <CachedIcon />
+        </IconButton>
+      </Tooltip>
+
       <Paper sx={{ p: 2 }} elevation={0}>
         <Typography
           variant="h5"
@@ -103,7 +113,7 @@ const AttendeeDetails = () => {
         </Box>
 
         <Typography component="p" variant="p" color="text.secondary" mb={1}>
-          Location: {attendee[0]?.event?.location?.venueName}
+          <span style={{ fontWeight: 600 }}>Location:</span> {attendee[0]?.event?.location?.venueName}
         </Typography>
 
         <Typography
@@ -146,7 +156,7 @@ const AttendeeDetails = () => {
           color="text.secondary"
           mb={1}
         >
-          Members: <br />
+          <span style={{ fontWeight: 600 }}>Members:</span> <br />
           {attendee[0]?.attendees?.map((att) => (
             <Typography
               key={att.name}
@@ -195,8 +205,8 @@ const AttendeeDetails = () => {
           </Typography>
 
           {openHistory ? (
-            attendee.length ? (
-              attendee?.map((att) => (
+            attendee?.slice(1).length ? (
+              attendee?.slice(1)?.map((att) => (
                 <Paper
                   key={att._id}
                   sx={{ p: 2, mb: 2, bgcolor: "#f8f8f8" }}
@@ -248,6 +258,7 @@ const AttendeeDetails = () => {
                   borderRadius: "0.4rem",
                   py: 1,
                   px: 2,
+                  mb: 2
                 }}
               >
                 No events

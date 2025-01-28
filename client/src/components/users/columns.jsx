@@ -21,7 +21,7 @@ const actionOptions = [
 
 function renderCell(slug) {
   return (
-    <Chip sx={{ mr: 1 }} label={slug.value} color={ slug.value === "guest".toUpperCase() ? "primary" : "secondary" } size="small" />
+    <Chip sx={{ mr: 1 }} variant="outlined" label={slug.value} color={ slug.value === "guest".toUpperCase() ? "primary" : "secondary" } size="small" />
   );
 };
 
