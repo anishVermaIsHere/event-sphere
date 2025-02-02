@@ -9,11 +9,11 @@ import { SelectMenuProps } from "../events/styles";
 
 export default function FilterElement({ filterList }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [selectedFilter, setSeletedFilter] = useState(searchParams.get('category'));
+  const [selectedFilter, setSelectedFilter] = useState(searchParams.get('category'));
 
 
   const handleChange = (event) => {
-    setSeletedFilter(event.target.value);
+    setSelectedFilter(event.target.value);
   };
 
   useEffect(() => {

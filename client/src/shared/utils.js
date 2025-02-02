@@ -3,6 +3,7 @@ import eventAPI from "./services/api/event";
 import locationAPI from "./services/api/location";
 import userAPI from "./services/api/user";
 import ticketAPI from "./services/api/ticket";
+import dayjs from "dayjs";
 
 
 export function parsePersistedData(data) {
@@ -77,10 +78,10 @@ export const formattedAmount = (centsValue)=> {
 }
 
 
-export const fetchDashboardData = async () => {
+export const fetchDashboardData = async (query) => {
   const prom = await Promise.all([
-    eventAPI.findByFilter({}),
-    ticketAPI.find(),
+    eventAPI.findByFilter(query),
+    ticketAPI.find(query),
     userAPI.find()
   ]);
   const events = prom[0];
@@ -134,17 +135,35 @@ export const formatCurrency = ({ amount, currency = "USD", decimalDigits = 2 }) 
   }).format(amount);
 };
 
-export function getDaysInMonth(month, year) {
-  const date = new Date(year, month, 0);
-  const monthName = date.toLocaleDateString("en-US", {
-    month: "short",
-  });
-  const daysInMonth = date.getDate();
-  const days = [];
-  let i = 1;
-  while (days.length < daysInMonth) {
-    days.push(`${monthName} ${i}`);
-    i += 1;
+export function getDaysInMonth(month, year, numberOfDays = 29) {
+  if(year !== dayjs().year()) {
+    year = dayjs().year();
   }
+  // const date = new Date(year, month, 0);
+  // const daysInMonth = date.getDate();
+  // const monthName = date.toLocaleDateString("en-US", {
+  //   month: "short",
+  // });
+  // let i = 1;
+    // while (days.length < daysInMonth) {
+  //   days.push(`${monthName} ${i}`);
+  //   i += 1;
+  // }
+  const startDate = dayjs().subtract(numberOfDays, 'day');
+  const endDate = dayjs().add(1, 'day');
+  let daysInMonth = endDate.diff(startDate, 'day');
+  let currentDate = startDate;
+
+  const days = [];
+  while(currentDate.valueOf() !== endDate.valueOf()){
+    days.push(currentDate.format('MMM D')); 
+    currentDate = currentDate.add(1, 'day'); 
+  }
+
   return days;
-}
+};
+
+export const getStartEndDates = (numberOfDays = 30) => ({
+  startDate: dayjs().subtract(numberOfDays, 'day'),
+  endDate: dayjs(),
+});

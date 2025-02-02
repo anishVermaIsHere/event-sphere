@@ -71,9 +71,9 @@ export default function RecentEvents({ events, isLoading, isError }) {
         params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
       }
       initialState={{
-        pagination: { paginationModel: { pageSize: 50 } },
+        pagination: { paginationModel: { pageSize: 25 } },
       }}
-      pageSizeOptions={[10, 20, 50, 100, 150]}
+      // pageSizeOptions={[20, 50, 100, 150]}
       density="compact"
     />
   ) : (

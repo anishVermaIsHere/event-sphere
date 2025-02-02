@@ -121,7 +121,7 @@ export default function ChartUserByCountry({ data }) {
             <PieCenterLabel primaryText={formattedValue(total)} secondaryText="Total" />
           </PieChart>
         </Box>
-        {countries.map((country, index) => (
+        {countries?.map((country, index) => (
           <Stack
             key={index}
             direction="row"

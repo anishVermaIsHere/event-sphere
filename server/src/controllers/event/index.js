@@ -15,10 +15,10 @@ const eventController = {
         query.category = category;
       }
       if (startDate) {
-        // query.startTime = { ...query.startTime, $gte: new Date(startDate) };
+        query.startTime = { ...query.startTime, $gte: new Date(startDate) };
       }
       if (endDate) {
-        // query.endTime = { ...query.endTime, $lte: new Date(endDate) };
+        query.endTime = { ...query.endTime, $lte: new Date(endDate) };
       }
       if (status) {
         if (status === "upcoming") {
@@ -30,12 +30,15 @@ const eventController = {
           query.endTime = { $lt: currentTime } ;
         }
       }
+      console.log(query)
 
       const events = await EventModel.find(query)
         .populate("guests", ["-__v", "-password", "-createdAt", "-updatedAt"])
         .populate("speakers", ["-__v", "-password", "-createdAt", "-updatedAt"])
         .populate("location")
         .populate("createdBy").sort();
+
+        console.log('events', events.length)
 
       return res.status(SUCCESS).json(events);
     } catch (error) {

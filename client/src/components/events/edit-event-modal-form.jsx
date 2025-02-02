@@ -35,7 +35,6 @@ const LazyEditEventForm = ({ handleClose, open }) => {
   const { event: { eventId } } = useFormStore((state) => state);
   const { setSnackbar } = useAppStore(state=>state);
   const { data } = useQuery({ queryKey: ["event-data"], queryFn: fetchEventsData });
-
   const [isLoading, setIsLoading] = useState(false);
 
   const {

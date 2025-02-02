@@ -6,7 +6,6 @@ import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { LineChart } from '@mui/x-charts/LineChart';
-import { getDaysInMonth } from '../../shared/utils';
 
 
 function AreaGradient({ color, id }) {
@@ -26,14 +25,12 @@ AreaGradient.propTypes = {
 };
 
 
-export default function SalesChart() {
+export default function SalesChart({ daysInMonth, data }) {
   const theme = useTheme();
-  const data = getDaysInMonth(4, 2024);
-
   const colorPalette = [
     theme.palette.primary.light,
     theme.palette.primary.main,
-    theme.palette.primary.dark,
+    theme.palette.primary.dark
   ];
 
   return (
@@ -57,7 +54,7 @@ export default function SalesChart() {
             {/* <Chip size="small" color="success" label="+35%" /> */}
           </Stack>
           <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-            Events per day for the last 30 days
+            Events per day for the last {daysInMonth?.length} days
           </Typography>
         </Stack>
         <LineChart
@@ -65,7 +62,7 @@ export default function SalesChart() {
           xAxis={[
             {
               scaleType: 'point',
-              data,
+              data: daysInMonth,
               tickInterval: (index, i) => (i + 1) % 5 === 0
             },
           ]}
@@ -78,11 +75,7 @@ export default function SalesChart() {
               stack: 'total',
               area: true,
               stackOrder: 'ascending',
-              data: [
-                1000, 1500, 1200, 1700, 1300, 2000, 2400, 2200, 2600, 2800, 2500,
-                3000, 3400, 3700, 3200, 3900, 4100, 3500, 4300, 4500, 4000, 4700,
-                5000, 5200, 4800, 5400, 5600, 5900, 6100, 6300,
-              ],
+              data,
             },
           ]}
           height={400}
