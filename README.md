@@ -1,6 +1,8 @@
 # Event Sphere in MERN
 #### Event Management App 
 
+![](event-sphere.png)
+
 ##### Features
 
 
