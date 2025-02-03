@@ -4,6 +4,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import useMainStore from '../../store/main.store';
 
 function AreaGradient({ color, id }) {
   return (
@@ -21,8 +22,10 @@ AreaGradient.propTypes = {
   id: PropTypes.string.isRequired,
 };
 
-function StatCard({ title, value, interval, trend, data }) {
+function StatCard({ title, value, data }) {
   const theme = useTheme();
+  const { daysInMonth } = useMainStore(state=>state);
+
 
   const trendColors = {
     up:
@@ -66,7 +69,7 @@ function StatCard({ title, value, interval, trend, data }) {
               </Typography>
             </Stack>
             <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-              {interval}
+             Last {daysInMonth?.length} days
             </Typography>
           </Stack>
         </Stack>

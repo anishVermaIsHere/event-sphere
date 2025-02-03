@@ -156,20 +156,24 @@ const AttendeeDetails = () => {
           color="text.secondary"
           mb={1}
         >
-          <span style={{ fontWeight: 600 }}>Members:</span> <br />
+          <Typography component="div" variant="body" sx={{ fontWeight: 600, mb: 1 }}>Members:</Typography> 
           {attendee[0]?.attendees?.map((att) => (
             <Typography
               key={att.name}
               variant="body"
               component="div"
-              sx={style}
+              sx={{ ...style, mb:1 }}
             >
               <Typography component="small">{att.name}</Typography>
               <Typography component="small">
                 {att.arrived ? (
-                  <CheckCircleIcon fontSize="small" color="success" />
+                  <Stack direction="row" spacing={1}>
+                  <Chip icon={<CheckCircleIcon color="white" />} label="Arrived" size="small" sx={{ bgcolor: "rgb(53, 149, 110)", color: "#fff", }}/>
+                </Stack>
                 ) : (
-                  ""
+                  <Stack direction="row" spacing={1}>
+                  <Chip icon={<CheckCircleIcon color="white" />} label="..." size="small" />
+                </Stack>
                 )}
               </Typography>
             </Typography>

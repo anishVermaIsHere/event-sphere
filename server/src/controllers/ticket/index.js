@@ -7,7 +7,12 @@ const { SUCCESS } = HTTP_CODES;
 const ticketController = {
     async find(req, res) {
       try {
-        const tickets = await TicketModel.find()
+        const query = {};
+        const { startDate, endDate } = req.query;
+        if(startDate && endDate){
+          query.date = { $gte: new Date(startDate), $lte: new Date(endDate) }
+        }
+        const tickets = await TicketModel.find(query)
         .populate({
           path: 'event',
           select: '-__v -createdAt -updatedAt',

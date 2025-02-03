@@ -65,8 +65,8 @@ const LazyEditEventForm = ({ handleClose, open }) => {
   const onSubmit = async (data) => {
     const validation = eventSchema.validate({
       ...data,
-      startTime: new Date(data.startTime).toISOString(),
-      endTime: new Date(data.endTime).toISOString(),
+      startTime: data.startTime.toISOString(),
+      endTime: data.endTime.toISOString(),
     });
     if (validation.error) {
       console.error(validation);
@@ -380,7 +380,7 @@ const LazyEditEventForm = ({ handleClose, open }) => {
                   error={errors?.priceInCents?.message && true}
                   id="priceInCents"
                   name="priceInCents"
-                  label="Price (in cents)"
+                  label="Ticket Price (in cents)"
                   size="small"
                   type="number"
                   placeholder="100-10000"

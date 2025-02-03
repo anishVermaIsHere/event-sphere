@@ -15,30 +15,27 @@ const eventController = {
         query.category = category;
       }
       if (startDate) {
-        query.startTime = { ...query.startTime, $gte: new Date(startDate) };
+        query.startTime = { $gte: new Date(startDate) };
       }
       if (endDate) {
-        query.endTime = { ...query.endTime, $lte: new Date(endDate) };
+        query.endTime = { $lte: new Date(endDate) };
       }
       if (status) {
         if (status === "upcoming") {
-          query.startTime = { $gt: currentTime } ;
+          query.startTime = { $gt: currentTime };
         } else if (status === "ongoing") {
-          query.startTime = { $lte: currentTime } ;
-          query.endTime = { $gte: currentTime } ;
+          query.startTime = { $lte: currentTime };
+          query.endTime = { $gte: currentTime };
         } else if (status === "past") {
-          query.endTime = { $lt: currentTime } ;
+          query.endTime = { $lt: currentTime };
         }
       }
-      console.log(query)
 
       const events = await EventModel.find(query)
         .populate("guests", ["-__v", "-password", "-createdAt", "-updatedAt"])
         .populate("speakers", ["-__v", "-password", "-createdAt", "-updatedAt"])
         .populate("location")
-        .populate("createdBy").sort();
-
-        console.log('events', events.length)
+        .populate("createdBy", ["-__v", "-password", "-createdAt", "-updatedAt"]).sort();
 
       return res.status(SUCCESS).json(events);
     } catch (error) {
@@ -117,7 +114,7 @@ const eventController = {
       const eventId = req.params.id;
       const event = {
         ...req.body,
-        slug: slugify(req.body.name.toLowerCase()),
+        slug: slugify(req.body.name.toLowerCase())
       };
       await EventModel.updateOne({ _id: eventId }, event);
       return res.status(SUCCESS).json({ message: "Event update successfully" });

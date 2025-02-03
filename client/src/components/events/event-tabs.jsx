@@ -10,7 +10,7 @@ import CustomizedDataGrid from "../dashboard/customized-data-grid";
 import AlertCard from "../common/alert-card";
 import eventAPI from "../../shared/services/api/event";
 import dayjs from "dayjs";
-import { getAuth } from "../../shared/utils";
+import { dateTimeParser, getAuth } from "../../shared/utils";
 
 
 
@@ -19,16 +19,16 @@ const fetchEvents = async (query) => {
   const auth = getAuth();
   return {
     rows: res.data.map((e) => {
-      const startTime = dayjs(e.startTime);
-      const endTime = dayjs(e.endTime);
-      const isLive = (dayjs().unix() >= startTime.unix()) && (dayjs().unix() <= endTime.unix())
+      const startDate = dateTimeParser(e.startTime);
+      const endDate = dateTimeParser(e.endTime);
+      const isLive = (dayjs().unix() >= dayjs(e.startTime).unix()) && (dayjs().unix() <= dayjs(e.endTime).unix())
       return {      
         ...e,
         id: e._id,
         location: e.location.venueName,
         createdBy: e.createdBy._id === auth.user.id ? "You" : e.createdBy.fullName,
-        startTime: startTime.format("DD/MM/YYYY HH:mm"),
-        endTime: endTime.format("DD/MM/YYYY HH:mm"),
+        startDateTime: startDate.date+" "+startDate.time,
+        endDateTime: endDate.date+" "+endDate.time,
         createdAt: dayjs(e.createdAt).format("DD/MM/YYYY HH:mm"),
         isEditable: !isLive,
         isLive

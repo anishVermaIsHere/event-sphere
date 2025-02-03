@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Copyright from '../common/copyright';
 import StatCard from './state-card';
-import { fetchDashboardData, getDaysInMonth } from '../../shared/utils';
+import { fetchDashboardData, getDaysInMonth, getStartEndDates } from '../../shared/utils';
 import { useQuery } from '@tanstack/react-query';
 import Spinner from '../common/spinner';
 import AlertCard from '../common/alert-card';
@@ -14,28 +14,33 @@ import RecentEvents from './recent-events';
 import dayjs from 'dayjs';
 import SalesChart from './sales-chart';
 import ChartUserByCountry from './chart-user-by-country';
-import useAppStore from '../../store/app.store';
 import DashboardFilter from './dashboard-filter';
+import useMainStore from '../../store/main.store';
 
 
 const dashboardFilterList = [
   {
     id:1,
+    label: "Weekly",
+    value: 7
+  },
+  {
+    id:2,
     label: "Monthly",
     value: 30
   },
   {
-    id:2,
+    id:3,
     label: "Quarterly",
     value: 90
   },
   {
-    id:3,
+    id:4,
     label: "Semi-annually",
     value: 180
   },
   {
-    id:4,
+    id:5,
     label: "Annually",
     value: 365
   }
@@ -43,11 +48,10 @@ const dashboardFilterList = [
 
 
 export default function MainGrid() {
-  const { dates } = useAppStore(state=>state);
+  const { dates, daysInMonth, setDaysInMonth } = useMainStore(state=>state);
   const [selectedFilter, setSelectedFilter] = useState(30);
   const startDate = dates.from;
   const endDate = dates.to;
-  const daysInMonth = getDaysInMonth(dayjs().month()+1, dayjs().year());
 
 
   const fetchEvents = async()=>{
@@ -55,11 +59,14 @@ export default function MainGrid() {
   };
 
   const fetchDashboard = async()=>{
-    return await fetchDashboardData({ startDate, endDate });
+    const dates = getStartEndDates(daysInMonth.length);
+    return await fetchDashboardData({ startDate: dates.startDate, endDate: dates.endDate }, daysInMonth);
   }
 
-  const { isLoading, isError, data } = useQuery({ queryKey: ["dashboard"], queryFn: fetchDashboard });
+  const { isLoading, isError, data } = useQuery({ queryKey: ["dashboard", selectedFilter], queryFn: fetchDashboard });
   const { isLoading: isEventLoading, isError: isEventError, data: eventsData } = useQuery({ queryKey: ["events"], queryFn: fetchEvents });
+
+  const salesValue = data?.cards[0].value;
 
   const events = eventsData?.data?.map((evt)=>({ 
     ...evt, 
@@ -70,20 +77,9 @@ export default function MainGrid() {
     id: evt?._id 
   }));
 
-  const salesData = [
-    1000, 1500, 1200, 1700, 1300, 2000, 2400, 2200, 2600, 2800, 2500,
-    3000, 3400, 3700, 3200, 3900, 4100, 3500, 4300, 4500, 4000, 4700,
-    5000, 5200, 4800, 5400, 5600 
-  ];
-
-  // useEffect(()=>{
-  //   if(startDate || endDate){
-  //     searchParams.set("startDate", dayjs(startDate).format("DD/MM/YYYY"));
-  //     searchParams.set("endDate", dayjs(endDate).format("DD/MM/YYYY"));
-  //     setSearchParams(searchParams);
-  //   }
-  //   return ()=>{}
-  // }, [startDate, endDate]);
+  useEffect(()=>{
+    setDaysInMonth(getDaysInMonth(dayjs().year(), selectedFilter));
+  }, [selectedFilter]);
 
 
   if(isLoading){
@@ -112,7 +108,7 @@ export default function MainGrid() {
           </Grid>
         ))}
         <Grid size={{ xs: 12, md: 8 }}>
-          <SalesChart daysInMonth={daysInMonth} data={salesData} />
+          <SalesChart data={data?.ticketSales} salesValue={salesValue}/>
         </Grid>
         <Grid size={{ xs: 12, md: 4 }}>
           <Stack gap={2} direction={{ xs: 'column', sm: 'row', lg: 'column' }}>

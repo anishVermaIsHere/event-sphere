@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { LineChart } from '@mui/x-charts/LineChart';
+import useMainStore from '../../store/main.store';
 
 
 function AreaGradient({ color, id }) {
@@ -25,8 +25,9 @@ AreaGradient.propTypes = {
 };
 
 
-export default function SalesChart({ daysInMonth, data }) {
+export default function SalesChart({ data, salesValue }) {
   const theme = useTheme();
+  const { daysInMonth } = useMainStore(state=>state);
   const colorPalette = [
     theme.palette.primary.light,
     theme.palette.primary.main,
@@ -49,7 +50,7 @@ export default function SalesChart({ daysInMonth, data }) {
             }}
           >
             <Typography variant="h4" component="p">
-              13,277
+              {salesValue}
             </Typography>
             {/* <Chip size="small" color="success" label="+35%" /> */}
           </Stack>
@@ -63,7 +64,7 @@ export default function SalesChart({ daysInMonth, data }) {
             {
               scaleType: 'point',
               data: daysInMonth,
-              tickInterval: (index, i) => (i + 1) % 5 === 0
+              tickInterval: (index, i) => daysInMonth.length > 89 ? (i + 1) % 5 === 0 : (i + 1) % 1 === 0
             },
           ]}
           series={[

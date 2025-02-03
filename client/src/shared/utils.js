@@ -78,49 +78,61 @@ export const formattedAmount = (centsValue)=> {
 }
 
 
-export const fetchDashboardData = async (query) => {
+const getTicketSales = (daysInMonth, tickets) => {
+  const revenueByDate = {};
+   tickets?.forEach((tk)=>{ 
+    Object.entries(tk).forEach(([date,value])=>{
+      const formattedDate = dayjs(date).format('MMM D');
+      if (revenueByDate.hasOwnProperty(formattedDate)) {
+        revenueByDate[formattedDate] += value; 
+      } else {
+        revenueByDate[formattedDate] = value; 
+      }
+    })
+  });
+  const ticketSales = daysInMonth.map((day)=>revenueByDate.hasOwnProperty(day) ? revenueByDate[day] : 0 );
+  return ticketSales;
+};
+
+export const fetchDashboardData = async (query, daysInMonth) => {
   const prom = await Promise.all([
     eventAPI.findByFilter(query),
     ticketAPI.find(query),
     userAPI.find()
   ]);
+  const ticketSales=[];
   const events = prom[0];
   const tickets = prom[1];
   const users = prom[2];
-  const totalRevenue = tickets?.data?.reduce((a,p)=>a+p.event.priceInCents, 0);
+  const totalRevenue = tickets?.data?.reduce((a,p)=>{ 
+    ticketSales.push({[dayjs(p.date).format('MMM D')]: p.event.priceInCents/100});
+    return a+p.event.priceInCents
+  }, 0);
+
+  const ticketsSalesValues  = getTicketSales(daysInMonth, ticketSales);
 
   return {
+    ticketSales: ticketsSalesValues,
     usersByCountry: [
       { label: 'USA', value:  users?.data?.length },
       { label: 'Others', value: 0 },
-    ],
-    ticketSales: [
-
     ],
     cards: [
       {
         title: "Total Revenue",
         value: formattedAmount(totalRevenue),
-        interval: "Last 30 days",
-        trend: "up",
       },
       {
         title: "Events",
         value: formattedValue(events.data.length),
-        interval: "Last 30 days",
-        trend: "up",
       },
       {
         title: "Attendees",
         value: formattedValue(tickets.data.length),
-        interval: "Last 30 days",
-        trend: "up",
       },
       {
         title: "Tickets",
         value: formattedValue(tickets.data.length),
-        interval: "Last 30 days",
-        trend: "up",
       },
     ]
   }
@@ -135,7 +147,7 @@ export const formatCurrency = ({ amount, currency = "USD", decimalDigits = 2 }) 
   }).format(amount);
 };
 
-export function getDaysInMonth(month, year, numberOfDays = 29) {
+export function getDaysInMonth(year, numberOfDays = 30) {
   if(year !== dayjs().year()) {
     year = dayjs().year();
   }
@@ -150,10 +162,9 @@ export function getDaysInMonth(month, year, numberOfDays = 29) {
   //   i += 1;
   // }
   const startDate = dayjs().subtract(numberOfDays, 'day');
-  const endDate = dayjs().add(1, 'day');
-  let daysInMonth = endDate.diff(startDate, 'day');
+  const endDate = dayjs();
+  // let daysInMonth = endDate.diff(startDate, 'day');
   let currentDate = startDate;
-
   const days = [];
   while(currentDate.valueOf() !== endDate.valueOf()){
     days.push(currentDate.format('MMM D')); 
@@ -167,3 +178,8 @@ export const getStartEndDates = (numberOfDays = 30) => ({
   startDate: dayjs().subtract(numberOfDays, 'day'),
   endDate: dayjs(),
 });
+
+
+export const dateTimeParser = (date) => {
+  return { date: dayjs(date, "DD/MM/YYYY").format("MMM D, YYYY"), time: dayjs(date, "DD/MM/YYYY HH:mm").format("hh:mm A") };
+}

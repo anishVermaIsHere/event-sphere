@@ -1,7 +1,5 @@
 import { create } from "zustand";
-import { getStartEndDates } from "../shared/utils";
 
-const dates = getStartEndDates();
 
 const useAppStore = create((set) => ({
   snackbarOpen: false,
@@ -14,8 +12,6 @@ const useAppStore = create((set) => ({
   dialogContent: "",
   dataView: "list",
   selectedEventRows: [],
-  dates: { from: dates.startDate, to: dates.endDate },
-  setDates: (dates)=>set({ dates }),
   setSelectedEventRows: (selectedEventRows)=>set({ selectedEventRows }),
   setDataView: (dataView )=>set({ dataView }),
   setDialog: ({ dialogOpen, dialogTitle, dialogContent })=> set({ dialogOpen, dialogContent, dialogTitle }),

@@ -60,7 +60,7 @@ export default function RecentEvents({ events, isLoading, isError }) {
   return events?.length ? (
     <DataGrid
       autoHeight
-      checkboxSelection
+      checkboxSelection={false}
       disableColumnResize
       disableRowSelectionOnClick
       loading={isLoading}

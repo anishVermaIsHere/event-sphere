@@ -3,8 +3,8 @@ import axiosInstance from "../axios-interceptor";
 const URL='/api/v1/tickets'
 
 const ticketAPI = {
-    async find(){
-        return await axiosInstance.get(`${URL}`);
+    async find(query){
+        return await axiosInstance.get(`${URL}`, { params: query });
     },
     async findById(ticketId){
         return await axiosInstance.get(`${URL}/${ticketId}`);

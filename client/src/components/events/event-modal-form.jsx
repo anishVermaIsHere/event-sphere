@@ -344,7 +344,7 @@ const LazyEventForm = ({ handleClose, open }) => {
                   error={errors?.priceInCents?.message && true}
                   id="priceInCents"
                   name="priceInCents"
-                  label="Price (in cents)"
+                  label="Ticket Price (in cents)"
                   size="small"
                   type="number"
                   placeholder="2000"

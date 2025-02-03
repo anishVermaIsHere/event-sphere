@@ -13,7 +13,7 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import dayjs from "dayjs";
 import eventAPI from "../../shared/services/api/event";
 import { queryClient } from "../../providers/query-provider";
-import { formatCurrency } from "../../shared/utils";
+import { dateTimeParser, formatCurrency } from "../../shared/utils";
 
 
 
@@ -53,17 +53,14 @@ export default function EventCard({
   priceInCents
 }) {
   const [expanded, setExpanded] = useState(false);
-  const {
-    event: { setEventId, setIsEditOpen },
-  } = useFormStore((state) => state);
+  const { event: { setEventId, setIsEditOpen } } = useFormStore((state) => state);
   const { setSnackbar } = useAppStore((state) => state);
   const chars = 150;
-  const guestList = guests
-    ?.map(({ firstName, lastName }) => firstName + " " + lastName)
-    .join(", ");
-  const speakerList = speakers
-    ?.map(({ firstName, lastName }) => firstName + " " + lastName)
-    .join(", ");
+  const guestList = guests?.map(({ firstName, lastName }) => firstName + " " + lastName).join(", ");
+  const speakerList = speakers?.map(({ firstName, lastName }) => firstName + " " + lastName).join(", ");
+  const startDate = dateTimeParser(startTime);
+  const endDate = dateTimeParser(endTime);
+
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -140,9 +137,9 @@ export default function EventCard({
             }}
           >
             <CalendarMonthIcon sx={{ mr: 1 }} />
-            {dayjs(startTime, "DD/MM/YYYY").format("MMM D, YYYY")}
+            {startDate.date}
             <ScheduleIcon sx={{ mx: 1 }} />
-            {dayjs(startTime, "DD/MM/YYYY HH:mm").format("hh:mm A")}
+            {startDate.time}
           </Typography>
 
           <Typography
@@ -156,9 +153,9 @@ export default function EventCard({
             }}
           >
             <CalendarMonthIcon sx={{ mr: 1 }} />
-            {dayjs(endTime, "DD/MM/YYYY").format("MMM D, YYYY")}
+            {endDate.date}
             <ScheduleIcon sx={{ mx: 1 }} />
-            {dayjs(endTime, "DD/MM/YYYY HH:mm").format("hh:mm A")}
+            {endDate.time}
           </Typography>
 
           <Typography

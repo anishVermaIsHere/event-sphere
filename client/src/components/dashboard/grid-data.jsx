@@ -73,7 +73,7 @@ export function renderAvatar(params) {
 export const columns = [
   { field: "name", headerName: "Event Name", flex: 1.5, minWidth: 200 },
   {
-    field: "startTime",
+    field: "startDateTime",
     headerName: "Start Time",
     headerAlign: "right",
     align: "right",
@@ -81,7 +81,7 @@ export const columns = [
     minWidth: 100,
   },
   {
-    field: "endTime",
+    field: "endDateTime",
     headerName: "End Time",
     headerAlign: "right",
     align: "right",
