@@ -6,18 +6,18 @@
 ##### Features
 
 
-**Dashboard Page**
+- **Dashboard Page**
  - includes
 1. Cards (Total Revenue, Number of Events, Tickets, Attendees, Recent Events)
 2. Graphical Visualization (Ticket Sales, Users by Country)
 3. Tables (Recent Events)
 
-**Event - Create, Read, Update & Delete**
-**Events List Page**
-**Event Filters by Categories and Status (Past, Ongoing, Upcoming) and Sorting**
-**Attendees List Page**
-**Attendee Details Page**
-**Users List (only Guest & Speakers)**
+- **Event - Create, Read, Update & Delete**
+- **Events List Page**
+- **Event Filters by Categories and Status (Past, Ongoing, Upcoming) and Sorting**
+- **Attendees List Page**
+- **Attendee Details Page**
+- **Users List (only Guest & Speakers)**
 
 
 
