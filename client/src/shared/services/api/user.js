@@ -1,19 +1,24 @@
-
+import axiosInstance from '../axios-interceptor';
 import axios from 'axios';
 import AppConfig from '../../../config/app.config';
 
 
-axios.defaults.baseURL = AppConfig.baseUrl;
-
 const URL='/api/v1/users'
 
 const userAPI={
-    async findGuests(){
-        return await axios.get(`${URL}/guests`);
+    async register(formData){
+        return await axios.post(`${AppConfig.baseUrl}/${URL}`, formData);
     },
-    async login(formData) {
-        return await axios.post(`${URL}/`, formData);        
-    }
+    async findByRole(role){
+        const roleEndPoints = {
+            guest: "guests",
+            speaker: "speakers"
+        }
+        return await axiosInstance.get(`${URL}/${roleEndPoints[role]}`);
+    },
+    async find(){
+        return await axiosInstance.get(`${URL}`);
+    },
 };
 
 export default userAPI;

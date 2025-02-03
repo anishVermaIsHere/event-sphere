@@ -9,18 +9,24 @@ export const ROUTES={
     RESET_PWD: '/resetpassword',
     LOGOUT:'logout',
     /* protected routes */
-    admin: {
-        DASHBOARD:'dashboard',
-        CREATE_EVENT:'event/create',
-        ACCOUNT:'account',
-        PROFILE:'profile',
-        CHANGE_PWD:'change-password',
-        EVENT:'events/:id',
+    ADMIN: {
+        DASHBOARD:'admin/dashboard',
+        USERS: 'admin/users',
+        CREATE_EVENT:'admin/event/create',
+        ACCOUNT:'admin/account',
+        PROFILE:'admin/profile',
+        CHANGE_PWD:'admin/change-password',
+        EVENT:'admin/events/:id',
         EDIT_EVENT:'/admin/event/:id/edit',
-        EVENTS:'events',
-        LOCATIONS: 'locations',
-        ATTENDEES: 'attendees',
-        TICKETS: 'tickets',
-        MANAGE: 'manage'
+        EVENTS:'admin/events',
+        LOCATIONS: 'admin/locations',
+        ATTENDEES: 'admin/attendees',
+        ATTENDEE: 'admin/attendees/:id',
+        TICKETS: 'admin/tickets',
+        MANAGE: 'admin/manage',
+        INVITE: 'admin/invite'
+    },
+    GUEST: {
+        BASE_PATH: 'guest'
     }
 }

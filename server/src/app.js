@@ -7,6 +7,11 @@ import { dbConnection } from "./config/db/connect.js";
 import authRouter from "./routes/auth.js";
 import userRouter from "./routes/user.js";
 import AppConfig from "./config/app.config.js";
+import eventRouter from "./routes/event.js";
+import locationRouter from "./routes/location.js";
+import categoryRouter from "./routes/category.js";
+import ticketRouter from "./routes/ticket.js";
+
 
 const app = express();
 app.use(express.json());
@@ -22,6 +27,11 @@ app.use(
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
+app.use("/api/v1/events", eventRouter);
+app.use("/api/v1/locations", locationRouter);
+app.use("/api/v1/categories", categoryRouter);
+app.use("/api/v1/tickets", ticketRouter);
+
 
 
 app.get("/", (_, res) => {

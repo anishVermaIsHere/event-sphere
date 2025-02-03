@@ -2,11 +2,19 @@ import { lazy } from "react";
 
 const LoginPage = lazy(()=>import('../pages/login-page'));
 const Dashboard = lazy(()=>import('../components/dashboard'));
-const Events = lazy(()=>import('../components/events/events'));
+const Events = lazy(()=>import('../components/events'));
+const Users = lazy(()=>import('../components/users'));
+const Attendees = lazy(()=>import('../components/attendees'));
+const AttendeeDetails = lazy(()=>import('../components/attendees/attendee-details'));
+const InvitePage  = lazy(()=>import('../components/invite'))
 
 
 export {
     LoginPage,
     Dashboard,
-    Events
+    Events,
+    Users,
+    Attendees,
+    AttendeeDetails,
+    InvitePage
 }

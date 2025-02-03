@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -11,6 +11,10 @@ import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import SideMenuMobile from '../dashboard/side-mobile-menu';
 import MenuButton from './menu-button';
 import ColorModeIconDropdown from './color-mode-icon-dropdown';
+import logo from '../../assets/event-sphere.png';
+import { CardMedia } from '@mui/material';
+import AppConfig from '../../config/app.config';
+
 
 const Toolbar = styled(MuiToolbar)({
   width: '100%',
@@ -29,7 +33,7 @@ const Toolbar = styled(MuiToolbar)({
 });
 
 export default function AppNavbar() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -63,12 +67,8 @@ export default function AppNavbar() {
             spacing={1}
             sx={{ justifyContent: 'center', mr: 'auto' }}
           >
-            <CustomIcon />
-            <Typography variant="h4" component="h1" sx={{ color: 'text.primary' }}>
-              Dashboard
-            </Typography>
+             <Typography variant='h5' component="h5" color='primary'>{AppConfig.appName}</Typography> 
           </Stack>
-          <ColorModeIconDropdown />
           <MenuButton aria-label="menu" onClick={toggleDrawer(true)}>
             <MenuRoundedIcon />
           </MenuButton>

@@ -1,13 +1,19 @@
 import createDBModel from "../../utils/create-model.js";
-import { SchemaTypes } from "mongoose";
+import { Schema, SchemaTypes } from "mongoose";
+
+
+const attendeeSchema = new Schema({
+  name: { type: String, required: [true, "Please provide attendee name"] },
+  passCode: { type: String, required: true },
+  arrived: { type: Boolean, default: false }
+});
 
 const ticketSchema = {
-  attendeeName: { type: String, required: [true, "Please provide attendee name"] },
-  eventId: { type: SchemaTypes.ObjectId, ref: "Events", required: true },
-  userId: { type: SchemaTypes.ObjectId, ref: "Users", required: true },
+  attendees: [ attendeeSchema ],
+  event: { type: SchemaTypes.ObjectId, ref: "Events", required: true },
+  user: { type: SchemaTypes.ObjectId, ref: "Users", required: true },
   date: { type: Date, required: true },
   status: { type: String, enum: ["confirmed", "cancelled", "expired"] },
-  priceInCents: { type: Number, required: true }
 };
 
 const TicketModel = createDBModel(ticketSchema, "Tickets");

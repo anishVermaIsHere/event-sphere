@@ -7,22 +7,22 @@ import Stack from '@mui/material/Stack';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AnalyticsRoundedIcon from '@mui/icons-material/AnalyticsRounded';
 import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
-import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
-import { NavLink } from 'react-router-dom';
+import { useLocation, NavLink } from 'react-router-dom';
 import { ROUTES } from '../../routes/route-links'
 
 
-const { DASHBOARD, EVENTS, ATTENDEES, GUESTS, TICKETS } = ROUTES;
+const { DASHBOARD, EVENTS, USERS, ATTENDEES, INVITE } = ROUTES.ADMIN;
 
 const mainListItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: DASHBOARD },
   { text: 'Events', icon: <AnalyticsRoundedIcon />, path: EVENTS },
+  { text: 'Users', icon: <PeopleRoundedIcon />, path: USERS },
   { text: 'Attendees', icon: <PeopleRoundedIcon />, path: ATTENDEES },
-  { text: 'Guests', icon:  <PeopleRoundedIcon />, path: GUESTS },
-  { text: 'Tickets', icon: <AssignmentRoundedIcon />, path: TICKETS },
+  {text: 'Invite Users', icon: <PersonAddIcon />, path: INVITE },
 ];
 
 const secondaryListItems = [
@@ -34,12 +34,14 @@ const secondaryListItems = [
 
 
 export default function MenuContent() {
+  const location = useLocation();
+
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
       <List dense>
         {mainListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block', color: 'inherit' }} component={NavLink} to={item.path}>
-            <ListItemButton selected={index === 0}>
+            <ListItemButton selected={location.pathname.startsWith(`/${item.path}`)}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>

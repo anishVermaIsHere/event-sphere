@@ -5,6 +5,8 @@ import { routes } from "../routes/routes";
 export default function AppRoutePovider({ children }){
 
   return (
-    <RouterProvider router={createBrowserRouter(routes)}>{children}</RouterProvider>
+    <RouterProvider router={createBrowserRouter(routes)}>
+      {children}
+    </RouterProvider>
   )
 }

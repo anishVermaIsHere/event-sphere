@@ -21,6 +21,8 @@ import { loginSchema } from "../shared/validation/schema";
 import authAPI from "../shared/services/api/auth";
 import Spinner from "../components/common/spinner";
 import AppConfig from "../config/app.config";
+import useAuthStore from "../store/auth.store";
+import useAppStore from "../store/app.store";
 
 
 export default function Login() {
@@ -35,44 +37,35 @@ export default function Login() {
       password: AppConfig.default.password
     },
     resolver: joiResolver(loginSchema) });
+
+  const { setUser, setAccessToken, setRefreshToken } = useAuthStore(state=>state);
+  const { setSnackbar } = useAppStore(state=>state);
   const [loading, setLoading] = useState(false);
   const [showPwd, setShowPwd] = useState(false);
   const navigate = useNavigate();
 
-  // const onSubmit = async (data) => {
 
-  //   try {
-  //     setLoading(true);
-  //     const res = await userAPI.login(data);
-  //     if (res.status === 200) {
-  //       // dispatch(handleAuth(res.data));
-  //       navigate(`/user/${ROUTES.FEEDS}`);
-  //       // dispatch(
-  //       //   handleSnackBar({
-  //       //     snackOpen: true,
-  //       //     snackType: "success",
-  //       //     snackMessage: res.data.message,
-  //       //   })
-  //       // );
-  //       setLoading(false);
-  //     }
-  //   } catch (error) {
-  //     // dispatch(
-  //     //   handleSnackBar({
-  //     //     snackOpen: true,
-  //     //     snackType: "error",
-  //     //     snackMessage: 'Invalid credentials',
-  //     //   })
-  //     // );
-  //     setLoading(false);
-  //   }
-    
-  //   reset();
-  // };
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
+      const res = await authAPI.login(data);
+      if (res.status === 200) {
+        const data = res.data;
+        setUser(data.user);
+        setAccessToken(data.accessToken);
+        setRefreshToken(data.refreshToken);
+        navigate(`/${ROUTES.ADMIN.DASHBOARD}`);
+      }
+      setTimeout(()=>{
+        setLoading(false);
+      }, 2000);
+    } catch (error) {
+      setSnackbar("Login error", "error");
+      setLoading(false);
+    }
+    reset();
+  };
   
-  const onSubmit =(data)=>{
-    
-  }
 
   return loading ? (
     <Spinner />

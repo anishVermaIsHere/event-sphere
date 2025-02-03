@@ -1,11 +1,22 @@
 import { UserModel } from "../../database/models/index.js";
+import tokenObject, { TOKEN } from "../../utils/token.js";
+import encrypt from "../../utils/encrypt.js";
+import { HTTP_CODES } from "../../utils/constants.js";
+
+
+const { SUCCESS, BAD_REQUEST, UNAUTHORIZE } = HTTP_CODES;
 
 const authController = {
+    /**
+     * @route POST /auth
+     * @desc Login user
+     * @access Public
+     */
     async login(req, res){
         try {
-            const { email,password }=req.body;
+            const { email, password }=req.body;
             const { tokenEncode }=tokenObject;
-            const user=await UserModel.findOne({email}).exec();
+            const user=await UserModel.findOne({ email }).exec();
             if(user && user.email) {
                 let dbPassword = user.password;
                 let plainPassword = password;
@@ -14,18 +25,21 @@ const authController = {
                     user.refreshToken=refreshToken;
 
                     return res.status(SUCCESS).json({
-                        message: resMessage.readMessage("user", "hi") + user.firstName,
-                        firstName: user.firstName,
-                        lastName:user.lastName,
-                        email: user.email,
-                        gender: user.gender,
+                        user: {
+                            id: user._id,
+                            firstName: user.firstName,
+                            lastName:user.lastName,
+                            fullName: user.firstName+" "+user.lastName,
+                            email: user.email,
+                            gender: user.gender,
+                            role: user.role
+                        },
                         accessToken: accessToken,
                         refreshToken: refreshToken,
-                        id: user._id
                     });
                 } 
                 else {
-                    return res.status(BAD_REQUEST).json({ message: resMessage.readMessage("user", "invalid") });
+                    return res.status(BAD_REQUEST).json({ message: "Invalid crendentials" });
                 }
             } 
         } catch (error) {
@@ -33,24 +47,11 @@ const authController = {
             throw new Error(error.message);
         }
     },
-    async register(req, res){
-        const user=req.body;
-        try {
-           const userDoc=await UserModel.findOne({email:user.email}).exec();
-            if(userDoc&&userDoc.email){
-                return res.status(CONFLICT).json({message:resMessage.readMessage('user','exist')});
-            }
-            else {
-                const encryptedPassword=encrypt.hashPassword(user.password);
-               const doc= await UserModel.create({...user,password:encryptedPassword});
-               if(doc&&doc._id){
-                return res.status(CREATE).json({message:resMessage.readMessage('user','register')});
-               }
-            }
-        } catch (error) {
-            console.log('API: user register error',error.message);
-        }
-    },
+    /**
+     * @route POST /auth/refresh
+     * @desc Refresh token
+     * @access Public
+     */
     async refreshToken(req, res){
         try {
             const token=req.headers.authorization?.split(' ')[1] || req.cookies?.refreshToken;
@@ -63,6 +64,20 @@ const authController = {
         } catch (error) {
             console.log('API: refresh token error', error.message);
             res.status(UNAUTHORIZE).json({ message: "Unauthorized" });
+        }
+    },
+     /**
+     * @route POST /auth/logout
+     * @desc Logout user
+     * @access Public
+     */
+    async logOut(req, res){
+        try {
+            console.log('request', req);
+
+        } catch (error) {
+            console.log('API: logout error', error.message);
+            throw Error("Logout Error >>");
         }
     }
 };

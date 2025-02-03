@@ -1,7 +1,5 @@
-import { Request } from "express";
-import jwt, { JwtPayload } from "jsonwebtoken"; // dont import * as jwt here
-import { IToken } from "../../interfaces/index.js";
-import AppConfig from "../../../config/env.config.js";
+import jwt from "jsonwebtoken"; // dont import * as jwt here
+import AppConfig from "../config/app.config.js";
 
 
 const TOKEN = Object.freeze({
