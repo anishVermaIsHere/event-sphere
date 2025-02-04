@@ -10,9 +10,6 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import SideMenuMobile from '../dashboard/side-mobile-menu';
 import MenuButton from './menu-button';
-import ColorModeIconDropdown from './color-mode-icon-dropdown';
-import logo from '../../assets/event-sphere.png';
-import { CardMedia } from '@mui/material';
 import AppConfig from '../../config/app.config';
 
 

@@ -10,6 +10,7 @@ import OptionsMenu from './options-menu';
 import logo from '../../assets/event-sphere.png'
 import { CardMedia } from '@mui/material';
 import useAuthStore from '../../store/auth.store';
+import AppConfig from '../../config/app.config';
 
 
 
@@ -49,7 +50,7 @@ export default function SideMenu() {
           px: 1.5,
         }}
       >
-        <CardMedia component="img" image={logo} alt="logo" sx={{ width: 100, display: 'block' }} />
+        <CardMedia component="img" image={AppConfig.logoUrl} alt="logo" sx={{ width: 100, display: 'block' }} />
       </Box>
       <Divider />
       <MenuContent />

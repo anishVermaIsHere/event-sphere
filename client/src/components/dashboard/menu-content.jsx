@@ -13,28 +13,31 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import { useLocation, NavLink } from 'react-router-dom';
 import { ROUTES } from '../../routes/route-links'
+import useFormStore from '../../store/form.store';
 
 
-const { DASHBOARD, EVENTS, USERS, ATTENDEES, INVITE } = ROUTES.ADMIN;
+const { DASHBOARD, EVENTS, USERS, ATTENDEES } = ROUTES.ADMIN;
 
 const mainListItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: DASHBOARD },
   { text: 'Events', icon: <AnalyticsRoundedIcon />, path: EVENTS },
   { text: 'Users', icon: <PeopleRoundedIcon />, path: USERS },
   { text: 'Attendees', icon: <PeopleRoundedIcon />, path: ATTENDEES },
-  {text: 'Invite Users', icon: <PersonAddIcon />, path: INVITE },
 ];
 
 const secondaryListItems = [
-  { text: 'Settings', icon: <SettingsRoundedIcon /> },
-  { text: 'About', icon: <InfoRoundedIcon /> },
-  { text: 'Feedback', icon: <HelpRoundedIcon /> },
+  { text: 'Invite Members', icon: <PersonAddIcon />, handler: () => {} },
+  { text: 'Settings', icon: <SettingsRoundedIcon />, handler: ()=>{} },
+  { text: 'About', icon: <InfoRoundedIcon />, handler: ()=>{} },
+  // { text: 'Feedback', icon: <HelpRoundedIcon />, handler: ()=>{} },
 ];
 
 
 
 export default function MenuContent() {
   const location = useLocation();
+  const { invite: { setIsOpen } } = useFormStore(state=>state);
+  secondaryListItems[0].handler = () => setIsOpen(true);
 
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
@@ -52,7 +55,7 @@ export default function MenuContent() {
       <List dense>
         {secondaryListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton>
+            <ListItemButton onClick={item.handler}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>

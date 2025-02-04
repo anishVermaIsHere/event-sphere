@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 import { ROUTES } from "./route-links";
-import { AttendeeDetails, Attendees, Events, InvitePage, LoginPage, Users } from "./lazy-components";
+import { AttendeeDetails, Attendees, Events, LoginPage, Users } from "./lazy-components";
 import DashboardLayout from "../components/layout/dashboard-layout";
 import Spinner from "../components/common/spinner";
 import Dashboard from "../components/dashboard";
 
-const { HOME, LOGIN, ADMIN: { DASHBOARD, EVENTS, USERS, ATTENDEES, ATTENDEE, INVITE } } = ROUTES;
+const { HOME, LOGIN, ADMIN: { DASHBOARD, EVENTS, USERS, ATTENDEES, ATTENDEE } } = ROUTES;
 
 export const routes = [
   {
@@ -64,14 +64,6 @@ export const routes = [
         element: (
           <Suspense fallback={<Spinner />}>
             <AttendeeDetails />
-          </Suspense>
-        ),
-      },
-      {
-        path: INVITE,
-        element: (
-          <Suspense fallback={<Spinner />}>
-            <InvitePage />
           </Suspense>
         ),
       },

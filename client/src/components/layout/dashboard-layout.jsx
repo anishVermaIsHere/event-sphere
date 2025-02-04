@@ -10,6 +10,8 @@ import QueryProvider from "../../providers/query-provider";
 import { AxiosInterceptor } from "../../shared/services/axios-interceptor";
 import useAppStore from "../../store/app.store";
 import { Alert, Snackbar } from "@mui/material";
+import InviteModal from "../invite";
+
 
 const DashboardLayout = () => {
   const {
@@ -76,6 +78,7 @@ const DashboardLayout = () => {
             </Alert>
           </Snackbar>
         </Box>
+        <InviteModal />
     </>
   );
 };

@@ -1,23 +1,23 @@
-import {
-  Box,
-  Button,
-  Grid2 as Grid,
-  IconButton,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import { queryClient } from "../../providers/query-provider";
-import CachedIcon from "@mui/icons-material/Cached";
+import { Box, Button, TextField, Typography, Modal } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import useFormStore from "../../store/form.store";
+import { useForm } from "react-hook-form";
+import { joiResolver } from '@hookform/resolvers/joi';
+import { inviteeSchema } from "../../shared/validation/schema";
+import useAppStore from "../../store/app.store";
+import inviteeAPI from "../../shared/services/api/invitee";
 
-const style = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "end",
-  px: 2,
-  gap: 1,
-  mb: 1,
+
+const formStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: { xs: "100%", sm: 400, xl: 600 },
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
 };
 
 // const fetchUsers = async () => {
@@ -28,65 +28,64 @@ const style = {
 //   return [...res[0].data, ...res[1].data];
 // };
 
+const InviteModal = () => {
+  const { invite: { isOpen, setIsOpen } } = useFormStore((state) => state);
+  const { setSnackbar } = useAppStore(state=>state);
+  const { register, reset, handleSubmit, formState: { errors } } = useForm({  defaultValues: { email: "" }, resolver: joiResolver(inviteeSchema),});
 
+  const handleClose = () => { 
+    setIsOpen(false); 
+    reset();
+  }
 
-function UserList({ users, isError, isLoading }) {
-    return (
-      <Grid container spacing={2} columns={12}>
-        <Grid size={{ xs: 12 }}>
-          {/* <UserDataGrid users={users} isError={isError} isLoading={isLoading}/> */}
-        </Grid>
-      </Grid>
-    );
+  const onSubmit = async (data) => {
+    const res = await inviteeAPI.register(data);
+    if(res.status === 201){
+      setSnackbar("Invitation sent", "info");
+    }
+    handleClose();
   };
 
 
-const InviteForm = () => {
   return (
-    <Box
-      component="form"
-      noValidate
-      sx={{ ...style, justifyContent: "start" }}
+    <Modal
+      open={isOpen}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
     >
-      <TextField
-        id="filled-search"
-        label="Type user's email"
-        type="text"
-        // variant="filled"
-        size="small"
-        sx={{ width: { xs: "100%", md: "50%" } }}
-      />
-      <Button variant="contained" color="primary" sx={{ height: '100%' }}>
-        <SendIcon sx={{mr:1}} />
-        Invite
-      </Button>
-    </Box>
-  );
-};
-
-const Invite = () => {
-  return (
-    <Box sx={{ position: "relative", width: "100%" }}>
-      <Typography variant="h5" component="h5" sx={{ fontWeight: 600, mb: 2 }}>
-        Invite users
-      </Typography>
-      <Box sx={style}>
-        <Tooltip title="Refetch">
-          <IconButton
-            size="small"
-            color="default"
-            onClick={async () => {
-              // queryClient.invalidateQueries("users");
-            }}
-          >
-            <CachedIcon />
-          </IconButton>
-        </Tooltip>
+      <Box component="form" noValidate sx={formStyle} onSubmit={handleSubmit(onSubmit)}>
+        <Typography component="p" variant="h6">
+          Invite Members
+        </Typography>
+        <Typography component="p" variant="p" color="text.secondary" mb={2}>
+          Type user email and send invitation
+        </Typography>
+        <TextField
+          label="Email"
+          type="text"
+          // variant="filled"
+          name="email"
+          size="small"
+          error={errors?.email?.message && true}
+          helperText={errors?.email?.message}
+          sx={{ mb: 2 }}
+          autoComplete="off"
+          fullWidth
+          {...register("email")}
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          sx={{ height: "100%", float: "right" }}
+        >
+          <SendIcon sx={{ mr: 1 }} />
+          Invite
+        </Button>
       </Box>
-      <InviteForm />
-      {/* <UserList users={users} isError={isError} isLoading={isLoading} /> */}
-    </Box>
+    </Modal>
   );
 };
 
-export default Invite;
+export default InviteModal;

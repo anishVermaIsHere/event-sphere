@@ -1,7 +1,7 @@
 # Event Sphere in MERN
 #### Event Management App 
 
-![](event-sphere.png)
+![](https://res.cloudinary.com/dnyp1e0zo/image/upload/v1738675226/event-sphere/ob57lkpaqcernkdykuii.png)
 
 ##### Features
 
