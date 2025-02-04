@@ -31,7 +31,6 @@ export const columns = [
     headerName: "Name", 
     flex: 1.5, 
     minWidth: 100 
-
   },
   {
     field: "username",
@@ -88,7 +87,7 @@ export const columns = [
     minWidth: 10,
     disableColumnMenu: true,
     sortable: false,
-    renderCell: (params)=><MenuOption value={params.row.role} options={actionOptions}/>
+    renderCell: (params)=><MenuOption id={params.row.id} value={params.row.role} options={actionOptions}/>
   }
 
 ]

@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 import AppConfig from "../config/app.config.js";
 
 function generateEmailTemplate(recipient) {
-  const { name, registerUrl } = recipient;
+  const { registerUrl } = recipient;
   return `
   <!DOCTYPE html>
 <html lang="en">
@@ -117,7 +117,6 @@ function generateEmailTemplate(recipient) {
 
       <div class="foreground">
         <div class="content">
-          <p id="user-name">Hi ${name}</p>
           <h1>Join us - ${AppConfig.appName}</h1>
 
           <p>

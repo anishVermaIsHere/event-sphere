@@ -6,6 +6,7 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { inviteeSchema } from "../../shared/validation/schema";
 import useAppStore from "../../store/app.store";
 import inviteeAPI from "../../shared/services/api/invitee";
+import { queryClient } from "../../providers/query-provider";
 
 
 const formStyle = {
@@ -39,11 +40,17 @@ const InviteModal = () => {
   }
 
   const onSubmit = async (data) => {
-    const res = await inviteeAPI.register(data);
-    if(res.status === 201){
-      setSnackbar("Invitation sent", "info");
+    try {
+      const res = await inviteeAPI.register(data);
+      if(res.status === 201){
+        setSnackbar("Invitation sent", "info");
+      }
+      queryClient.invalidateQueries("invitees");
+      handleClose();
+    } catch (error) {
+      setSnackbar(error?.response.data?.message);
+      handleClose();
     }
-    handleClose();
   };
 
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -7,8 +7,9 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const ITEM_HEIGHT = 28;
 
-export default function MenuOption({ options, value }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+export default function MenuOption({ options, value, id }) {
+  const rowId = id;
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -47,12 +48,12 @@ export default function MenuOption({ options, value }) {
           }
         }}
       >
-        {options.filter((opt)=>opt.value !== value.toLowerCase()).map((option) => (
+        {options.filter((opt)=>opt.value !== value?.toLowerCase()).map((option) => (
           <MenuItem 
             key={option} 
             sx={{ fontSize: '.9rem'}} 
             onClick={()=>{
-              option.onClick();
+              option.onClick(rowId);
               handleClose();
             }}>
               {option.label}

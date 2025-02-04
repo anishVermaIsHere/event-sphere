@@ -1,9 +1,9 @@
-
+import { inviteeSchema } from "../validation/schema.js";
 import { HTTP_CODES } from "../utils/constants.js";
 
 const { BAD_REQUEST } = HTTP_CODES;
 
-export const validator = (schema) => {
+const validator = (schema, value) => {
     return (req, res, next) => {
         try {
             const { error } = schema.validate(req.body);
@@ -16,3 +16,10 @@ export const validator = (schema) => {
         }
     }
 };
+
+const sendInvitationValidator = validator(inviteeSchema);
+
+export {
+    sendInvitationValidator,
+
+}
