@@ -73,3 +73,32 @@ export const inviteeSchema = Joi.object({
     "string.pattern.base": "Email must be a valid email format.",
   }),
 });
+
+
+export const onboardSchema = Joi.object({
+  firstName: Joi.string().messages(),
+  lastName: Joi.string().messages(),
+  email: Joi.string().email({ tlds: false }).messages({
+    "any.required": "Email is required.",
+    "string.empty": "Email must not be empty.",
+    "string.email": "Email must be a valid ",
+    "string.pattern.base": "Email must be a valid email format.",
+  }),
+  username: Joi.string().min(3).max(20).messages(),
+  gender: Joi.string().messages(),
+  dob: Joi.string().messages(),
+  role: Joi.string().messages(),
+  password: Joi.string()
+    .min(8)
+    .max(16)
+    .required()
+    .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
+    .messages({
+      "string.base": "Password should be a string.",
+      "string.empty": "Password is required.",
+      "string.min": "Password should have at least 8 characters.",
+      "string.max": "Password should not exceed 16 characters.",
+      "any.required": "Password is required.",
+      "string.pattern.base": "Password must contain only letters and numbers.",
+    }),
+});

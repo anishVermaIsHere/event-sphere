@@ -10,7 +10,6 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import GroupsIcon from "@mui/icons-material/Groups";
-import dayjs from "dayjs";
 import eventAPI from "../../shared/services/api/event";
 import { queryClient } from "../../providers/query-provider";
 import { dateTimeParser, formatCurrency } from "../../shared/utils";
@@ -100,13 +99,14 @@ export default function EventCard({
                 sx={{
                   mr: 1,
                   mb: 2,
-                  bgcolor: "rgb(53, 149, 110)",
-                  color: "#fff",
+                  // bgcolor: "rgb(53, 149, 110)",
+                  // color: "#fff",
                   boxShadow: "0px 0px 1px 1px #0000001a",
                   animation: "pulse-animation 2s infinite",
                 }}
+                color="success"
                 label="LIVE"
-                size="small"
+                size="large"
               />
             )}
           </Stack>
@@ -180,7 +180,7 @@ export default function EventCard({
               alignItems: "center",
               justifyContent: "space-between",
               gap: 4,
-              flexDirection: { xs: "column", md: "row" },
+              flexDirection: "row",
             }}
           >
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -188,10 +188,10 @@ export default function EventCard({
               {capacity}
             </div>
 
-            
             <Chip
               label={priceInCents > 0 ? formatCurrency({ amount: priceInCents / 100 }) : "Free"}
-              sx={{ fontSize: "1rem" }}
+              // sx={{ fontSize: "1rem" }}
+              size="large"
               variant="outlined"
             />
           </Typography>

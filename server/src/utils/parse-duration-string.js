@@ -30,7 +30,6 @@ export const parseDurationString = (date, duration = "3d") => {
     }
   
     const futureDate = new Date(new Date(date).getTime() + milliseconds);
-    console.log('future Date', futureDate)
     return {
       date: futureDate,
       amount,

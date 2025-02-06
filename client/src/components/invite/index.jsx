@@ -8,7 +8,6 @@ import { inviteeSchema } from "../../shared/validation/schema";
 import useAppStore from "../../store/app.store";
 import inviteeAPI from "../../shared/services/api/invitee";
 import { queryClient } from "../../providers/query-provider";
-import Spinner from "../common/spinner";
 
 
 const formStyle = {

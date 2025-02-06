@@ -5,7 +5,7 @@ const userSchema = {
   lastName: { type: String, required: [true, "Please provide last name"] },
   username: { type: String, required: [true, "Please provide username"] },
   gender: { type: String, enum: ["male", "female", "other"] },
-  dob: { type: Date, required: true },
+  dob: { type: Date },
   email: { type: String, required: [true, "Please provide email"] },
   password: { type: String, required: [true, "Please provide password"] },
   role: { type: String, enum: ["user", "admin", "guest"], default: "user" },

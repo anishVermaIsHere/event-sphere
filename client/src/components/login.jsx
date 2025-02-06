@@ -79,7 +79,7 @@ export default function Login() {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, width: "80px", height: "80px" }} src={AppConfig.logoUrl} alt={AppConfig.appName}/>
+        <Avatar sx={{ m: 1, width: "100px", height: "100px" }} src={AppConfig.logoUrl} alt={AppConfig.appName}/>
         <Typography component="h1" variant="h5">
           Login
         </Typography>

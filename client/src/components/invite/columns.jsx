@@ -6,6 +6,8 @@ import { getAuth } from "../../shared/utils";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PendingIcon from '@mui/icons-material/Pending';
 import CancelIcon from '@mui/icons-material/Cancel';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 
 
@@ -16,6 +18,7 @@ const actionOptions = [
     id:1,
     label: "Delete",
     value: "",
+    icon: DeleteIcon,
     onClick: async (id)=> {
       await inviteeAPI.delete(id);
       queryClient.invalidateQueries("invitees");
@@ -30,7 +33,7 @@ function renderCell(slug){
   const fullName = firstName+" "+lastName;
 
   if(user.id === _id){
-    return <Chip sx={{ mr: 1 }} variant="contained" label={"You"} color={"success"} size="small" />
+    return <Chip sx={{ mr: 1 }} variant="contained" label={"You"} color={"primary"} size="small" />
   }
   return <Chip sx={{ mr: 1 }} variant="contained" label={fullName} color={"default"} size="small" />
 }

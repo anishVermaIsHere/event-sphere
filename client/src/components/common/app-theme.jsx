@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { inputsCustomizations } from './inputs';
@@ -6,10 +6,19 @@ import { dataDisplayCustomizations } from './data-display';
 import { navigationCustomizations } from './navigation';
 import { surfacesCustomizations } from './surfaces';
 import { colorSchemes, typography, shadows, shape } from '../dashboard/theme/theme-primitives';
+import { chartsCustomizations, dataGridCustomizations, datePickersCustomizations, treeViewCustomizations } from "../dashboard/theme/customizations";
+
+
+const xThemeComponents = {
+  ...chartsCustomizations,
+  ...dataGridCustomizations,
+  ...datePickersCustomizations,
+  ...treeViewCustomizations,
+};
 
 function AppTheme(props) {
-  const { children, disableCustomTheme, themeComponents } = props;
-  const theme = React.useMemo(() => {
+  const { children, disableCustomTheme } = props;
+  const theme = useMemo(() => {
     return disableCustomTheme
       ? {}
       : createTheme({
@@ -19,20 +28,25 @@ function AppTheme(props) {
           //   cssVarPrefix: 'template',
           // },
           colorSchemes, // Recently added in v6 for building light & dark mode app, see https://mui.com/material-ui/customization/palette/#color-schemes
-          typography,
           shadows,
           shape,
+          typography: {
+            ...typography,
+            // button: {
+            //   textTransform: 'none'
+            // }
+          },
           components: {
             ...inputsCustomizations,
             ...dataDisplayCustomizations,
             ...navigationCustomizations,
             ...surfacesCustomizations,
-            ...themeComponents,
+            ...xThemeComponents,
           },
         });
-  }, [disableCustomTheme, themeComponents]);
+  }, [disableCustomTheme]);
   if (disableCustomTheme) {
-    return <React.Fragment>{children}</React.Fragment>;
+    return <>{children}</>;
   }
   return (
     <ThemeProvider theme={theme} disableTransitionOnChange>
@@ -43,11 +57,7 @@ function AppTheme(props) {
 
 AppTheme.propTypes = {
   children: PropTypes.node,
-  /**
-   * This is for the docs site. You can ignore it or remove it.
-   */
   disableCustomTheme: PropTypes.bool,
-  themeComponents: PropTypes.object,
 };
 
 export default AppTheme;

@@ -18,6 +18,9 @@
 - **Attendees List Page**
 - **Attendee Details Page**
 - **Users List (only Guest & Speakers)**
+- **Send Invites - by email** 
+- **Invitees List**
+- **Onboarding page**
 
 
 

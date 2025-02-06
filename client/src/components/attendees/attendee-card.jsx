@@ -20,6 +20,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
+    backgroundColor: "#fff"
     // display: "-webkit-box",
     // WebkitBoxOrient: "vertical",
     // WebkitLineClamp: 3,
@@ -73,7 +74,7 @@ const AttendeeCard = ({
             spacing={1}
             mb={1}
           >
-            <Chip sx={{ mr: 1, mb: 1 }} label={event?.name} size="medium" />
+            <Chip sx={{ mr: 1, mb: 1 }} label={event?.name} variant="outlined" color="primary" size="medium" />
           </Stack>
 
           <Typography

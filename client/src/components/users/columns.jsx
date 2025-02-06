@@ -1,4 +1,5 @@
 import { Chip } from "@mui/material";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import MenuOption from "../common/menu-option";
 
 
@@ -6,14 +7,16 @@ import MenuOption from "../common/menu-option";
 const actionOptions = [
   {
     id:2,
-    label: "Change as Guest",
+    label: "Assign as Guest",
     value: "guest",
+    icon: ManageAccountsIcon,
     onClick: ()=>{}
   },
   {
     id:3,
-    label: "Change as Speaker",
+    label: "Assign as Speaker",
     value: "speaker",
+    icon: ManageAccountsIcon,
     onClick: ()=>{}
   },
 

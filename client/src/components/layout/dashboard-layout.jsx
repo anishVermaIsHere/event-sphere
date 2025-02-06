@@ -80,6 +80,7 @@ const DashboardLayout = () => {
         </Box>
         <InviteModal />
     </>
+
   );
 };
 

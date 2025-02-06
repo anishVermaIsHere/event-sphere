@@ -3,6 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { ListItemIcon, ListItemText } from '@mui/material';
 
 
 const ITEM_HEIGHT = 28;
@@ -43,7 +44,7 @@ export default function MenuOption({ options, value, id }) {
           paper: {
             style: {
               maxHeight: ITEM_HEIGHT * 4.5,
-              width: '20ch',
+              // width: '20ch',
             },
           }
         }}
@@ -51,12 +52,14 @@ export default function MenuOption({ options, value, id }) {
         {options.filter((opt)=>opt.value !== value?.toLowerCase()).map((option) => (
           <MenuItem 
             key={option} 
-            sx={{ fontSize: '.9rem'}} 
             onClick={()=>{
               option.onClick(rowId);
               handleClose();
             }}>
-              {option.label}
+              <ListItemIcon>
+                {<option.icon/>}
+              </ListItemIcon>
+              <ListItemText sx={{ fontSize:"inherit" }}>{option.label}</ListItemText>
             </MenuItem>
           ))}
       </Menu>

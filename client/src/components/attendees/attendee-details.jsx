@@ -85,7 +85,7 @@ const AttendeeDetails = () => {
         </IconButton>
       </Tooltip>
 
-      <Paper sx={{ p: 2 }} elevation={0}>
+      <Paper sx={{ p: 2, bgcolor:"#fff" }} elevation={0}>
         <Typography
           variant="h5"
           component="p"
@@ -139,12 +139,13 @@ const AttendeeDetails = () => {
                   })
                 : "Free"
             }
+            color="success"
+            size="large"
             sx={{
               fontSize: "1.5rem",
               fontWeight: 600,
-              bgcolor: "rgb(53, 149, 110)",
-              color: "#fff",
               border: "none",
+              color: "#fff",
             }}
             variant="outlined"
           />
@@ -168,7 +169,7 @@ const AttendeeDetails = () => {
               <Typography component="small">
                 {att.arrived ? (
                   <Stack direction="row" spacing={1}>
-                  <Chip icon={<CheckCircleIcon color="white" />} label="Arrived" size="small" sx={{ bgcolor: "rgb(53, 149, 110)", color: "#fff", }}/>
+                  <Chip icon={<CheckCircleIcon color="white" />} label="Arrived" size="small" color="success"/>
                 </Stack>
                 ) : (
                   <Stack direction="row" spacing={1}>
@@ -214,7 +215,7 @@ const AttendeeDetails = () => {
                 <Paper
                   key={att._id}
                   sx={{ p: 2, mb: 2, bgcolor: "#f8f8f8" }}
-                  elevation={0}
+                  elevation={1}
                 >
                   <Typography
                     sx={{ display: "flex", justifyContent: "space-between" }}
@@ -303,8 +304,12 @@ const AttendeeDetails = () => {
 
           {openContact ? 
                 <Paper
-                  sx={{ p: 2, mb: 2, bgcolor: "#f8f8f8" }}
-                  elevation={0}
+                  sx={{ 
+                    p: 2, 
+                    mb: 2, 
+                    bgcolor: "#f8f8f8" 
+                  }}
+                  elevation={1}
                 >
                   <Typography
                     variant="body"
