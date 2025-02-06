@@ -15,7 +15,6 @@ import {
   Typography,
   Container,
 } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { ROUTES } from "../routes/route-links";
 import { loginSchema } from "../shared/validation/schema";
 import authAPI from "../shared/services/api/auth";
@@ -80,9 +79,7 @@ export default function Login() {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
+        <Avatar sx={{ m: 1, width: "80px", height: "80px" }} src={AppConfig.logoUrl} alt={AppConfig.appName}/>
         <Typography component="h1" variant="h5">
           Login
         </Typography>
@@ -136,11 +133,6 @@ export default function Login() {
             <Grid item xs>
               <Link href={ROUTES.RECOVER_ACC} variant="body2">
                 Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link component={NavLink} to={ROUTES.REGISTER} variant="body2">
-                {"Not a member? Register"}
               </Link>
             </Grid>
           </Grid>

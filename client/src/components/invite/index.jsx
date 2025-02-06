@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Box, Button, TextField, Typography, Modal } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import useFormStore from "../../store/form.store";
@@ -7,6 +8,7 @@ import { inviteeSchema } from "../../shared/validation/schema";
 import useAppStore from "../../store/app.store";
 import inviteeAPI from "../../shared/services/api/invitee";
 import { queryClient } from "../../providers/query-provider";
+import Spinner from "../common/spinner";
 
 
 const formStyle = {
@@ -30,6 +32,7 @@ const formStyle = {
 // };
 
 const InviteModal = () => {
+  const [ isLoading, setIsLoading] = useState(false);
   const { invite: { isOpen, setIsOpen } } = useFormStore((state) => state);
   const { setSnackbar } = useAppStore(state=>state);
   const { register, reset, handleSubmit, formState: { errors } } = useForm({  defaultValues: { email: "" }, resolver: joiResolver(inviteeSchema),});
@@ -41,14 +44,17 @@ const InviteModal = () => {
 
   const onSubmit = async (data) => {
     try {
+      setIsLoading(true);
       const res = await inviteeAPI.register(data);
       if(res.status === 201){
         setSnackbar("Invitation sent", "info");
       }
-      queryClient.invalidateQueries("invitees");
+      setIsLoading(false);
       handleClose();
+      queryClient.invalidateQueries("invitees");
     } catch (error) {
       setSnackbar(error?.response.data?.message);
+      setIsLoading(false);
       handleClose();
     }
   };
@@ -86,9 +92,10 @@ const InviteModal = () => {
           variant="contained"
           color="primary"
           sx={{ height: "100%", float: "right" }}
+          disabled={isLoading}
         >
           <SendIcon sx={{ mr: 1 }} />
-          Invite
+          {isLoading ? "Sending..." : "Invite"}
         </Button>
       </Box>
     </Modal>

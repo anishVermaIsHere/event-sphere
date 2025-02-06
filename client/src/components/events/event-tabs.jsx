@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -11,6 +10,7 @@ import AlertCard from "../common/alert-card";
 import eventAPI from "../../shared/services/api/event";
 import dayjs from "dayjs";
 import { dateTimeParser, getAuth } from "../../shared/utils";
+import CustomTabPanel from "../common/tab-panel";
 
 
 
@@ -49,29 +49,8 @@ function EventList({ events, isError, isLoading }) {
     </Grid>
 }
 
-function CustomTabPanel(props) {
-  const { children, value, index, ...other } = props;
 
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ p: 1, minHeight: "100vh", bgcolor: "rgb(247 246 246)" }}>{children}</Box>}
-    </div>
-  );
-}
-
-CustomTabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-function tabProps(index) {
+export function tabProps(index) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,

@@ -4,6 +4,11 @@ import { HTTP_CODES } from "../../utils/constants.js";
 import { sendMail } from "../../utils/mailer.js";
 import { generateToken } from "../../utils/other-token.js";
 import mongoose from 'mongoose';
+import { decodedUser } from "../../utils/token.js";
+import { parseDurationString } from "../../utils/parse-duration-string.js";
+import AppConfig from "../../config/app.config.js";
+
+
 
 const { SUCCESS, CREATE, CONFLICT, BAD_REQUEST } = HTTP_CODES;
 
@@ -15,6 +20,7 @@ const inviteeController = {
    */
   async create(req, res) {
     const { email: recipientEmail } = req.body;
+    const requestedUser = decodedUser(req);
     try {
       const user = await InviteeModel.findOne({ recipientEmail });
       if(user?.status === "pending"){
@@ -31,7 +37,7 @@ const inviteeController = {
       };
       const invitee = await InviteeModel.create(data);
       if (invitee && invitee._id) {
-        await sendMail({ email: recipientEmail, registerUrl: `/${data.token}`})
+        // await sendMail({ email: recipientEmail, senderName: requestedUser?.firstName+" "+requestedUser?.lastName, registerUrl: `/${data.token}`})
         return res.status(CREATE).json({ message: "Invited successfully" });
       } 
     } catch (error) {
@@ -46,7 +52,8 @@ const inviteeController = {
    */
   async find(req, res){
     try {
-      const invitees = await InviteeModel.find();
+      const results = await InviteeModel.find().populate("sender", ["-__v", "-password", "-createdAt", "-updatedAt"]);
+      const invitees = results.map((inv)=>({ ...inv.toObject(), expires: parseDurationString(inv.expires, AppConfig.invitationExpiry)?.timeStamp }));
       return res.status(SUCCESS).json(invitees);
     } catch (error) {
       console.log("API: invitees finding error", error.message);

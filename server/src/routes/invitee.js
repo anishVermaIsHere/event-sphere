@@ -1,13 +1,14 @@
 import { Router } from "express";
 import inviteeController from "../controllers/invitee/index.js";
-import { sendInvitationValidator } from "../middlewares/validator.js";
-import { tokenVerify } from "../middlewares/token-verify.js";
+import { validator } from "../middlewares/validator.js";
+import { authTokenVerify } from "../middlewares/token-verify.js";
 
 const inviteeRouter = Router();
+const { sendInvitation, deleteInvitation } = validator;
 
-inviteeRouter.get("/", tokenVerify, inviteeController.find);
-inviteeRouter.post("/", tokenVerify, sendInvitationValidator, inviteeController.create);
-inviteeRouter.delete("/:id", tokenVerify, sendInvitationValidator, inviteeController.delete);
+inviteeRouter.get("/", authTokenVerify, inviteeController.find);
+inviteeRouter.post("/", authTokenVerify, sendInvitation, inviteeController.create);
+inviteeRouter.delete("/:id", authTokenVerify, deleteInvitation, inviteeController.delete);
 
 
 

@@ -1,4 +1,5 @@
 import { Schema, SchemaTypes, model } from "mongoose";
+import AppConfig from "../../config/app.config.js";
 
 const inviteeSchema = new Schema(
   {
@@ -14,7 +15,7 @@ const inviteeSchema = new Schema(
     },
     token: { type: String, required: true },
     consumed: { type: Boolean, default: false },
-    expires: { type: Date, default: Date.now, expires: "3d" },
+    expires: { type: Date, default: Date.now, expires: AppConfig.invitationExpiry },
   },
   { timestamps: true }
 );

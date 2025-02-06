@@ -33,6 +33,9 @@ const secondaryListItems = [
 ];
 
 
+const itemIconStyle = {
+  minWidth: "40px"
+}
 
 export default function MenuContent() {
   const location = useLocation();
@@ -45,7 +48,7 @@ export default function MenuContent() {
         {mainListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block', color: 'inherit' }} component={NavLink} to={item.path}>
             <ListItemButton selected={location.pathname.startsWith(`/${item.path}`)}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemIcon sx={itemIconStyle}>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
           </ListItem>
@@ -56,7 +59,7 @@ export default function MenuContent() {
         {secondaryListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block' }}>
             <ListItemButton onClick={item.handler}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemIcon sx={itemIconStyle}>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
           </ListItem>

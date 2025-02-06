@@ -2,24 +2,18 @@ import { Chip } from "@mui/material";
 import MenuOption from "../common/menu-option";
 import { queryClient } from "../../providers/query-provider";
 import inviteeAPI from "../../shared/services/api/invitee";
+import { getAuth } from "../../shared/utils";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import PendingIcon from '@mui/icons-material/Pending';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 
+
+const auth = getAuth();
 
 const actionOptions = [
   {
-    id:2,
-    label: "Change as Guest",
-    value: "guest",
-    onClick: ()=>{}
-  },
-  {
-    id:3,
-    label: "Change as Speaker",
-    value: "speaker",
-    onClick: ()=>{}
-  },
-  {
-    id:4,
+    id:1,
     label: "Delete",
     value: "",
     onClick: async (id)=> {
@@ -30,18 +24,30 @@ const actionOptions = [
 
 ];
 
-function renderCell(slug) {
+function renderCell(slug){
+  const { user } = auth;
+  const { firstName, lastName, _id } = slug.value;
+  const fullName = firstName+" "+lastName;
+
+  if(user.id === _id){
+    return <Chip sx={{ mr: 1 }} variant="contained" label={"You"} color={"success"} size="small" />
+  }
+  return <Chip sx={{ mr: 1 }} variant="contained" label={fullName} color={"default"} size="small" />
+}
+
+
+function renderStatus(slug) {
   const label = slug?.value?.toUpperCase();
     if(slug.value === "pending"){
-        return <Chip sx={{ mr: 1 }} variant="outlined" label={label} color={"warning"} size="small" />
+        return <Chip sx={{ mr: 1, color: "#fff" }} icon={<PendingIcon color="white" />} variant="contained" label={label} color={"warning"} size="small" />
     } 
     if (slug.value === "accepted"){
-        return <Chip sx={{ mr: 1 }} variant="outlined" label={label} color={"success"} size="small" />
+        return <Chip sx={{ mr: 1, color: "#fff" }} icon={<CheckCircleIcon color="white" />} variant="contained" label={label} color={"success"} size="small" />
     } 
     if (slug.value === "declined"){
-        return <Chip sx={{ mr: 1 }} variant="outlined" label={label} color={"error"} size="small" />
+        return <Chip sx={{ mr: 1, color: "#fff" }} icon={<CancelIcon color="white" />} variant="contained" label={label} color={"error"} size="small" />
     } 
-    return <Chip sx={{ mr: 1 }} variant="outlined" label={label} color={"default"} size="small" />
+    return <Chip sx={{ mr: 1, color: "#fff" }} variant="contained" label={label} color={"default"} size="small" />
 };
 
 export const columns = [
@@ -58,6 +64,13 @@ export const columns = [
     align: "center",
     flex: 1,
     minWidth: 50,
+    renderCell: (params) => renderStatus(params),
+  },
+  {
+    field: "sender",
+    headerName: "Invited By",
+    flex: 0.5,
+    minWidth: 100,
     renderCell: (params) => renderCell(params),
   },
   {
@@ -65,6 +78,13 @@ export const columns = [
     headerName: "Sent At",
     flex: 0.5,
     minWidth: 200,
+  },
+  {
+    field: "expires",
+    headerName: "Expires",
+    flex: 0.5,
+    minWidth: 200,
+    renderCell: (params) => <Chip sx={{ mr: 1, color: "#fff" }} variant="contained" label={params.value} color={"error"} size="small" />
   },
   {
     headerName: "Actions",

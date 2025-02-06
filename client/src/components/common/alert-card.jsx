@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 export default function AlertCard({ color, message }) {
   const navigate = useNavigate();
   return (
-    <Stack sx={{ width: "100%", my: 2 }} spacing={2}>
+    <Stack sx={{ width: { xs: "100%", sm: "60vw" }, my: 2 }} spacing={2}>
       <Alert severity={color}>{message}</Alert>
 
       <Typography 

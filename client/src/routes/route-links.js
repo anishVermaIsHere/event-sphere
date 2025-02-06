@@ -8,6 +8,7 @@ export const ROUTES={
     RECOVER_ACC: '/recover',
     RESET_PWD: '/resetpassword',
     LOGOUT:'logout',
+    ONBOARD: '/onboarding',
     /* protected routes */
     ADMIN: {
         DASHBOARD:'admin/dashboard',
@@ -24,7 +25,6 @@ export const ROUTES={
         ATTENDEE: 'admin/attendees/:id',
         TICKETS: 'admin/tickets',
         MANAGE: 'admin/manage',
-        INVITE: 'admin/invite'
     },
     GUEST: {
         BASE_PATH: 'guest'

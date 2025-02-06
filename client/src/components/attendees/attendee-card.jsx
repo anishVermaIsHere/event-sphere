@@ -43,7 +43,7 @@ const AttendeeCard = ({
   const arrived = attendees.filter((att) => att.arrived).length;
 
   const onCardOpen = () => {
-    navigate(`/attendees/${user?._id}`);
+    navigate(`${user?._id}`);
   };
 
   return (

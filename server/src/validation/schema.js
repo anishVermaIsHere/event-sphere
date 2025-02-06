@@ -53,3 +53,10 @@ export const inviteeSchema = Joi.object({
     "string.pattern.base": "Email must be a valid email format.",
   }),
 });
+
+export const requestParamsSchema = Joi.object({
+  id: Joi.string().messages({
+    "any.required": "Request Param is required.",
+    "string.empty": "Request Param must not be empty.",
+  })
+});

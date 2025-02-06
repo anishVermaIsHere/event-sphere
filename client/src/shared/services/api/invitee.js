@@ -13,7 +13,7 @@ const inviteeAPI={
         return await axiosInstance.get(`${URL}`);
     },
     async delete(inviteeId){
-        return await axiosInstance.get(`${URL}/${inviteeId}`);
+        return await axiosInstance.delete(`${URL}/${inviteeId}`);
     }
 };
 

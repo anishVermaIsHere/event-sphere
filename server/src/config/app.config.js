@@ -13,6 +13,7 @@ const AppConfig={
     refreshTokenKey: process.env.REFRESH_TOKEN_SEC_KEY,
     accessTokenExpiry: process.env.ACCESS_TOKEN_EXPIRY,
     refreshTokenExpiry: process.env.REFRESH_TOKEN_EXPIRY,
+    invitationExpiry: process.env.INVITE_EXPIRY,
     cloudinary: {
         apiKey: process.env.CLOUDINARY_API_KEY,
         secretKey: process.env.CLOUDINARY_API_SEC_KEY,

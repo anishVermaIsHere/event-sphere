@@ -1,12 +1,12 @@
-import { inviteeSchema } from "../validation/schema.js";
+import { inviteeSchema, requestParamsSchema } from "../validation/schema.js";
 import { HTTP_CODES } from "../utils/constants.js";
 
 const { BAD_REQUEST } = HTTP_CODES;
 
-const validator = (schema, value) => {
+const requestValidator = (schema, value) => {
     return (req, res, next) => {
         try {
-            const { error } = schema.validate(req.body);
+            const { error } = schema.validate(req[value]);
             if(error){
                 return res.status(BAD_REQUEST).json({ error: error.details[0].message });
             } 
@@ -17,9 +17,9 @@ const validator = (schema, value) => {
     }
 };
 
-const sendInvitationValidator = validator(inviteeSchema);
-
-export {
-    sendInvitationValidator,
-
+export const validator = {
+    sendInvitation: requestValidator(inviteeSchema, "body"),
+    deleteInvitation: requestValidator(requestParamsSchema, "params")
 }
+
+
