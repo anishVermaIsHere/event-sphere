@@ -54,9 +54,13 @@ export const inviteeSchema = Joi.object({
   }),
 });
 
-export const requestParamsSchema = Joi.object({
-  id: Joi.string().messages({
-    "any.required": "Request Param is required.",
-    "string.empty": "Request Param must not be empty.",
+
+
+export const requestParamsSchema = (fieldName) => (
+  Joi.object({
+    [fieldName]: Joi.string().messages({
+      "any.required": "Request Param is required.",
+      "string.empty": "Request Param must not be empty.",
+    })
   })
-});
+);

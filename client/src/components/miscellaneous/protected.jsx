@@ -3,7 +3,7 @@ import ROUTES from "../../routes/route-links";
 import useAuthStore from "../../store/auth.store";
 
 const Protected = () => {
-  const { RECOVER_ACC, RESET_PWD, REGISTER, ADMIN:{ DASHBOARD } } = ROUTES;
+  const { RECOVER_ACC, RESET_PWD, REGISTER } = ROUTES;
   const location = useLocation();
   const { accessToken } = useAuthStore((state) => state);
   const publicRoutes = ["/", REGISTER, RECOVER_ACC, RESET_PWD];

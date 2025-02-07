@@ -1,20 +1,26 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   Button,
   CssBaseline,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Link,
-  Grid,
+  Grid2 as Grid,
   Box,
   Typography,
   Container,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
+  FormHelperText,
 } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { ROUTES } from "../routes/route-links";
 import { loginSchema } from "../shared/validation/schema";
 import authAPI from "../shared/services/api/auth";
@@ -24,25 +30,37 @@ import useAuthStore from "../store/auth.store";
 import useAppStore from "../store/app.store";
 
 
+
+
 export default function Login() {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({ 
+  } = useForm({
     defaultValues: {
       email: AppConfig.default.email,
-      password: AppConfig.default.password
+      password: AppConfig.default.password,
     },
-    resolver: joiResolver(loginSchema) });
+    resolver: joiResolver(loginSchema),
+  });
 
-  const { setUser, setAccessToken, setRefreshToken } = useAuthStore(state=>state);
-  const { setSnackbar } = useAppStore(state=>state);
+  const { setUser, setAccessToken, setRefreshToken } = useAuthStore((state) => state);
+  const { setSnackbar } = useAppStore((state) => state);
   const [loading, setLoading] = useState(false);
-  const [showPwd, setShowPwd] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const handleMouseUpPassword = (event) => {
+    event.preventDefault();
+  };
 
   const onSubmit = async (data) => {
     try {
@@ -55,7 +73,7 @@ export default function Login() {
         setRefreshToken(data.refreshToken);
         navigate(`/${ROUTES.ADMIN.DASHBOARD}`);
       }
-      setTimeout(()=>{
+      setTimeout(() => {
         setLoading(false);
       }, 2000);
     } catch (error) {
@@ -64,7 +82,6 @@ export default function Login() {
     }
     reset();
   };
-  
 
   return loading ? (
     <Spinner />
@@ -79,7 +96,11 @@ export default function Login() {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, width: "100px", height: "100px" }} src={AppConfig.logoUrl} alt={AppConfig.appName}/>
+        <Avatar
+          sx={{ m: 1, width: "100px", height: "100px" }}
+          src={AppConfig.logoUrl}
+          alt={AppConfig.appName}
+        />
         <Typography component="h1" variant="h5">
           Login
         </Typography>
@@ -89,38 +110,63 @@ export default function Login() {
           noValidate
           sx={{ mt: 1 }}
         >
-          <TextField
-            size="small"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            {...register("email")}
-            label="Email"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            error={errors.email && Boolean(errors.email?.message)}
-            helperText={errors.email && errors.email?.message}
-          />
+          <Grid container spacing={2}>
+            <Grid item size={{ xs: 12 }}>
+              <TextField
+                size="small"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                {...register("email")}
+                label="Email"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                error={errors.email && Boolean(errors.email?.message)}
+                helperText={errors.email && errors.email?.message}
+              />
+            </Grid>
 
-          <TextField
-            size="small"
-            margin="normal"
-            required
-            fullWidth
-            label="Password"
-            type={ showPwd ? "text" : "password"}
-            id="password"
-            {...register("password")}
-            error={errors.password && Boolean(errors.password?.message)}
-            helperText={errors.password && errors.password?.message}
-          />
+            <Grid item size={{ xs: 12 }}>
+              <FormControl
+                sx={{ position: "relative" }}
+                fullWidth
+                variant="outlined"
+              >
+                <InputLabel htmlFor="outlined-adornment-password">
+                  Password
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password"
+                  type={showPassword ? "text" : "password"}
+                  {...register("password")}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label={
+                          showPassword
+                            ? "hide the password"
+                            : "display the password"
+                        }
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        onMouseUp={handleMouseUpPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                />
+                <FormHelperText className="Mui-error">
+                  {errors.password && errors.password?.message}
+                </FormHelperText>
+              </FormControl>
+            </Grid>
+          </Grid>
 
-          <FormControlLabel
-            control={<Checkbox value="showPwd" onChange={()=>setShowPwd(!showPwd)} color="primary" />}
-            label="Show password"
-          />
           <Button
             type="submit"
             fullWidth

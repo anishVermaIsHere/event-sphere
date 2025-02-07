@@ -39,8 +39,7 @@ app.use("/api/v1/invitees", inviteeRouter);
 
 app.get("/", (_, res) => {
   res.json({ 
-    message: `Hi!, this is event management app server`,
-    date_time: new Date().toLocaleString(),
+    message: `Hi!, this is Event Sphere Server`,
     github_link: "https://github.com/anishvermaishere",
     author: "Anish"
   });

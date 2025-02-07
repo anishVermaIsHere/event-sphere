@@ -76,18 +76,40 @@ export const inviteeSchema = Joi.object({
 
 
 export const onboardSchema = Joi.object({
-  firstName: Joi.string().messages(),
-  lastName: Joi.string().messages(),
+  firstName: Joi.string().required().messages({
+    "any.required": "First name is required.",
+    "string.empty": "First name must not be empty.",
+  }),
+  lastName: Joi.string().required().messages({
+    "any.required": "Last name is required.",
+    "string.empty": "Last name must not be empty.",
+  }),
   email: Joi.string().email({ tlds: false }).messages({
     "any.required": "Email is required.",
     "string.empty": "Email must not be empty.",
     "string.email": "Email must be a valid ",
     "string.pattern.base": "Email must be a valid email format.",
   }),
-  username: Joi.string().min(3).max(20).messages(),
-  gender: Joi.string().messages(),
-  dob: Joi.string().messages(),
-  role: Joi.string().messages(),
+  userName: Joi.string().min(3).max(20).required().messages({
+    "any.required": "Username is required.",
+    "string.empty": "Username must not be empty.",
+    "string.min": "Username should have at least 3 characters",
+    "string.max": "Username should not exceed 20 characters.",
+  }),
+  gender: Joi.string().required().messages({
+    "any.required": "Gender is required.",
+    "string.empty": "Gender must not be empty.",
+  }),
+  dob: Joi.date().required().messages({
+    "any.required": "Date of birth is required.",
+    "date.base": "Date of birth must be a valid date.",
+    "date.format": "Date of birth must be in ISO date format (YYYY-MM-DD).",
+    "date.max": "Date of birth cannot be in the future.",
+  }),
+  role: Joi.string().required().messages({
+    "any.required": "Role is required.",
+    "string.empty": "Role must not be empty.",
+  }),
   password: Joi.string()
     .min(8)
     .max(16)
@@ -100,5 +122,13 @@ export const onboardSchema = Joi.object({
       "string.max": "Password should not exceed 16 characters.",
       "any.required": "Password is required.",
       "string.pattern.base": "Password must contain only letters and numbers.",
+    }),
+    repeatPassword: Joi.string()
+    .valid(Joi.ref("password")) // Ensure it matches the 'password' field
+    .required()
+    .messages({
+      "string.required": "Repeat password is required.",
+      "string.empty": "Repeat password is required.",
+      "any.only": "Repeat password must match the password field.",
     }),
 });

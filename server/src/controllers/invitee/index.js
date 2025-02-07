@@ -60,6 +60,20 @@ const inviteeController = {
       throw new Error(error.message);
     }
   },
+  async verify(req, res){
+    try {
+      const token = req.params.token;
+      const invitee = await InviteeModel.findOne({ token, consumed: false });
+      console.log('token found', invitee)
+      if(!invitee){
+        return res.json({ message: "Invalid token or expired" });
+      } 
+      return res.json({ success: true, message: "" });
+    } catch (error) {
+      console.log("API: invitee verification error", error.message);
+      throw new Error(error.message);
+    }
+  },
   /**
    * @route DELETE /invitees/:id
    * @desc Delete invitee

@@ -12,6 +12,9 @@ const inviteeAPI={
     async find(){
         return await axiosInstance.get(`${URL}`);
     },
+    async verify(token){
+        return await axios.post(`${AppConfig.baseUrl}${URL}/${token}`);
+    },
     async delete(inviteeId){
         return await axiosInstance.delete(`${URL}/${inviteeId}`);
     }

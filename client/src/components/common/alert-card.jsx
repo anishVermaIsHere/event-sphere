@@ -5,13 +5,13 @@ import CachedIcon from "@mui/icons-material/Cached";
 import { useNavigate } from "react-router-dom";
 
 
-export default function AlertCard({ color, message }) {
+export default function AlertCard({ color, message, reload = true }) {
   const navigate = useNavigate();
   return (
-    <Stack sx={{ width: { xs: "100%", sm: "60vw" }, my: 2 }} spacing={2}>
+    <Stack sx={{ mx: "auto", width: "80vw", my: 2 }} spacing={2}>
       <Alert severity={color}>{message}</Alert>
 
-      <Typography 
+      {reload && <Typography 
       component="div" 
       variant="body"
       sx={{
@@ -27,7 +27,7 @@ export default function AlertCard({ color, message }) {
           Reload
           <CachedIcon sx={{ ml: 1 }}/>
         </Button>
-      </Typography>
+      </Typography>}
     </Stack>
   );
 }

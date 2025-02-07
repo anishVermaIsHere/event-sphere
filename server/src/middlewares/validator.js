@@ -19,7 +19,8 @@ const requestValidator = (schema, value) => {
 
 export const validator = {
     sendInvitation: requestValidator(inviteeSchema, "body"),
-    deleteInvitation: requestValidator(requestParamsSchema, "params")
+    deleteInvitation: requestValidator(requestParamsSchema("id"), "params"),
+    verifyInvitation: requestValidator(requestParamsSchema("token"), "params"),
 }
 
 

@@ -8,7 +8,8 @@ export const ROUTES={
     RECOVER_ACC: '/recover',
     RESET_PWD: '/resetpassword',
     LOGOUT:'logout',
-    ONBOARD: '/onboarding',
+    ONBOARD: '/onboarding/:token',
+    VERIFY: '/u/:token',
     /* protected routes */
     ADMIN: {
         DASHBOARD:'admin/dashboard',
@@ -18,7 +19,6 @@ export const ROUTES={
         PROFILE:'admin/profile',
         CHANGE_PWD:'admin/change-password',
         EVENT:'admin/events/:id',
-        EDIT_EVENT:'/admin/event/:id/edit',
         EVENTS:'admin/events',
         LOCATIONS: 'admin/locations',
         ATTENDEES: 'admin/attendees',
