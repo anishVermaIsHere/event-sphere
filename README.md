@@ -23,7 +23,9 @@
 - **Onboarding page**
 
 
+https://github.com/user-attachments/assets/0e5bea54-0fae-4823-bfa0-d47b0dba0a7a
 
-![](recording.mp4)
+
+
 
 
