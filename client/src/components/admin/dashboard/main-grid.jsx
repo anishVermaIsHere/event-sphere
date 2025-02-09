@@ -3,19 +3,19 @@ import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Copyright from '../common/copyright';
+import Copyright from '../../common/copyright';
 import StatCard from './state-card';
-import { fetchDashboardData, getDaysInMonth, getStartEndDates } from '../../shared/utils';
+import { fetchDashboardData, getDaysInMonth, getStartEndDates } from '../../../shared/utils';
 import { useQuery } from '@tanstack/react-query';
-import Spinner from '../common/spinner';
-import AlertCard from '../common/alert-card';
-import eventAPI from '../../shared/services/api/event';
+import Spinner from '../../common/spinner';
+import AlertCard from '../../common/alert-card';
+import eventAPI from '../../../shared/services/api/event';
 import RecentEvents from './recent-events';
 import dayjs from 'dayjs';
 import SalesChart from './sales-chart';
 import ChartUserByCountry from './chart-user-by-country';
 import DashboardFilter from './dashboard-filter';
-import useMainStore from '../../store/main.store';
+import useMainStore from '../../../store/main.store';
 
 
 const dashboardFilterList = [

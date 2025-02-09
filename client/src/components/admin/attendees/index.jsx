@@ -1,11 +1,11 @@
 import { Box, Grid2 as Grid, IconButton, Tooltip, Typography } from "@mui/material";
-import ticketAPI from "../../shared/services/api/ticket";
+import ticketAPI from "../../../shared/services/api/ticket";
 import { useQuery } from "@tanstack/react-query";
 import AttendeeCard from "./attendee-card";
-import Spinner from "../common/spinner";
-import AlertCard from "../common/alert-card";
+import Spinner from "../../common/spinner";
+import AlertCard from "../../common/alert-card";
 import CachedIcon from "@mui/icons-material/Cached";
-import { queryClient } from "../../providers/query-provider";
+import { queryClient } from "../../../providers/query-provider";
 
 
 

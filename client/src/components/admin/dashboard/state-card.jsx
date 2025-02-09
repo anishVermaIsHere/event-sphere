@@ -4,7 +4,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import useMainStore from '../../store/main.store';
+import useMainStore from '../../../store/main.store';
 
 function AreaGradient({ color, id }) {
   return (

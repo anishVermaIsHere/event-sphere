@@ -5,8 +5,8 @@ import { inputsCustomizations } from './inputs';
 import { dataDisplayCustomizations } from './data-display';
 import { navigationCustomizations } from './navigation';
 import { surfacesCustomizations } from './surfaces';
-import { colorSchemes, typography, shadows, shape } from '../dashboard/theme/theme-primitives';
-import { chartsCustomizations, dataGridCustomizations, datePickersCustomizations, treeViewCustomizations } from "../dashboard/theme/customizations";
+import { colorSchemes, typography, shadows, shape } from '../admin/dashboard/theme/theme-primitives';
+import { chartsCustomizations, dataGridCustomizations, datePickersCustomizations, treeViewCustomizations } from "../admin/dashboard/theme/customizations";
 
 
 const xThemeComponents = {

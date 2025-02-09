@@ -12,8 +12,8 @@ import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import { useLocation, NavLink } from 'react-router-dom';
-import { ROUTES } from '../../routes/route-links'
-import useFormStore from '../../store/form.store';
+import { ROUTES } from '../../../routes/route-links'
+import useFormStore from '../../../store/form.store';
 
 
 const { DASHBOARD, EVENTS, USERS, ATTENDEES } = ROUTES.ADMIN;

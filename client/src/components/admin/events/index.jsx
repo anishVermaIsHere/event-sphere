@@ -2,8 +2,8 @@ import { Box, Typography } from "@mui/material";
 import EventTabs from "./event-tabs";
 import EventActionBar from "./event-action-bar";
 import { lazy, Suspense } from "react";
-import useFormStore from "../../store/form.store";
-import Spinner from "../common/spinner";
+import useFormStore from "../../../store/form.store";
+import Spinner from "../../common/spinner";
 
 const LazyEventForm = lazy(() => import("./event-modal-form"));
 const LazyEditEventForm = lazy(() => import("./edit-event-modal-form"));

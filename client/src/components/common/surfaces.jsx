@@ -1,5 +1,5 @@
 import { alpha } from '@mui/material/styles';
-import { gray } from '../dashboard/theme/theme-primitives';
+import { gray } from '../admin/dashboard/theme/theme-primitives';
 
 
 

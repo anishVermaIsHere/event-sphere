@@ -1,6 +1,6 @@
 import { DataGrid } from "@mui/x-data-grid"
 import { columns } from "./columns"
-import AlertCard from "../common/alert-card";
+import AlertCard from "../../common/alert-card";
 
 const UserDataGrid = ({ isLoading, isError, users }) => {
     if (isError) {

@@ -20,7 +20,7 @@ const inviteeSchema = new Schema(
   { timestamps: true }
 );
 
-// inviteeSchema.index({ expires: 1 }, { expireAfterSeconds: 604800 });
+// inviteeSchema.index({ expires: 1 }, { expireAfterSeconds: AppConfig.invitationExpiry });
 
 const InviteeModel = model("Invitees", inviteeSchema);
 

@@ -1,8 +1,8 @@
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { SelectMenuProps } from "../events/styles";
-import { getDaysInMonth, getStartEndDates } from "../../shared/utils";
+import { getDaysInMonth, getStartEndDates } from "../../../shared/utils";
 import dayjs from "dayjs";
-import useMainStore from "../../store/main.store";
+import useMainStore from "../../../store/main.store";
 
 
 const DashboardFilter = ({ filterList, selectedFilter, setSelectedFilter }) => {

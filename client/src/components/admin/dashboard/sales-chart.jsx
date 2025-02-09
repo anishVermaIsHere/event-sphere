@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { LineChart } from '@mui/x-charts/LineChart';
-import useMainStore from '../../store/main.store';
+import useMainStore from '../../../store/main.store';
 
 
 function AreaGradient({ color, id }) {

@@ -64,14 +64,13 @@ const inviteeController = {
     try {
       const token = req.params.token;
       const invitee = await InviteeModel.findOne({ token, consumed: false });
-      console.log('token found', invitee)
       if(!invitee){
         return res.json({ message: "Invalid token or expired" });
       } 
-      return res.json({ success: true, message: "" });
+      return res.json({ success: true, recipientEmail: invitee?.recipientEmail });
     } catch (error) {
-      console.log("API: invitee verification error", error.message);
-      throw new Error(error.message);
+      console.error("API: invitee verification error", error.message);
+      return res.status(500).json({ error: true, message: "Internal server error" });
     }
   },
   /**
@@ -90,7 +89,7 @@ const inviteeController = {
     } catch (error) {
       console.log("API: invitee deletion error", error.message);
     }
-  }
+  },
 };
 
 export default inviteeController;

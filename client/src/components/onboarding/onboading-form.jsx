@@ -1,17 +1,7 @@
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { joiResolver } from "@hookform/resolvers/joi";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { ROUTES } from "../../routes/route-links";
 import { onboardSchema } from "../../shared/validation/schema";
 import useAppStore from "../../store/app.store";
 import AppConfig from "../../config/app.config";
@@ -25,13 +15,26 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  Box,
+  Container,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  Typography
 } from "@mui/material";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import CustomDatePicker from "../dashboard/custom-date-picker";
+import CustomDatePicker from "../admin/dashboard/custom-date-picker";
+import userAPI from "../../shared/services/api/user";
 
 
-export default function OnboardingForm() {
+
+export default function OnboardingForm({ recipientEmail }) {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -55,12 +58,14 @@ export default function OnboardingForm() {
 
   const onSubmit = async (data) => {
     try {
-      // const res = await authAPI.register(data);
-      // if (res.status === 201) {
-      //   setSnackbar("Onboarding completed", "success");
-      // } else {
-      //   setSnackbar("Error", "warning");
-      // }
+      const res = await userAPI.register(data);
+      if (res.status === 201) {
+        const role = res?.data?.role;
+        setSnackbar("Onboarding completed", "success");
+        navigate(`/${role}/events`);
+      } else {
+        setSnackbar("Error", "warning");
+      }
       console.log(data);
     } catch (error) {
       setSnackbar(error.message, "error");
@@ -200,9 +205,10 @@ export default function OnboardingForm() {
                 fullWidth
                 id="email"
                 label="Email Address"
+                value={recipientEmail}
                 {...register("email")}
-                name="email"
                 autoComplete="email"
+                disabled
                 error={errors.email && Boolean(errors.email?.message)}
                 helperText={errors.email && errors.email?.message}
               />

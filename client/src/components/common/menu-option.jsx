@@ -29,6 +29,7 @@ export default function MenuOption({ options, value, id }) {
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
+        size='small'
       >
         <MoreVertIcon fontSize="small"/>
       </IconButton>

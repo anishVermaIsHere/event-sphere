@@ -1,4 +1,4 @@
-import { UserModel } from "../../database/models/index.js";
+import { InviteeModel, UserModel } from "../../database/models/index.js";
 import { HTTP_CODES } from "../../utils/constants.js";
 
 const { SUCCESS } = HTTP_CODES;
@@ -22,9 +22,18 @@ const userController = {
           password: encryptedPassword,
         });
         if (doc && doc._id) {
-          return res
-            .status(CREATE)
-            .json({ message: "User registred successfully" });
+
+         await InviteeModel.updateOne({ recipientEmail: user.email }, { consumed: true });
+          return res.status(CREATE).json({ 
+            message: "User registred successfully",
+            firstName: user.firstName,
+            lastName:user.lastName,
+            fullName: user.firstName+" "+user.lastName,
+            email: user.email,
+            gender: user.gender,
+            role: user.role 
+
+          });
         }
       }
     } catch (error) {

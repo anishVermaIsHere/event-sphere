@@ -1,6 +1,6 @@
 import { useState } from "react";
-import useFormStore from "../../store/form.store";
-import useAppStore from "../../store/app.store";
+import useFormStore from "../../../store/form.store";
+import useAppStore from "../../../store/app.store";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -10,9 +10,9 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import GroupsIcon from "@mui/icons-material/Groups";
-import eventAPI from "../../shared/services/api/event";
-import { queryClient } from "../../providers/query-provider";
-import { dateTimeParser, formatCurrency } from "../../shared/utils";
+import eventAPI from "../../../shared/services/api/event";
+import { queryClient } from "../../../providers/query-provider";
+import { dateTimeParser, formatCurrency } from "../../../shared/utils";
 
 
 

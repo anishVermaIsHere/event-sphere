@@ -1,6 +1,6 @@
 import { Chip } from "@mui/material";
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import MenuOption from "../common/menu-option";
+import MenuOption from "../../common/menu-option";
 
 
 

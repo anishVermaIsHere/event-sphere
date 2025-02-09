@@ -10,10 +10,10 @@ import {
   Typography,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import ticketAPI from "../../shared/services/api/ticket";
+import ticketAPI from "../../../shared/services/api/ticket";
 import { useNavigate, useParams } from "react-router-dom";
-import Spinner from "../common/spinner";
-import AlertCard from "../common/alert-card";
+import Spinner from "../../common/spinner";
+import AlertCard from "../../common/alert-card";
 import PeopleIcon from "@mui/icons-material/People";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -26,8 +26,8 @@ import ContactsIcon from '@mui/icons-material/Contacts';
 import EmailIcon from '@mui/icons-material/Email';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import dayjs from "dayjs";
-import { formatCurrency } from "../../shared/utils";
-import { queryClient } from "../../providers/query-provider";
+import { formatCurrency } from "../../../shared/utils";
+import { queryClient } from "../../../providers/query-provider";
 
 
 

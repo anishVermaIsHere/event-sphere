@@ -17,23 +17,29 @@ const UserVerifyPage = () => {
 
   useEffect(()=>{
     const verifyUser = async () => {
-        return await inviteeAPI.verify(params?.token);
+      try {
+        const response = await inviteeAPI.verify(params?.token);
+        const { success, message } = response?.data || {};
+        setVerified(success);
+        setMessage(message);
+      } catch (error) {
+        console.error("Error verifying user:", error);
+      }
+    };
+    if(verified){
+      navigate(`${ONBOARD.split('/:')[0]}/${params?.token}`);
     }
-    verifyUser().then(res=>{
-        setVerified(res?.data?.success);
-        setMessage(res?.data?.message);
-    }).catch((err)=>console.log(err));
-  }, [params?.token]);
-
-  useEffect(()=>{
-    if(verified) { 
-        return navigate(`${ONBOARD.split('/:')[0]}/${params?.token}`);
+    if (params?.token) {
+      verifyUser();
     }
-  }, [verified])
+  }, [params?.token, verified]);
 
-  return <Box>
-    {message && <AlertCard message={message} color="error" reload={false} />}
-  </Box>;
+  if(!verified && message){
+    return <Box><AlertCard message={message} color="error" reload={false} /></Box>;
+  }
+
+  return <></>
+
 };
 
 export default UserVerifyPage;

@@ -9,7 +9,7 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import MenuButton from './menu-button';
 import MenuContent from './menu-content';
-import useAuthStore from '../../store/auth.store';
+import useAuthStore from '../../../store/auth.store';
 
 
 

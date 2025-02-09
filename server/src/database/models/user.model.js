@@ -8,7 +8,7 @@ const userSchema = {
   dob: { type: Date },
   email: { type: String, required: [true, "Please provide email"] },
   password: { type: String, required: [true, "Please provide password"] },
-  role: { type: String, enum: ["user", "admin", "guest"], default: "user" },
+  role: { type: String, enum: ["user", "admin", "guest", "speaker"], default: "user" },
 };
 
 const UserModel = createDBModel(userSchema, "Users");

@@ -3,14 +3,14 @@ import { Button, Box, Tooltip, IconButton } from "@mui/material";
 import CachedIcon from "@mui/icons-material/Cached";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { queryClient } from "../../providers/query-provider";
+import { queryClient } from "../../../providers/query-provider";
 import GridViewIcon from "@mui/icons-material/GridView";
 import ViewHeadlineIcon from "@mui/icons-material/ViewHeadline";
-import useAppStore from "../../store/app.store";
-import FilterElement from "../common/filter";
-import categoryAPI from "../../shared/services/api/category";
-import useFormStore from "../../store/form.store";
-import eventAPI from "../../shared/services/api/event";
+import useAppStore from "../../../store/app.store";
+import FilterElement from "../../common/filter";
+import categoryAPI from "../../../shared/services/api/category";
+import useFormStore from "../../../store/form.store";
+import eventAPI from "../../../shared/services/api/event";
 
 
 

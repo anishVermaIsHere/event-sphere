@@ -6,11 +6,11 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
 import CustomizedDataGrid from "../dashboard/customized-data-grid";
-import AlertCard from "../common/alert-card";
-import eventAPI from "../../shared/services/api/event";
+import AlertCard from "../../common/alert-card";
+import eventAPI from "../../../shared/services/api/event";
 import dayjs from "dayjs";
-import { dateTimeParser, getAuth } from "../../shared/utils";
-import CustomTabPanel from "../common/tab-panel";
+import { dateTimeParser, getAuth } from "../../../shared/utils";
+import CustomTabPanel from "../../common/tab-panel";
 
 
 

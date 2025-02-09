@@ -8,7 +8,7 @@ import { tabsClasses } from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
-import SideMenuMobile from '../dashboard/side-mobile-menu';
+import SideMenuMobile from '../admin/dashboard/side-mobile-menu';
 import MenuButton from './menu-button';
 import AppConfig from '../../config/app.config';
 

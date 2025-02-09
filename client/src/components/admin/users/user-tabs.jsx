@@ -9,14 +9,14 @@ import {
   Grid2 as Grid,
 } from "@mui/material";
 import CachedIcon from "@mui/icons-material/Cached";
-import CustomTabPanel from "../common/tab-panel";
+import CustomTabPanel from "../../common/tab-panel";
 import { tabProps } from "../events/event-tabs";
-import { queryClient } from "../../providers/query-provider";
+import { queryClient } from "../../../providers/query-provider";
 import UserDataGrid from "./user-data-grid";
-import InviteeDataGrid from "../invite/invitee-grid";
+import InviteeDataGrid from "../../invite/invitee-grid";
 import { useQuery } from "@tanstack/react-query";
-import inviteeAPI from "../../shared/services/api/invitee";
-import userAPI from "../../shared/services/api/user";
+import inviteeAPI from "../../../shared/services/api/invitee";
+import userAPI from "../../../shared/services/api/user";
 import dayjs from "dayjs";
 
 const style = {

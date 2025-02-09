@@ -1,4 +1,4 @@
-import { inviteeSchema, requestParamsSchema } from "../validation/schema.js";
+import { inviteeSchema, registerSchema, requestParamsSchema } from "../validation/schema.js";
 import { HTTP_CODES } from "../utils/constants.js";
 
 const { BAD_REQUEST } = HTTP_CODES;
@@ -21,6 +21,7 @@ export const validator = {
     sendInvitation: requestValidator(inviteeSchema, "body"),
     deleteInvitation: requestValidator(requestParamsSchema("id"), "params"),
     verifyInvitation: requestValidator(requestParamsSchema("token"), "params"),
+    registerUser: requestValidator(registerSchema, "body")
 }
 
 

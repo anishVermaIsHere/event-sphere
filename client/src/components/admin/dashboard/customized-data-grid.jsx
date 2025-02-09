@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import useAppStore from "../../store/app.store";
+import useAppStore from "../../../store/app.store";
 import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
 import { columns } from "./grid-data";
 import { Grid2 as Grid, Typography } from "@mui/material";
 import EventCard from "../events/event-card";
-import Spinner from "../common/spinner";
+import Spinner from "../../common/spinner";
 
 
 export default function CustomizedDataGrid({ events, isLoading, isError }) {

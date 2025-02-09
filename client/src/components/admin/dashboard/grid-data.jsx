@@ -3,9 +3,9 @@ import Chip from "@mui/material/Chip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Tooltip } from "@mui/material";
-import eventAPI from "../../shared/services/api/event";
-import { queryClient } from "../../providers/query-provider";
-import useFormStore from "../../store/form.store";
+import eventAPI from "../../../shared/services/api/event";
+import { queryClient } from "../../../providers/query-provider";
+import useFormStore from "../../../store/form.store";
 
 // function renderSparklineCell(params) {
 //   const data = getDaysInMonth(4, 2024);

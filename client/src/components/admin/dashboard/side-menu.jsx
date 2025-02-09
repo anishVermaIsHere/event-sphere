@@ -7,10 +7,9 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import MenuContent from './menu-content';
 import OptionsMenu from './options-menu';
-import logo from '../../assets/event-sphere.png'
 import { CardMedia } from '@mui/material';
-import useAuthStore from '../../store/auth.store';
-import AppConfig from '../../config/app.config';
+import useAuthStore from '../../../store/auth.store';
+import AppConfig from '../../../config/app.config';
 
 
 
