@@ -1,14 +1,16 @@
-import * as React from 'react';
+import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { ListItemIcon, ListItemText } from '@mui/material';
 
 
 const ITEM_HEIGHT = 28;
 
-export default function MenuOption({ options, value }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+export default function MenuOption({ options, value, id }) {
+  const rowId = id;
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -27,6 +29,7 @@ export default function MenuOption({ options, value }) {
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
+        size='small'
       >
         <MoreVertIcon fontSize="small"/>
       </IconButton>
@@ -42,20 +45,22 @@ export default function MenuOption({ options, value }) {
           paper: {
             style: {
               maxHeight: ITEM_HEIGHT * 4.5,
-              width: '20ch',
+              // width: '20ch',
             },
           }
         }}
       >
-        {options.filter((opt)=>opt.value !== value.toLowerCase()).map((option) => (
+        {options.filter((opt)=>opt.value !== value?.toLowerCase()).map((option) => (
           <MenuItem 
             key={option} 
-            sx={{ fontSize: '.9rem'}} 
             onClick={()=>{
-              option.onClick();
+              option.onClick(rowId);
               handleClose();
             }}>
-              {option.label}
+              <ListItemIcon>
+                {<option.icon/>}
+              </ListItemIcon>
+              <ListItemText sx={{ fontSize:"inherit" }}>{option.label}</ListItemText>
             </MenuItem>
           ))}
       </Menu>

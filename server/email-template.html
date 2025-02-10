@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invitation - ${AppConfig.appName}</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; padding: 0;">
+
+  <div style="max-width: 600px; margin: auto; background: #f6f5f5; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+
+    <div style="text-align: center;">
+      <img src="https://res.cloudinary.com/dnyp1e0zo/image/upload/v1738675226/event-sphere/ob57lkpaqcernkdykuii.png" alt="Company Logo" style="height: 100px;">
+    </div>
+
+    <div style="background-color: #fff; padding: 40px;">
+      <div style="text-align: center; font-size: 18px; font-weight: bold; margin-bottom: 10px;">
+        Join us - ${AppConfig.appName}
+      </div>
+      <div style="line-height: 1.6; font-size: 16px; color: #555;">
+        <p>Hi!, I am ${senderName}</p>
+        <p>We are thrilled to invite you to join ${AppConfig.appName}, where managing and organizing events is made effortless.</p>
+        <p>Join us today to experience:</p>
+        <ul>
+          <li>Easy event creation and management</li>
+          <li>Real-time updates and notifications</li>
+          <li>Collaborative features for team coordination</li>
+          <li>Insights and analytics for informed decision-making</li>
+          <li>Easy event creation and management</li>
+        </ul>
+
+        <p>Click below button to register and start managing your events with us.</p>
+        <p>We look forward to seeing you onboard!</p>
+      </div>
+
+      <div style="padding: 50px; text-align: center; margin: 20px 0;">
+        <a href="${registerUrl}" style="background-color: #007bff; color: #fff; border: none; padding: 14px 30px; border-radius: 4px; cursor: pointer; text-decoration: none; font-size: 1.2rem;">Register now</a>
+      </div>
+
+      <p>PS: This invitation link is valid for 72 hrs</p>
+    </div>
+
+    <div style="margin-top: 20px; font-size: 14px; text-align: center; color: #888;">
+      <p>Copyright © <span>${new Date().getFullYear()}</span> ${AppConfig.appName}. All rights reserved.</p>
+    </div>
+
+  </div>
+
+</body>
+</html>

@@ -6,7 +6,8 @@ const AppConfig = {
     },
     baseUrl: import.meta.env.VITE_BASE_URL,
     appName: import.meta.env.VITE_APP_NAME,
-    devName: "Anish Verma"
+    devName: "Anish Verma",
+    logoUrl: "https://res.cloudinary.com/dnyp1e0zo/image/upload/v1738675226/event-sphere/ob57lkpaqcernkdykuii.png"
 };
 
 

@@ -1,17 +1,17 @@
 
 import { ErrorBoundary, useErrorBoundary } from "react-error-boundary";
-import { Button } from "@mui/material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 
-function ErrorSection() {
+export function ErrorSection() {
   const { resetBoundary } = useErrorBoundary();
   return (
-    <div className="grid place-items-center min-h-screen p-10">
-      <div className="p-5 grid place-items-center">
-        <h1 className="text-8xl font-semibold text-center text-gray-500 mb-8">☹️ <br/>Oops!</h1>
-        <p className="font-semibold text-2xl text-center mb-5">Something went wrong!</p>
-        <Button onClick={resetBoundary}>Try again</Button>
-      </div>
-    </div>
+    <Box sx={{ minHeight: "100vh", p: 5 }}>
+      <Paper elevation={0} sx={{ display: "flex", justifyContent:"center", flexDirection: "column", alignItems: "center", p: 5 }}>
+        <Typography component="h1" variant="h1" mb={4}>☹️ <br/>Oops!</Typography>
+        <Typography variant="h6" component="p" mb={4} color="error" sx={{ fontSize: "1.5rem" }}>Something went wrong!</Typography>
+        <Button onClick={resetBoundary} color="default" variant="contained">Try again</Button>
+      </Paper>
+    </Box>
   );
 }
 

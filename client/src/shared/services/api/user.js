@@ -7,7 +7,7 @@ const URL='/api/v1/users'
 
 const userAPI={
     async register(formData){
-        return await axios.post(`${AppConfig.baseUrl}/${URL}`, formData);
+        return await axios.post(`${AppConfig.baseUrl}${URL}`, formData);
     },
     async findByRole(role){
         const roleEndPoints = {
