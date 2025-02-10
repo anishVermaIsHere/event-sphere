@@ -4,14 +4,14 @@ import bodyParser from "body-parser";
 import cors from "cors";
 // dotenv.config();
 import { dbConnection } from "./config/db/connect.js";
-import authRouter from "./routes/auth.js";
-import userRouter from "./routes/user.js";
+import authRouter from "./routes/auth/index.js";
+import userRouter from "./routes/user/index.js";
 import AppConfig from "./config/app.config.js";
-import eventRouter from "./routes/event.js";
-import locationRouter from "./routes/location.js";
-import categoryRouter from "./routes/category.js";
-import ticketRouter from "./routes/ticket.js";
-import inviteeRouter from "./routes/invitee.js";
+import eventRouter from "./routes/event/index.js";
+import locationRouter from "./routes/location/index.js";
+import categoryRouter from "./routes/category/index.js";
+import ticketRouter from "./routes/ticket/index.js";
+import inviteeRouter from "./routes/invitee/index.js";
 
 
 const app = express();

@@ -12,6 +12,9 @@ const OnboardingPage = lazy(()=>import('../components/onboarding'));
 const UserVerifyPage = lazy(()=>import('../pages/userverify'));
 const EventsOfGuest = lazy(()=>import("../components/guest/guest-events"));
 const GuestLayout = lazy(()=>import('../components/layout/guest-layout'));
+const SpeakerLayout = lazy(()=>import("../components/layout/speaker-dashboard-layout"));
+const SpeakerDashboard = lazy(()=>import("../components/speaker/dashboard")); 
+const EventsOfSpeaker = lazy(()=>import("../components/speaker/speaker-events")); 
 
 
 export {
@@ -26,5 +29,8 @@ export {
     OnboardingPage,
     UserVerifyPage,
     EventsOfGuest,
-    GuestLayout
+    GuestLayout,
+    SpeakerLayout,
+    SpeakerDashboard,
+    EventsOfSpeaker
 }

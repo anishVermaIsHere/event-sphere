@@ -30,6 +30,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import CustomDatePicker from "../admin/dashboard/custom-date-picker";
 import userAPI from "../../shared/services/api/user";
+import useAuthStore from "../../store/auth.store";
 
 
 
@@ -44,7 +45,9 @@ export default function OnboardingForm({ recipientEmail }) {
     formState: { errors },
   } = useForm({ resolver: joiResolver(onboardSchema) });
   const { setSnackbar } = useAppStore((state) => state);
+  const { setUser, setAccessToken, setRefreshToken } = useAuthStore((state) => state);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -58,17 +61,24 @@ export default function OnboardingForm({ recipientEmail }) {
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true);
+      delete data.repeatPassword;
       const res = await userAPI.register(data);
       if (res.status === 201) {
-        const role = res?.data?.role;
+        const { data } = res;
+        const role = data?.user?.role;
         setSnackbar("Onboarding completed", "success");
+        setUser(data?.user);
+        setAccessToken(data?.accessToken);
+        setRefreshToken(data?.refreshToken);
         navigate(`/${role}/events`);
       } else {
         setSnackbar("Error", "warning");
       }
-      console.log(data);
+      setLoading(false);
     } catch (error) {
       setSnackbar(error.message, "error");
+      setLoading(false);
     }
     reset();
   };
@@ -267,8 +277,9 @@ export default function OnboardingForm({ recipientEmail }) {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2, p: 1 }}
+            disabled={loading}
           >
-            Submit
+            { loading ? "Submitting..." : "Submit"}
           </Button>
         </Box>
       </Box>

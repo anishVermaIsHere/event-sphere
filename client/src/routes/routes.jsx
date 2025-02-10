@@ -12,7 +12,9 @@ import {
   AdminDashboardLayout,
   PageNotFound,
   GuestLayout,
-  EventsOfGuest
+  EventsOfGuest,
+  SpeakerLayout,
+  EventsOfSpeaker
 } from "./lazy-components";
 import Spinner from "../components/common/spinner";
 import AppLayout from "../components/layout/app-layout";
@@ -24,6 +26,7 @@ const {
   VERIFY,
   ADMIN: { DASHBOARD, EVENTS, USERS, ATTENDEES, ATTENDEE },
   GUEST,
+  SPEAKER
 } = ROUTES;
 
 export const routes = [
@@ -124,6 +127,19 @@ export const routes = [
             element: (
               <Suspense fallback={<Spinner />}>
                 <EventsOfGuest />
+              </Suspense>
+            ),
+          }
+        ]
+      },
+      {
+        element: <SpeakerLayout />,
+        children: [
+          {
+            path: SPEAKER.EVENTS,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <EventsOfSpeaker />
               </Suspense>
             ),
           }

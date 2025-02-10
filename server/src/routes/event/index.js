@@ -1,6 +1,6 @@
 import { Router } from "express";
-import eventController from "../controllers/event/index.js";
-import { authTokenVerify } from "../middlewares/token-verify.js";
+import eventController from "../../controllers/event/index.js";
+import { authTokenVerify } from "../../middlewares/token-verify.js";
 
 
 

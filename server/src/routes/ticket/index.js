@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { authTokenVerify } from "../middlewares/token-verify.js";
-import ticketController from "../controllers/ticket/index.js";
+import { authTokenVerify } from "../../middlewares/token-verify.js";
+import ticketController from "../../controllers/ticket/index.js";
 
 const ticketRouter = Router();
 

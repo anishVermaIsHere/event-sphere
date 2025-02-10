@@ -294,7 +294,7 @@ const styles = {
 // }
 
 
-const EventsOfUsers= () => {
+const EventsOfUser = () => {
   return (
     <Box sx={{ position: "relative", width:"100%" }}>
       <Typography variant="h5" component="h5" sx={{ fontWeight: 600, mb: 2 }}>Events</Typography>
@@ -308,4 +308,4 @@ const EventsOfUsers= () => {
   )
 }
 
-export default EventsOfUsers
+export default EventsOfUser

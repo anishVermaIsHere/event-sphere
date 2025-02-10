@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import MenuContent from './menu-content';
+import MenuContent from '../../common/menu-content';
 import OptionsMenu from './options-menu';
 import { CardMedia } from '@mui/material';
 import useAuthStore from '../../../store/auth.store';
@@ -26,7 +26,10 @@ const Drawer = styled(MuiDrawer)({
   },
 });
 
-export default function SideMenu() {
+export default function SideMenu({
+  mainListItems,
+  secondaryListItems
+}) {
   const { user } = useAuthStore(state=>state);
   
   return (
@@ -52,7 +55,7 @@ export default function SideMenu() {
         <CardMedia component="img" image={AppConfig.logoUrl} alt="logo" sx={{ width: 100, display: 'block' }} />
       </Box>
       <Divider />
-      <MenuContent />
+      <MenuContent mainListItems={mainListItems} secondaryListItems={secondaryListItems}/>
       {/* <CardAlert /> */}
       <Stack
         direction="row"

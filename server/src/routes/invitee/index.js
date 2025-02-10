@@ -1,7 +1,7 @@
 import { Router } from "express";
-import inviteeController from "../controllers/invitee/index.js";
-import { validator } from "../middlewares/validator.js";
-import { authTokenVerify } from "../middlewares/token-verify.js";
+import inviteeController from "../../controllers/invitee/index.js";
+import { validator } from "../../middlewares/validator.js";
+import { authTokenVerify } from "../../middlewares/token-verify.js";
 
 const inviteeRouter = Router();
 const { sendInvitation, deleteInvitation, verifyInvitation } = validator;
