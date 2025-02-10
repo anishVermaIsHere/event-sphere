@@ -4,7 +4,7 @@ import { typographyClasses } from '@mui/material/Typography';
 import { buttonBaseClasses } from '@mui/material/ButtonBase';
 import { chipClasses } from '@mui/material/Chip';
 import { iconButtonClasses } from '@mui/material/IconButton';
-import { gray, red, green } from '../dashboard/theme/theme-primitives';
+import { gray, red, green } from '../admin/dashboard/theme/theme-primitives';
 
 export const dataDisplayCustomizations = {
   MuiList: {

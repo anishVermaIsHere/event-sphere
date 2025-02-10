@@ -6,7 +6,7 @@ import { menuItemClasses } from '@mui/material/MenuItem';
 import { selectClasses } from '@mui/material/Select';
 import { tabClasses } from '@mui/material/Tab';
 import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
-import { gray, brand } from '../dashboard/theme/theme-primitives';
+import { gray, brand } from '../admin/dashboard/theme/theme-primitives';
 
 
 export const navigationCustomizations = {

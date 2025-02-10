@@ -1,7 +1,7 @@
 # Event Sphere in MERN
 #### Event Management App 
 
-![](event-sphere.png)
+![](https://res.cloudinary.com/dnyp1e0zo/image/upload/v1738675226/event-sphere/ob57lkpaqcernkdykuii.png)
 
 ##### Features
 
@@ -18,8 +18,14 @@
 - **Attendees List Page**
 - **Attendee Details Page**
 - **Users List (only Guest & Speakers)**
+- **Send Invites - by email** 
+- **Invitees List**
+- **Onboarding page**
+
+
+https://github.com/user-attachments/assets/0e5bea54-0fae-4823-bfa0-d47b0dba0a7a
 
 
 
-https://github.com/user-attachments/assets/fabd3387-685b-4bc0-a988-b46aaefb04a9
+
 

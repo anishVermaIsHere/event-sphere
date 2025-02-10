@@ -5,7 +5,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { SelectMenuProps } from "../events/styles";
+import { SelectMenuProps } from "../admin/events/styles";
+
+
 
 export default function FilterElement({ filterList }) {
   const [searchParams, setSearchParams] = useSearchParams();
