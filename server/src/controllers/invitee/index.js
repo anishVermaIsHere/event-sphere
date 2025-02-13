@@ -37,7 +37,7 @@ const inviteeController = {
       };
       const invitee = await InviteeModel.create(data);
       if (invitee && invitee._id) {
-        // await sendMail({ email: recipientEmail, senderName: requestedUser?.firstName+" "+requestedUser?.lastName, registerUrl: `/${data.token}`})
+        await sendMail({ email: recipientEmail, senderName: requestedUser?.firstName+" "+requestedUser?.lastName, registerUrl: `/${data.token}`})
         return res.status(CREATE).json({ message: "Invited successfully" });
       } 
     } catch (error) {
