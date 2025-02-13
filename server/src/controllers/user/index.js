@@ -1,7 +1,9 @@
-import { UserModel } from "../../database/models/index.js";
+import { InviteeModel, UserModel } from "../../database/models/index.js";
 import { HTTP_CODES } from "../../utils/constants.js";
+import encrypt from "../../utils/encrypt.js";
+import tokenObject from "../../utils/token.js";
 
-const { SUCCESS } = HTTP_CODES;
+const { SUCCESS, CREATE, CONFLICT } = HTTP_CODES;
 
 const userController = {
   /**
@@ -10,23 +12,34 @@ const userController = {
    * @access Public
    */
   async register(req, res) {
-    const user = req.body;
     try {
+      const user = req.body;
       const userDoc = await UserModel.findOne({ email: user.email }).exec();
       if (userDoc && userDoc.email) {
         return res.status(CONFLICT).json({ message: "User already exist" });
       } else {
         const encryptedPassword = encrypt.hashPassword(user.password);
-        const doc = await UserModel.create({
-          ...user,
-          password: encryptedPassword,
-        });
+        const doc = await UserModel.create({ ...user, username: user?.userName, password: encryptedPassword });
         if (doc && doc._id) {
-          return res
-            .status(CREATE)
-            .json({ message: "User registred successfully" });
-        }
-      }
+         await InviteeModel.updateOne({ recipientEmail: user.email }, { consumed: true, status: "accepted" });
+          const { tokenEncode }=tokenObject;
+         const { accessToken, refreshToken } = tokenEncode({ email:user.email, firstName: user.firstName, lastName: user.lastName, id:user.id });
+         user.refreshToken=refreshToken; 
+         
+         return res.status(CREATE).json({
+          user: {
+            id: user._id,
+            firstName: user.firstName,
+            lastName:user.lastName,
+            fullName: user.firstName+" "+user.lastName,
+            email: user.email,
+            gender: user.gender,
+            role: user.role
+        },
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      })
+    }}
     } catch (error) {
       console.log("API: user register error", error.message);
     }

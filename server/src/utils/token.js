@@ -11,9 +11,9 @@ const decodedUser=(req)=>req["decode"];
 
 const tokenObject = {
   tokenEncode(payload) {
-    const { id }=payload;
+    const { id } = payload;
     const accessToken= jwt.sign(payload, AppConfig.accessTokenKey, { algorithm: "HS256", expiresIn: AppConfig.accessTokenExpiry });
-    const refreshToken=jwt.sign({ id }, AppConfig.refreshTokenKey, { algorithm: "HS256", expiresIn: AppConfig.refreshTokenExpiry });
+    const refreshToken=jwt.sign(payload, AppConfig.refreshTokenKey, { algorithm: "HS256", expiresIn: AppConfig.refreshTokenExpiry });
     return { accessToken, refreshToken}
 
   },

@@ -21,7 +21,7 @@ const authController = {
                 let dbPassword = user.password;
                 let plainPassword = password;
                 if (encrypt.comparePassword(plainPassword, dbPassword)) {
-                    const { accessToken, refreshToken } = tokenEncode({ email:user.email, firstName: user.firstName, id:user.id });
+                    const { accessToken, refreshToken } = tokenEncode({ email:user.email, firstName: user.firstName, lastName: user.lastName, id:user.id });
                     user.refreshToken=refreshToken;
 
                     return res.status(SUCCESS).json({
@@ -73,13 +73,13 @@ const authController = {
      */
     async logOut(req, res){
         try {
-            console.log('request', req);
-
+            res.setHeader('Authorization', '');
+            res.status(SUCCESS).json({ message: 'Logged out successfully' });
         } catch (error) {
             console.log('API: logout error', error.message);
             throw Error("Logout Error >>");
         }
-    }
+    },
 };
 
 

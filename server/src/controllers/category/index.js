@@ -5,6 +5,11 @@ import { HTTP_CODES } from "../../utils/constants.js";
 const { SUCCESS, CREATE, CONFLICT, UNAUTHORIZE } = HTTP_CODES;
 
 const categoryController = {
+  /**
+   * @route GET /categories
+   * @desc fetch categories
+   * @access Private
+   */
   async find(req, res) {
     try {
       const categories = await CategoryModel.find();

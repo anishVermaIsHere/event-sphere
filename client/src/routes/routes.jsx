@@ -1,82 +1,180 @@
 import { Suspense } from "react";
 import { ROUTES } from "./route-links";
-import { AttendeeDetails, Attendees, Events, InvitePage, LoginPage, Users } from "./lazy-components";
-import DashboardLayout from "../components/layout/dashboard-layout";
+import {
+  AttendeeDetails,
+  Attendees,
+  Events,
+  LoginPage,
+  Dashboard,
+  Users,
+  OnboardingPage,
+  UserVerifyPage,
+  AdminDashboardLayout,
+  PageNotFound,
+  GuestLayout,
+  EventsOfGuest,
+  SpeakerLayout,
+  EventsOfSpeaker,
+  SpeakerEventDetails,
+  SpeakerAttendees,
+  SpeakerDashboard,
+  ProtectedPage
+} from "./lazy-components";
 import Spinner from "../components/common/spinner";
-import Dashboard from "../components/dashboard";
+import AppLayout from "../components/layout/app-layout";
 
-const { HOME, LOGIN, ADMIN: { DASHBOARD, EVENTS, USERS, ATTENDEES, ATTENDEE, INVITE } } = ROUTES;
+const {
+  HOME,
+  LOGIN,
+  ONBOARD,
+  VERIFY,
+  ADMIN: { DASHBOARD, EVENTS, USERS, ATTENDEES, ATTENDEE },
+  GUEST,
+  SPEAKER
+} = ROUTES;
 
-export const routes = [
+
+const appRoutes = [
   {
-    path: HOME,
-    element: (
-      <Suspense fallback={<Spinner />}>
-        <LoginPage />
-      </Suspense>
-    ),
-  },
-  {
-    path: LOGIN,
-    element: (
-      <Suspense fallback={<Spinner />}>
-        <LoginPage />
-      </Suspense>
-    ),
-  },
-  {
-    element: <DashboardLayout />,
+    element: <ProtectedPage element={<AppLayout />}/>,
     children: [
       {
-        path: DASHBOARD,
+        path: HOME,
         element: (
           <Suspense fallback={<Spinner />}>
-            <Dashboard />
+            <LoginPage />
           </Suspense>
         ),
       },
       {
-        path: EVENTS,
+        path: LOGIN,
         element: (
           <Suspense fallback={<Spinner />}>
-            <Events />
+            <LoginPage />
           </Suspense>
         ),
       },
       {
-        path: USERS,
+        path: VERIFY,
         element: (
           <Suspense fallback={<Spinner />}>
-            <Users />
+            <UserVerifyPage />
           </Suspense>
         ),
       },
       {
-        path: ATTENDEES,
+        path: "*",
         element: (
           <Suspense fallback={<Spinner />}>
-            <Attendees />
+            <PageNotFound />
           </Suspense>
         ),
       },
       {
-        path: ATTENDEE,
+        element: <ProtectedPage element={<AdminDashboardLayout />} />,
+        children: [
+          {
+            path: DASHBOARD,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <Dashboard />
+              </Suspense>
+            ),
+          },
+          {
+            path: EVENTS,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <Events />
+              </Suspense>
+            ),
+          },
+          {
+            path: USERS,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <Users />
+              </Suspense>
+            ),
+          },
+          {
+            path: ATTENDEES,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <Attendees />
+              </Suspense>
+            ),
+          },
+          {
+            path: ATTENDEE,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <AttendeeDetails />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: ONBOARD,
         element: (
           <Suspense fallback={<Spinner />}>
-            <AttendeeDetails />
+            <OnboardingPage />
           </Suspense>
         ),
       },
       {
-        path: INVITE,
-        element: (
-          <Suspense fallback={<Spinner />}>
-            <InvitePage />
-          </Suspense>
-        ),
+        element: <ProtectedPage element={ <GuestLayout /> } />,
+        children: [
+          {
+            path: GUEST.EVENTS,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <EventsOfGuest />
+              </Suspense>
+            ),
+          }
+        ]
       },
+      {
+        element: <ProtectedPage element={<SpeakerLayout />} />,
+        children: [
+          {
+            path: SPEAKER.DASHBOARD,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <SpeakerDashboard />
+              </Suspense>
+            ),
+          },
+          {
+            path: SPEAKER.EVENTS,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <EventsOfSpeaker />
+              </Suspense>
+            ),
+          },
+          {
+            path: SPEAKER.EVENT,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <SpeakerEventDetails />
+              </Suspense>
+            ),
+          },
+          {
+            path: SPEAKER.ATTENDEES,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <SpeakerAttendees />
+              </Suspense>
+            ),
+          }
+        ]
+      }
     ],
   },
 ];
 
-
+export default appRoutes;
