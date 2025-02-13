@@ -93,7 +93,6 @@ export default function MainGrid() {
     <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h5" component="h5" sx={{ fontWeight: 600 }}>Dashboard</Typography>
-
         <DashboardFilter filterList={dashboardFilterList} selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter}/>
       </Box>
       <Grid

@@ -68,10 +68,11 @@ export default function Login() {
       const res = await authAPI.login(data);
       if (res.status === 200) {
         const data = res.data;
-        setUser(data.user);
-        setAccessToken(data.accessToken);
-        setRefreshToken(data.refreshToken);
-        navigate(`/${ROUTES.ADMIN.DASHBOARD}`);
+        const role = data?.user?.role;
+        setUser(data?.user);
+        setAccessToken(data?.accessToken);
+        setRefreshToken(data?.refreshToken);
+        navigate(`/${role}/events`);
       }
       setTimeout(() => {
         setLoading(false);

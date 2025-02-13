@@ -14,7 +14,11 @@ import {
   GuestLayout,
   EventsOfGuest,
   SpeakerLayout,
-  EventsOfSpeaker
+  EventsOfSpeaker,
+  SpeakerEventDetails,
+  SpeakerAttendees,
+  SpeakerDashboard,
+  ProtectedPage
 } from "./lazy-components";
 import Spinner from "../components/common/spinner";
 import AppLayout from "../components/layout/app-layout";
@@ -29,10 +33,10 @@ const {
   SPEAKER
 } = ROUTES;
 
-export const routes = [
+
+const appRoutes = [
   {
-    element: <AppLayout />,
-    
+    element: <ProtectedPage element={<AppLayout />}/>,
     children: [
       {
         path: HOME,
@@ -67,7 +71,7 @@ export const routes = [
         ),
       },
       {
-        element: <AdminDashboardLayout />,
+        element: <ProtectedPage element={<AdminDashboardLayout />} />,
         children: [
           {
             path: DASHBOARD,
@@ -120,7 +124,7 @@ export const routes = [
         ),
       },
       {
-        element: <GuestLayout />,
+        element: <ProtectedPage element={ <GuestLayout /> } />,
         children: [
           {
             path: GUEST.EVENTS,
@@ -133,13 +137,37 @@ export const routes = [
         ]
       },
       {
-        element: <SpeakerLayout />,
+        element: <ProtectedPage element={<SpeakerLayout />} />,
         children: [
+          {
+            path: SPEAKER.DASHBOARD,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <SpeakerDashboard />
+              </Suspense>
+            ),
+          },
           {
             path: SPEAKER.EVENTS,
             element: (
               <Suspense fallback={<Spinner />}>
                 <EventsOfSpeaker />
+              </Suspense>
+            ),
+          },
+          {
+            path: SPEAKER.EVENT,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <SpeakerEventDetails />
+              </Suspense>
+            ),
+          },
+          {
+            path: SPEAKER.ATTENDEES,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <SpeakerAttendees />
               </Suspense>
             ),
           }
@@ -148,3 +176,5 @@ export const routes = [
     ],
   },
 ];
+
+export default appRoutes;

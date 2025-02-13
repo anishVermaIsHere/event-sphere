@@ -19,11 +19,7 @@ const userController = {
         return res.status(CONFLICT).json({ message: "User already exist" });
       } else {
         const encryptedPassword = encrypt.hashPassword(user.password);
-        const doc = await UserModel.create({
-          ...user,
-          username: user?.userName,
-          password: encryptedPassword,
-        });
+        const doc = await UserModel.create({ ...user, username: user?.userName, password: encryptedPassword });
         if (doc && doc._id) {
          await InviteeModel.updateOne({ recipientEmail: user.email }, { consumed: true, status: "accepted" });
           const { tokenEncode }=tokenObject;

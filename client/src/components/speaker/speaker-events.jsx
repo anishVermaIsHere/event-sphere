@@ -6,45 +6,44 @@ import {
   CardContent,
   Stack,
   Chip,
-  CardActions,
   Divider,
 } from "@mui/material";
 import { useState } from "react";
 import { dateTimeParser, formatCurrency, getAuth } from "../../shared/utils";
 import useAppStore from "../../store/app.store";
 import useFormStore from "../../store/form.store";
-import { queryClient } from "../../providers/query-provider";
-import eventAPI from "../../shared/services/api/event";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import GroupsIcon from "@mui/icons-material/Groups";
+import LockIcon from '@mui/icons-material/Lock';
 import dayjs from "dayjs";
 import { useQuery } from "@tanstack/react-query";
 import AlertCard from "../common/alert-card";
 import Spinner from "../common/spinner";
+import speakerAPI from "../../shared/services/api/speaker";
+import { useNavigate } from "react-router-dom";
 
 const fetchEvents = async (query) => {
-  const res = await eventAPI.findByFilter(query);
+  const res = await speakerAPI.events(query);
   const auth = getAuth();
   return {
     rows: res.data.map((e) => {
       const startDate = dateTimeParser(e.startTime);
       const endDate = dateTimeParser(e.endTime);
-      const isLive =
-        dayjs().unix() >= dayjs(e.startTime).unix() &&
-        dayjs().unix() <= dayjs(e.endTime).unix();
+      const isLive = dayjs().unix() >= dayjs(e.startTime).unix() && dayjs().unix() <= dayjs(e.endTime).unix();
+      const isStarted = dayjs().unix() >= dayjs(e.startTime).unix();
       return {
         ...e,
         id: e._id,
         location: e.location.venueName,
-        createdBy:
-          e.createdBy._id === auth.user.id ? "You" : e.createdBy.fullName,
+        createdBy: e.createdBy._id === auth.user.id ? "You" : e.createdBy.firstName+" "+e.createdBy.lastName,
         startDateTime: startDate.date + " " + startDate.time,
         endDateTime: endDate.date + " " + endDate.time,
         createdAt: dayjs(e.createdAt).format("DD/MM/YYYY HH:mm"),
         isEditable: !isLive,
         isLive,
+        isStarted
       };
     }),
   };
@@ -76,7 +75,6 @@ function EventCard({
   category,
   isPrivate,
   isLive,
-  isEditable,
   startTime,
   endTime,
   location,
@@ -84,12 +82,16 @@ function EventCard({
   guests,
   capacity,
   priceInCents,
+  isStarted,
+  createdBy
 }) {
   const [expanded, setExpanded] = useState(false);
   const {
     event: { setEventId, setIsEditOpen },
   } = useFormStore((state) => state);
   const { setSnackbar } = useAppStore((state) => state);
+  const navigate = useNavigate();
+
   const chars = 150;
   const guestList = guests
     ?.map(({ firstName, lastName }) => firstName + " " + lastName)
@@ -104,19 +106,12 @@ function EventCard({
     setExpanded(!expanded);
   };
 
-  const toggleEdit = () => {
-    setEventId(id);
-    setIsEditOpen(true);
-  };
-
-  const handleDelete = async () => {
-    await eventAPI.delete(id);
-    setSnackbar("Event deleted", "info");
-    queryClient.invalidateQueries("events");
-  };
+  const onCardOpen = () =>{
+    navigate(id);
+  }
 
   return (
-    <Card sx={styles.card} elevation={0}>
+    <Card sx={{ ...styles.card,  bgcolor:"#fff" }} elevation={0} onClick={onCardOpen}>
       <CardContent
         sx={{ ...styles.card, justifyContent: "start", alignItems: "start" }}
       >
@@ -209,7 +204,7 @@ function EventCard({
           >
             <LocationOnIcon sx={{ mr: 1 }} /> {location}
           </Typography>
-          <Typography
+          {isStarted && <Typography
             variant="body"
             component="div"
             color="text.secondary"
@@ -237,11 +232,26 @@ function EventCard({
               size="large"
               variant="outlined"
             />
-          </Typography>
+          </Typography>}
 
           <Divider />
         </Box>
+        {!isStarted ? 
+        <LockIcon color="disabled"/>: 
         <Box>
+           <Stack
+            sx={{ display: "flex", justifyContent: "space-between" }}
+            direction="row"
+            spacing={1}
+            mb={1}
+          >
+            <Chip
+              sx={{ mr: 2, mb: 2 }}
+              label={`Organised by: ${createdBy}`}
+              color="default"
+              size="small"
+            />
+          </Stack>
           {guests?.length ? (
             <>
               <Box>
@@ -313,21 +323,14 @@ function EventCard({
               />
             )
           )}
-        </Box>
+        </Box>}
       </CardContent>
     </Card>
   );
 }
 
 const EventsOfSpeaker = () => {
-  const {
-    isLoading,
-    isError,
-    data: events,
-  } = useQuery({
-    queryKey: ["events"],
-    queryFn: async () => await fetchEvents(),
-  });
+  const { isLoading, isError, data: events } = useQuery({ queryKey: ["events"], queryFn: async () => await fetchEvents({}) });
 
   if(isLoading){
     return <Spinner />

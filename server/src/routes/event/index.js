@@ -1,17 +1,19 @@
 import { Router } from "express";
 import eventController from "../../controllers/event/index.js";
 import { authTokenVerify } from "../../middlewares/token-verify.js";
+import { validator } from "../../middlewares/validator.js";
 
+const { requestParams } = validator;
 
 
 const eventRouter = Router();
 
 eventRouter.get("/", authTokenVerify, eventController.findByFilter);
-eventRouter.get("/:id", authTokenVerify, eventController.findById);
+eventRouter.get("/:id", authTokenVerify, requestParams, eventController.findById);
 eventRouter.post("/", authTokenVerify, eventController.create);
-eventRouter.delete("/:id", authTokenVerify, eventController.delete);
+eventRouter.delete("/:id", authTokenVerify, requestParams, eventController.delete);
 eventRouter.delete("/", authTokenVerify, eventController.deleteAll);
-eventRouter.put("/:id", authTokenVerify, eventController.update);
+eventRouter.put("/:id", authTokenVerify, requestParams, eventController.update);
 
 
 

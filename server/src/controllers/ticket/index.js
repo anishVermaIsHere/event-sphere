@@ -5,6 +5,11 @@ const { SUCCESS } = HTTP_CODES;
 
 
 const ticketController = {
+   /**
+   * @route GET /tickets
+   * @desc Fetch tickets
+   * @access Private
+   */
     async find(req, res) {
       try {
         const query = {};
@@ -29,6 +34,11 @@ const ticketController = {
         throw new Error(error.message);
       }
     },
+     /**
+   * @route GET /tickets/:id
+   * @desc Fetch ticket by id
+   * @access Private
+   */
     async findById(req, res){
       try {
         const ticketId = req.params.id;
@@ -49,6 +59,11 @@ const ticketController = {
         throw new Error(error.message);
       }
     },
+    /**
+   * @route GET /tickets/users/:id
+   * @desc Fetch tickets by user
+   * @access Private
+   */
     async findByUser(req, res){
       try {
         const userId = req.params.id;

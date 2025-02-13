@@ -4,9 +4,10 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
-
 import { useLocation, NavLink } from 'react-router-dom';
 import useFormStore from '../../store/form.store';
+import useAuthStore from '../../store/auth.store';
+import { navLinkItems } from './sidebar-navs';
 
 
 
@@ -14,12 +15,12 @@ const itemIconStyle = {
   minWidth: "40px"
 }
 
-export default function MenuContent({
-  mainListItems,
-  secondaryListItems
-}) {
+export default function MenuContent() {
   const location = useLocation();
   const { invite: { setIsOpen } } = useFormStore(state=>state);
+  const { user } = useAuthStore(state=>state);
+  const mainListItems = navLinkItems[user?.role].mainListItems;
+  const secondaryListItems = navLinkItems[user?.role].secondaryListItems;
   secondaryListItems[0].handler = () => setIsOpen(true);
 
   return (
