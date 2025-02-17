@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Suspense, lazy } from "react";
 import {
   Box,
   IconButton,
@@ -12,12 +12,14 @@ import CachedIcon from "@mui/icons-material/Cached";
 import CustomTabPanel from "../../common/tab-panel";
 import { tabProps } from "../events/event-tabs";
 import { queryClient } from "../../../providers/query-provider";
-import UserDataGrid from "./user-data-grid";
-import InviteeDataGrid from "../../invite/invitee-grid";
 import { useQuery } from "@tanstack/react-query";
 import inviteeAPI from "../../../shared/services/api/invitee";
 import userAPI from "../../../shared/services/api/user";
 import dayjs from "dayjs";
+import { InviteeList, UserList } from "./users-list";
+import Spinner from "../../common/spinner";
+
+
 
 const style = {
   display: "flex",
@@ -26,6 +28,7 @@ const style = {
   gap: 1,
   mb: 1,
 };
+
 
 const fetchUsers = async () => {
   const res = await Promise.all([
@@ -38,30 +41,6 @@ const fetchUsers = async () => {
 const fetchInvitees = async () => {
   return await inviteeAPI.find();
 };
-
-function UserList({ users, isError, isLoading }) {
-  return (
-    <Grid container spacing={2} columns={12}>
-      <Grid size={{ xs: 12 }}>
-        <UserDataGrid users={users} isError={isError} isLoading={isLoading} />
-      </Grid>
-    </Grid>
-  );
-}
-
-function InviteeList({ users, isError, isLoading }) {
-  return (
-    <Grid container spacing={2} columns={12}>
-      <Grid size={{ xs: 12 }}>
-        <InviteeDataGrid
-          users={users}
-          isError={isError}
-          isLoading={isLoading}
-        />
-      </Grid>
-    </Grid>
-  );
-}
 
 const UserTabs = () => {
   const [value, setValue] = useState(0);
@@ -102,10 +81,15 @@ const UserTabs = () => {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Guests/Speakers" {...tabProps(0)} />
-          <Tab label="Invitees" {...tabProps(1)} />
+          <Tab label="Permanent Guests/Speakers" {...tabProps(0)} />
+          <Tab label="New Guests/Speakers" {...tabProps(1)} />
+          <Tab label="Invitees" {...tabProps(2)} />
         </Tabs>
       </Box>
+      <Suspense fallback={<Spinner />}>
+
+      </Suspense>
+      
       <CustomTabPanel value={value} index={0}>
         <Box component="div" mb={4}>
           <Box sx={style}>

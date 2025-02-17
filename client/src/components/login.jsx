@@ -28,7 +28,7 @@ import Spinner from "../components/common/spinner";
 import AppConfig from "../config/app.config";
 import useAuthStore from "../store/auth.store";
 import useAppStore from "../store/app.store";
-
+import LockIcon from '@mui/icons-material/Lock';
 
 
 
@@ -102,8 +102,8 @@ export default function Login() {
           src={AppConfig.logoUrl}
           alt={AppConfig.appName}
         />
-        <Typography component="h1" variant="h5">
-          Login
+        <Typography component="h1" variant="h5" color="text.secondary">
+          <LockIcon sx={{ verticalAlign: "text-top" }} /> Login
         </Typography>
         <Box
           component="form"

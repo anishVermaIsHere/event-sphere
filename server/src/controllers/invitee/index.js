@@ -37,7 +37,7 @@ const inviteeController = {
       };
       const invitee = await InviteeModel.create(data);
       if (invitee && invitee._id) {
-        await sendMail({ email: recipientEmail, senderName: requestedUser?.firstName+" "+requestedUser?.lastName, registerUrl: `/${data.token}`})
+        // await sendMail({ email: recipientEmail, senderName: requestedUser?.firstName+" "+requestedUser?.lastName, registerUrl: `/${data.token}`})
         return res.status(CREATE).json({ message: "Invited successfully" });
       } 
     } catch (error) {
@@ -65,7 +65,7 @@ const inviteeController = {
       const token = req.params.token;
       const invitee = await InviteeModel.findOne({ token, consumed: false });
       if(!invitee){
-        return res.json({ message: "Invalid token or expired" });
+        return res.json({ message: "Invalid link" });
       } 
       return res.json({ success: true, recipientEmail: invitee?.recipientEmail });
     } catch (error) {

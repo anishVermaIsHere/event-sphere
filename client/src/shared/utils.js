@@ -4,7 +4,33 @@ import locationAPI from "./services/api/location";
 import userAPI from "./services/api/user";
 import ticketAPI from "./services/api/ticket";
 import dayjs from "dayjs";
+import { Country, State, City }  from 'country-state-city';
 
+
+
+// export function getCountryByName(countryName){
+//   if(!countryName) return [];
+//   const allCountries = Country.getAllCountries();
+//   const countries = allCountries.filter((cn)=>(cn.name.toLowerCase().includes(countryName.toLowerCase()) ))
+//   return countries;
+// }
+
+
+export function getCountries(){
+  return Country.getAllCountries();
+}
+
+export function getCountryByCode(countryCode="IN"){
+  return Country.getCountryByCode(countryCode)
+}
+
+export function getStatesByCountry(countryCode="IN"){
+  return State.getStatesOfCountry(countryCode);
+}
+
+export function getCities(countryCode="IN", stateCode="DL"){
+  return City.getCitiesOfState(countryCode, stateCode);
+}
 
 export function parsePersistedData(data) {
   const parsedData = {};

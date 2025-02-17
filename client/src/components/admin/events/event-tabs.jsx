@@ -16,7 +16,7 @@ import CustomTabPanel from "../../common/tab-panel";
 
 const fetchEvents = async (query) => {
   const res = await eventAPI.findByFilter(query);
-  const auth = getAuth();
+  const auth = getAuth();  
   return {
     rows: res.data.map((e) => {
       const startDate = dateTimeParser(e.startTime);
@@ -77,7 +77,6 @@ export default function EventTabs() {
     queryKey: ["events", { status: query.status, category: query.category }],
     queryFn: async () => await fetchEvents(query),
   });
-
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

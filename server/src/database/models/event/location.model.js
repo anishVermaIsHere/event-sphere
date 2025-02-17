@@ -1,4 +1,4 @@
-import createDBModel from "../../utils/create-model.js";
+import createDBModel from "../../../utils/create-model.js";
 
 const locationSchema = {
   venueName: { type: String, required: [true, "Please provide venue name"] },

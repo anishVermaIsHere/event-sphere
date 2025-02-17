@@ -41,7 +41,7 @@ const SpeakerEventDetails = () => {
   const [openChat, setOpenChat] = useState([false, false]);
 
   const fetchEvent = async () => {
-    return await eventAPI.findById(params?.id);
+    return await eventAPI.findBySlug(params?.slug);
   };
 
   const { isLoading, isError, data } = useQuery({ queryKey: ["event", params?.id], queryFn: fetchEvent });

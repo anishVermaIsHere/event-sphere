@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import useAppStore from "../../store/app.store";
-import useFormStore from "../../store/form.store";
+import useAppStore from "../../../store/app.store";
+import useFormStore from "../../../store/form.store";
 import { useQuery } from "@tanstack/react-query";
 import {
   TextField,
@@ -23,12 +23,12 @@ import { Controller, useForm } from "react-hook-form";
 import CustomDateTimePicker from "../dashboard/custom-date-time-picker";
 import CancelIcon from "@mui/icons-material/Cancel";
 import dayjs from "dayjs";
-import { fetchEventsData } from "../../shared/utils";
-import eventAPI from "../../shared/services/api/event";
-import { queryClient } from "../../providers/query-provider";
-import { eventSchema } from "../../shared/validation/schema";
+import { fetchEventsData } from "../../../shared/utils";
+import eventAPI from "../../../shared/services/api/event";
+import { queryClient } from "../../../providers/query-provider";
+import { eventSchema } from "../../../shared/validation/schema";
 import { formBoxStyle, SelectMenuProps as MenuProps } from "./styles";
-import Spinner from "../common/spinner";
+import Spinner from "../../common/spinner";
 
 
 const LazyEditEventForm = ({ handleClose, open }) => {
@@ -110,6 +110,7 @@ const LazyEditEventForm = ({ handleClose, open }) => {
       onClose={handleClose}
       aria-labelledby="edit event form"
       aria-describedby="edit event form"
+      sx={{ overflowY: "auto" }}
     >
       <Box sx={formBoxStyle}>
         {isLoading ? (

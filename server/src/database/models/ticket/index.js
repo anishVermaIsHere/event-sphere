@@ -1,4 +1,4 @@
-import createDBModel from "../../utils/create-model.js";
+import createDBModel from "../../../utils/create-model.js";
 import { Schema, SchemaTypes } from "mongoose";
 
 

@@ -22,6 +22,7 @@ export const validator = {
     requestParams: requestValidator(requestParamsSchema("id"), "params"),
     verifyInvitation: requestValidator(requestParamsSchema("token"), "params"),
     registerUser: requestValidator(registerSchema, "body"),
+    requestSlugParams: requestValidator(requestParamsSchema("slug"), "params"),
 
 }
 

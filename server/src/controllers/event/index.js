@@ -55,8 +55,16 @@ const eventController = {
    */
   async findById(req, res){
     try {
+      let query = {};
       const eventId = req.params.id;
-      const event = await EventModel.findById({ _id: eventId })
+      const eventSlug = req.params.slug;
+      if(eventId){
+        query = { _id: eventId }
+      }
+      if(eventSlug){
+        query = { slug: eventSlug }
+      }
+      const event = await EventModel.findById(query)
         .populate("guests", ["-__v", "-password", "-createdAt", "-updatedAt"])
         .populate("speakers", ["-__v", "-password", "-createdAt", "-updatedAt"])
         .populate("location")

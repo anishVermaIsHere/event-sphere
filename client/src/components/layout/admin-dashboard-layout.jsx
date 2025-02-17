@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack";
 import AppNavbar from "../common/app-navbar";
 import SideMenu from "../admin/dashboard/side-menu";
 import InviteModal from "../invite";
-
+import Footer from "../common/footer"
 
 const AdminDashboardLayout = () => {
   return (
@@ -38,6 +38,7 @@ const AdminDashboardLayout = () => {
           >
             <Header />
             <Outlet />
+            <Footer />
           </Stack>
         </Box>
       </Box>

@@ -71,6 +71,7 @@ const styles = {
 
 function EventCard({
   id,
+  slug,
   name,
   category,
   isPrivate,
@@ -86,9 +87,7 @@ function EventCard({
   createdBy
 }) {
   const [expanded, setExpanded] = useState(false);
-  const {
-    event: { setEventId, setIsEditOpen },
-  } = useFormStore((state) => state);
+  const { event: { setEventId, setIsEditOpen } } = useFormStore((state) => state);
   const { setSnackbar } = useAppStore((state) => state);
   const navigate = useNavigate();
 
@@ -107,7 +106,7 @@ function EventCard({
   };
 
   const onCardOpen = () =>{
-    navigate(id);
+    navigate(slug);
   }
 
   return (

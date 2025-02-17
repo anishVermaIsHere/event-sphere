@@ -123,7 +123,6 @@ export default function MainGrid() {
           <RecentEvents events={events} isLoading={isEventLoading} isError={isEventError} />
         </Grid>
       </Grid>
-      <Copyright sx={{ my: 4 }} />
     </Box>
   );
 }

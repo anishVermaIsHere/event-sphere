@@ -1,4 +1,4 @@
-import createDBModel from "../../utils/create-model.js";
+import createDBModel from "../../../utils/create-model.js";
 
 const categorySchema = {
   name: { type: String, required: [true, "Please provide category name"] },

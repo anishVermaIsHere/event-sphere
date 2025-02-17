@@ -12,6 +12,9 @@ const eventAPI = {
     async findById(eventId){
         return await axiosInstance.get(`${URL}/${eventId}`);
     },
+    async findBySlug(slug){
+        return await axiosInstance.get(`${URL}/${slug}`);
+    },
     async delete(eventId){
         return await axiosInstance.delete(`${URL}/${eventId}`);        
     },

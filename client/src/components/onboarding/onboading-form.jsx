@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { joiResolver } from "@hookform/resolvers/joi";
@@ -21,18 +21,19 @@ import {
   TextField,
   Box,
   Container,
-  Radio,
-  RadioGroup,
+  Typography,
+  Divider,
   FormControlLabel,
-  Typography
+  Checkbox,
 } from "@mui/material";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CustomDatePicker from "../admin/dashboard/custom-date-picker";
 import userAPI from "../../shared/services/api/user";
 import useAuthStore from "../../store/auth.store";
-
-
+import { getCountries } from "../../shared/utils";
+import SearchLocationField from "../location/search-country-field";
 
 export default function OnboardingForm({ recipientEmail }) {
   const navigate = useNavigate();
@@ -42,12 +43,21 @@ export default function OnboardingForm({ recipientEmail }) {
     reset,
     control,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({ resolver: joiResolver(onboardSchema) });
   const { setSnackbar } = useAppStore((state) => state);
-  const { setUser, setAccessToken, setRefreshToken } = useAuthStore((state) => state);
+  const { setUser, setAccessToken, setRefreshToken } = useAuthStore(
+    (state) => state
+  );
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [location, setLocation] = useState({
+    cities: [],
+    states: [],
+    countries: [],
+  });
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -58,6 +68,20 @@ export default function OnboardingForm({ recipientEmail }) {
   const handleMouseUpPassword = (event) => {
     event.preventDefault();
   };
+
+  const searchCountries = () => {
+    const countries = getCountries();
+    console.log("cll", countries);
+    if (Array.isArray(countries)) {
+      setLocation({ countries });
+      return;
+    }
+    setLocation({ countries: [countries] });
+  };
+
+  useEffect(() => {
+    searchCountries(watch("country"));
+  }, [watch("country")]);
 
   const onSubmit = async (data) => {
     try {
@@ -84,24 +108,15 @@ export default function OnboardingForm({ recipientEmail }) {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 8,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Avatar
-          sx={{ m: 1, width: "100px", height: "100px" }}
-          src={AppConfig.logoUrl}
-          alt={AppConfig.appName}
-        />
-        <Typography component="h1" variant="h5">
-          Onboarding
-        </Typography>
         <Box
           component="form"
           sx={{ mt: 3 }}
@@ -109,6 +124,13 @@ export default function OnboardingForm({ recipientEmail }) {
           onSubmit={handleSubmit(onSubmit)}
         >
           <Grid container spacing={2}>
+            <Grid item size={{ xs: 12 }}>
+              <Typography component="p" variant="p" color="primary" px={1}>
+                1. Personal Info
+              </Typography>
+              <Divider sx={{ mt: 1 }} />
+            </Grid>
+
             <Grid item size={{ xs: 12, sm: 6 }}>
               <TextField
                 size="small"
@@ -131,12 +153,11 @@ export default function OnboardingForm({ recipientEmail }) {
                 label="Last Name"
                 {...register("lastName")}
                 name="lastName"
-                autoComplete="family-name"
                 error={errors.lastName && Boolean(errors.lastName?.message)}
                 helperText={errors.lastName && errors.lastName?.message}
               />
             </Grid>
-            <Grid item size={{ xs: 12 }}>
+            <Grid item size={{ xs: 12, sm: 6 }}>
               <TextField
                 size="small"
                 required
@@ -149,54 +170,47 @@ export default function OnboardingForm({ recipientEmail }) {
                 autoFocus
               />
             </Grid>
-            <Grid item size={12}>
-              <Controller
-                rules={{ required: true }}
-                control={control}
-                name="gender"
-                render={({ field }) => (
-                  <RadioGroup
-                    row
-                    aria-labelledby="gender"
-                    {...field}
-                    sx={{ display: "flex", justifyContent: "center" }}
-                  >
-                    <FormControlLabel
-                      value="male"
-                      control={<Radio />}
-                      label="Male"
-                    />
-                    <FormControlLabel
-                      value="female"
-                      control={<Radio />}
-                      label="Female"
-                    />
-                    <FormControlLabel
-                      value="other"
-                      control={<Radio />}
-                      label="Other"
-                    />
-                  </RadioGroup>
-                )}
+            <Grid item size={{ xs: 12, sm: 6 }}>
+              <CustomDatePicker
+                label="Date of Birth"
+                name="dob"
+                setValue={setValue}
               />
-            </Grid>
-            <Grid item size={{ xs: 6 }}>
-              <CustomDatePicker label="Date of Birth" name="dob" setValue={setValue}/>
               <FormHelperText className="Mui-error">
                 {errors.dob && errors.dob?.message}
               </FormHelperText>
             </Grid>
-            <Grid item size={{ xs: 6 }}>
+
+            <Grid item size={{ xs: 12, sm: 6 }}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                <InputLabel id="gender-label">Gender</InputLabel>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
+                  labelId="gender-label"
+                  id="gender"
                   size="small"
-                  // MenuProps={SelectMenuProps}
-                  // value={selectedFilter}
+                  label="Gender"
+                  {...register("gender")}
+                >
+                  <MenuItem defaultValue={"male"} value={"male"}>
+                    Male
+                  </MenuItem>
+                  <MenuItem value={"female"}>Female</MenuItem>
+                  <MenuItem value={"other"}>Other</MenuItem>
+                </Select>
+                <FormHelperText className="Mui-error">
+                  {errors.gender && errors.gender?.message}
+                </FormHelperText>
+              </FormControl>
+            </Grid>
+
+            <Grid item size={{ xs: 12, sm: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel id="role-label">Role</InputLabel>
+                <Select
+                  labelId="role-label"
+                  id="role"
+                  size="small"
                   label="Role"
-                  // onChange={handleChange}
                   {...register("role")}
                 >
                   <MenuItem value={"guest"}>Guest</MenuItem>
@@ -206,6 +220,79 @@ export default function OnboardingForm({ recipientEmail }) {
                   {errors.role && errors.role?.message}
                 </FormHelperText>
               </FormControl>
+            </Grid>
+            <Grid item size={{ xs: 12 }}>
+              <Typography component="p" variant="p" color="primary" px={1}>
+                2. Address
+              </Typography>
+              <Divider sx={{ mt: 1 }} />
+            </Grid>
+
+            <Grid item size={{ xs: 12, sm: 6 }}>
+              <TextField
+                size="small"
+                fullWidth
+                id="street"
+                label="Street"
+                {...register("street")}
+                error={errors.street && Boolean(errors.street?.message)}
+                helperText={errors.street && errors.street?.message}
+                autoFocus
+              />
+            </Grid>
+            <Grid item size={{ xs: 12, sm: 6 }}>
+              <TextField
+                size="small"
+                required
+                fullWidth
+                id="city"
+                label="City"
+                {...register("city")}
+                error={errors.city && Boolean(errors.city?.message)}
+                helperText={errors.city && errors.city?.message}
+              />
+            </Grid>
+
+            <Grid item size={{ xs: 12, sm: 6 }}>
+              <TextField
+                size="small"
+                required
+                fullWidth
+                id="state"
+                label="State"
+                {...register("state")}
+                error={errors.state && Boolean(errors.state?.message)}
+                helperText={errors.state && errors.state?.message}
+                autoFocus
+              />
+            </Grid>
+            <Grid item size={{ xs: 12, sm: 6 }}>
+              <SearchLocationField
+                label="Country"
+                locations={location.countries}
+                error={errors}
+                control={control}
+              />
+            </Grid>
+
+            <Grid item size={{ xs: 12, sm: 6 }}>
+              <TextField
+                size="small"
+                fullWidth
+                id="postalCode"
+                label="Postal Code"
+                {...register("postalCode")}
+                error={errors.country && Boolean(errors.country?.message)}
+                helperText={errors.country && errors.country?.message}
+                autoFocus
+              />
+            </Grid>
+
+            <Grid item size={{ xs: 12 }}>
+              <Typography component="p" variant="p" color="primary" px={1}>
+                3. Email & Password{" "}
+              </Typography>
+              <Divider sx={{ mt: 1 }} />
             </Grid>
 
             <Grid item size={12}>
@@ -223,36 +310,45 @@ export default function OnboardingForm({ recipientEmail }) {
                 helperText={errors.email && errors.email?.message}
               />
             </Grid>
-            <Grid item size={12}>
-            <FormControl sx={{ position: "relative" }} fullWidth variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password"
-                type={showPassword ? 'text' : 'password'}
-                {...register("password")}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label={
-                        showPassword ? 'hide the password' : 'display the password'
-                      }
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      onMouseUp={handleMouseUpPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
-              />
-              <FormHelperText className="Mui-error">
+
+            <Grid item size={{ xs: 12, sm: 6 }}>
+              <FormControl
+                sx={{ position: "relative" }}
+                fullWidth
+                variant="outlined"
+              >
+                <InputLabel htmlFor="outlined-adornment-password">
+                  Password
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password"
+                  type={showPassword ? "text" : "password"}
+                  {...register("password")}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label={
+                          showPassword
+                            ? "hide the password"
+                            : "display the password"
+                        }
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        onMouseUp={handleMouseUpPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                />
+                <FormHelperText className="Mui-error">
                   {errors.password && errors.password?.message}
                 </FormHelperText>
-            </FormControl>
+              </FormControl>
             </Grid>
-            <Grid item size={12}>
+            <Grid item size={{ xs: 12, sm: 6 }}>
               <TextField
                 size="small"
                 required
@@ -272,15 +368,24 @@ export default function OnboardingForm({ recipientEmail }) {
               />
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2, p: 1 }}
-            disabled={loading}
-          >
-            { loading ? "Submitting..." : "Submit"}
-          </Button>
+          <Grid item size={12} sx={{ display: "flex", }}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{
+                mx: "auto",
+                mt: 3,
+                mb: 2,
+                p: 1,
+                width: { xs: "100%", md: "50%" },
+              }}
+              disabled={loading}
+            >
+              {loading ? "Submitting..." : "Submit"}
+              <ArrowForwardIcon sx={{ ml: 1 }} />
+            </Button>
+          </Grid>
         </Box>
       </Box>
     </Container>

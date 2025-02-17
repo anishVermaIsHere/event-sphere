@@ -19,29 +19,20 @@ const userController = {
         return res.status(CONFLICT).json({ message: "User already exist" });
       } else {
         const encryptedPassword = encrypt.hashPassword(user.password);
-        const doc = await UserModel.create({ ...user, username: user?.userName, password: encryptedPassword });
-        if (doc && doc._id) {
+        const userDoc = await UserModel.create({ ...user, fullName: user?.firstName+" "+user?.lastName, password: encryptedPassword });
+        if (userDoc && userDoc._id) {
          await InviteeModel.updateOne({ recipientEmail: user.email }, { consumed: true, status: "accepted" });
-          const { tokenEncode }=tokenObject;
-         const { accessToken, refreshToken } = tokenEncode({ email:user.email, firstName: user.firstName, lastName: user.lastName, id:user.id });
-         user.refreshToken=refreshToken; 
-         
+          const { tokenEncode } = tokenObject;
+         const { accessToken, refreshToken } = tokenEncode({ email:userDoc.email, firstName: userDoc.firstName, lastName: userDoc.lastName, id:userDoc._id });         
+         const { _id, email, firstName, lastName, fullName, userName, dob, gender, adress, role, contact } = userDoc;
          return res.status(CREATE).json({
-          user: {
-            id: user._id,
-            firstName: user.firstName,
-            lastName:user.lastName,
-            fullName: user.firstName+" "+user.lastName,
-            email: user.email,
-            gender: user.gender,
-            role: user.role
-        },
-        accessToken: accessToken,
-        refreshToken: refreshToken,
+          user: { id:_id, email, firstName, lastName, fullName, userName, dob, gender, adress, role, contact, avatar },
+          accessToken: accessToken,
+          refreshToken: refreshToken,
       })
     }}
     } catch (error) {
-      console.log("API: user register error", error.message);
+      console.log("API: user onboarding registration error", error.message);
     }
   },
   /**

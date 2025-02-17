@@ -106,9 +106,36 @@ export const onboardSchema = Joi.object({
     "date.format": "Date of birth must be in ISO date format (YYYY-MM-DD).",
     "date.max": "Date of birth cannot be in the future.",
   }),
+  street: Joi.string().messages({
+    "any.required": "Street is required.",
+    "string.empty": "Street must not be empty.",
+  }),
+  city: Joi.string().required().messages({
+    "any.required": "City is required.",
+    "string.empty": "City must not be empty.",
+  }),
+  state: Joi.string().required().messages({
+    "any.required": "State is required.",
+    "string.empty": "State must not be empty.",
+  }),
+  country: Joi.string().required().messages({
+    "any.required": "Country is required.",
+    "string.empty": "Country must not be empty.",
+  }),
+  postalCode: Joi.string().required().messages({
+    "any.required": "Postal code is required.",
+    "string.empty": "Postal code must not be empty.",
+  }),
   role: Joi.string().required().messages({
     "any.required": "Role is required.",
     "string.empty": "Role must not be empty.",
+  }),
+  phone: Joi.array().items({
+    type: Joi.string().required(),
+    number: Joi.string().required().messages({
+      "any.required": "Phone number is required.",
+      "string.empty": "Phone number must not be empty.",
+    })
   }),
   password: Joi.string()
     .min(8)

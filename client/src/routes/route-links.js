@@ -33,7 +33,7 @@ export const ROUTES = {
     EVENTS: "speaker/events",
     EVENT: "speaker/events/:id",
     ATTENDEES: "speaker/attendees",
-    ATTENDEE: "speaker/attendees/:id",
+    ATTENDEE: "speaker/attendees/:slug",
     DASHBOARD: "speaker/dashboard"
   }
 };

@@ -1,4 +1,4 @@
-import LocationModel from "../../database/models/location.model.js";
+import { LocationModel } from "../../database/models/index.js";
 import { HTTP_CODES } from "../../utils/constants.js";
 
 
