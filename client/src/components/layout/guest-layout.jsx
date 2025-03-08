@@ -4,7 +4,7 @@ import Footer from '../common/footer'
 
 const GuestLayout = () => {
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ }}>
         Guest-Layout page
 
 

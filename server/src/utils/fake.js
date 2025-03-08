@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { generatePassCode } from './other-token.js';
-import { demoTickets } from './data.js';
+import { demoTickets } from './data.jst';
 
 
 export const generateAttendees = () => {

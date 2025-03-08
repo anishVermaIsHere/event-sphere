@@ -13,7 +13,6 @@ import categoryRouter from "./routes/category/index.js";
 import ticketRouter from "./routes/ticket/index.js";
 import inviteeRouter from "./routes/invitee/index.js";
 import speakerRouter from "./routes/speaker/index.js";
-import { createSingleUser } from "./utils/seed.js";
 
 
 const app = express();
@@ -38,8 +37,7 @@ app.use("/api/v1/invitees", inviteeRouter);
 app.use("/api/v1/speakers", speakerRouter);
 
 
-
-createSingleUser();
+// createUsers();
 
 app.get("/", (_, res) => {
   res.json({ 

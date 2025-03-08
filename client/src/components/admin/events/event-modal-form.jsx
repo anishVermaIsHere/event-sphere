@@ -26,6 +26,7 @@ import { queryClient } from "../../../providers/query-provider";
 import { eventSchema } from "../../../shared/validation/schema";
 import { formBoxStyle, SelectMenuProps as MenuProps } from "./styles";
 import useAppStore from "../../../store/app.store";
+import GoogleMaps from "./g-map";
 
 
 
@@ -200,8 +201,6 @@ const LazyEventForm = ({ handleClose, open }) => {
                   {data?.locations?.length === 0 && "No locations"}
                 </Typography>
               </Grid2>
-
-              
 
               <Grid2
                 item

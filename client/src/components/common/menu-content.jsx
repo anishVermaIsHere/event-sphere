@@ -19,8 +19,8 @@ export default function MenuContent() {
   const location = useLocation();
   const { invite: { setIsOpen } } = useFormStore(state=>state);
   const { user } = useAuthStore(state=>state);
-  const mainListItems = navLinkItems[user?.role].mainListItems;
-  const secondaryListItems = navLinkItems[user?.role].secondaryListItems;
+  const mainListItems = navLinkItems[user?.role]?.mainListItems;
+  const secondaryListItems = navLinkItems[user?.role]?.secondaryListItems || [];
   secondaryListItems[0].handler = () => setIsOpen(true);
 
   return (

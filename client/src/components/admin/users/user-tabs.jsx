@@ -21,6 +21,8 @@ import Spinner from "../../common/spinner";
 
 
 
+
+
 const style = {
   display: "flex",
   alignItems: "center",
@@ -28,7 +30,6 @@ const style = {
   gap: 1,
   mb: 1,
 };
-
 
 const fetchUsers = async () => {
   const res = await Promise.all([
@@ -87,28 +88,33 @@ const UserTabs = () => {
         </Tabs>
       </Box>
       <Suspense fallback={<Spinner />}>
-
-      </Suspense>
-      
-      <CustomTabPanel value={value} index={0}>
-        <Box component="div" mb={4}>
-          <Box sx={style}>
-            <Tooltip title="Refetch">
-              <IconButton
-                size="small"
-                color="default"
-                onClick={async () => {
-                  queryClient.invalidateQueries("users");
-                }}
-              >
-                <CachedIcon />
-              </IconButton>
-            </Tooltip>
+        <CustomTabPanel value={value} index={0}>
+          <Box component="div" mb={4}>
+            <Box sx={style}>
+              <Tooltip title="Refetch">
+                <IconButton
+                  size="small"
+                  color="default"
+                  onClick={async () => {
+                    queryClient.invalidateQueries("users");
+                  }}
+                >
+                  <CachedIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
+            <UserList users={users} isError={isError} isLoading={isLoading} />
           </Box>
-          <UserList users={users} isError={isError} isLoading={isLoading} />
-        </Box>
-      </CustomTabPanel>
+        </CustomTabPanel>
+      </Suspense>
+
+      <Suspense fallback={<Spinner />}>
       <CustomTabPanel value={value} index={1}>
+        No data
+      </CustomTabPanel>
+      </Suspense>
+      <Suspense fallback={<Spinner />}>
+      <CustomTabPanel value={value} index={2}>
         <Box component="div" mb={2}>
           <Box sx={style}>
             <Tooltip title="Refetch">
@@ -130,6 +136,7 @@ const UserTabs = () => {
           />
         </Box>
       </CustomTabPanel>
+      </Suspense>
     </Box>
   );
 };

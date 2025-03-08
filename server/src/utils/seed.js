@@ -1,18 +1,23 @@
-import { CategoryModel, LocationModel, TicketModel, UserModel } from "../database/models/index.js";
+import { CategoryModel, EventModel, LocationModel, TicketModel, UserModel } from "../database/models/index.js";
 import { demoCategories, demoTickets, demoGuests, demoLocations, demoUsers } from "./data.js";
 import encrypt from "./encrypt.js";
 import slugify from "slugify";
 import { generateAttendees } from "./fake.js";
+import { eventsData, newAllUsers, newAttendees } from "./data2.js";
 
-export async function createUsers(users) {
-  const newUsers = users.map((user) => ({
-    ...user,
-    password: encrypt.hashPassword(user.password),
-    gender: user.gender.toLocaleLowerCase(),
-    dob: new Date(user.dob),
-  }));
+
+
+export async function createUsers() {
   try {
+    const newUsers = [...newAttendees, ...newAllUsers].map((user) => ({
+      ...user,
+      fullName: user.firstName + " " + user.lastName,
+      password: encrypt.hashPassword(user.password),
+      dob: new Date(user.dob),
+      gender: user.gender.toLocaleLowerCase(),
+    }));
     await UserModel.insertMany(newUsers);
+    console.log('done')
   } catch (error) {
     console.log("api error", error);
   }
@@ -20,15 +25,27 @@ export async function createUsers(users) {
 
 export async function createLocations() {
   try {
-    const newLocs = demoLocations.map((loc) => ({
+    const locs = demoLocations.map((loc) => ({
       ...loc,
       slug: slugify(loc.venueName.toLowerCase()),
     }));
-    await LocationModel.insertMany(newLocs);
+    await LocationModel.insertMany(locs);
   } catch (error) {
     console.log("api error", error);
   }
 }
+
+export async function createEvents(){
+  try {
+    const events = eventsData.map((ev)=>({
+      ...ev,
+      createdBy: "67cc79ec430b86aeb2404373"
+    }));
+    await EventModel.insertMany(events);
+  } catch (error) {
+    console.log("api error", error);
+  }
+};
 
 export async function createCategories() {
   try {
@@ -67,7 +84,7 @@ export async function createSingleUser(){
   }
   console.log('before create user', user);
   // await UserModel.create(user); 
-  const res = await UserModel.find();
-  console.log(res.length);
+  // const res = await UserModel.find();
+  // console.log(res.length);
 }
 

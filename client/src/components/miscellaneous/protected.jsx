@@ -13,16 +13,17 @@ const Protected = ({ element }) => {
   const isProtectedRoute = protectedRoutes.some((route) =>matchPath(route, location.pathname));
   const isPublicRoute = publicRoutes.some((route) =>matchPath(route, location.pathname));
 
-  // if (accessToken && isProtectedRoute || (!accessToken && isPublicRoute)) {
-  //   return element;
-  // } 
-  // else if (!accessToken && isProtectedRoute) {
-  //   return <Navigate to="/" state={{ from: location }} replace />;
-  // } else if (accessToken && isPublicRoute) {
-  //   return <Navigate to={`/${user?.role}/events`} replace />;
-  // } else {
-  //   return <Navigate to="/" />;
-  // }
+  
+  if (accessToken && isProtectedRoute || (!accessToken && isPublicRoute)) {
+    return element;
+  } 
+  else if (!accessToken && isProtectedRoute) {
+    return <Navigate to="/" state={{ from: location }} replace />;
+  } else if (accessToken && isPublicRoute) {
+    return <Navigate to={`/${user?.role}/events`} replace />;
+  } else {
+    return <Navigate to="/" />;
+  }
 
   return element;
 };
