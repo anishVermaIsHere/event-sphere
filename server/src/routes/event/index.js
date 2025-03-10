@@ -10,7 +10,6 @@ const eventRouter = Router();
 
 eventRouter.get("/", authTokenVerify, eventController.findByFilter);
 eventRouter.get("/:id", authTokenVerify, requestParams, eventController.findById);
-eventRouter.get("/:slug", authTokenVerify, requestSlugParams, eventController.findById);
 eventRouter.post("/", authTokenVerify, eventController.create);
 eventRouter.delete("/:id", authTokenVerify, requestParams, eventController.delete);
 eventRouter.delete("/", authTokenVerify, eventController.deleteAll);

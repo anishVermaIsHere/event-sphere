@@ -159,3 +159,29 @@ export const onboardSchema = Joi.object({
       "any.only": "Repeat password must match the password field.",
     }),
 });
+
+
+export const applyEventSchema = Joi.object({
+  topicsOfInterest: Joi.string().required().messages({
+    "any.required": "Topics of interest is required.",
+    "string.empty": "Topics of interest must not be empty.",
+  }),
+  bio: Joi.string().required().messages({
+    "any.required": "Bio is required.",
+    "string.empty": "Bio must not be empty.",
+  }),
+  previousExperience: Joi.string(),
+  reasonForAttend: Joi.string().required().messages({
+    "any.required": "Reason for attend is required.",
+    "string.empty": "Reason for attend must not be empty.",
+  }),
+  specialRequirements: Joi.string(),
+  docsLinks: Joi.array().items(Joi.string()),
+  content: Joi.string(),
+  termsAgreed: Joi.boolean().required().messages({
+    "any.required": "Terms consent must be checked.",
+  }),
+  dataPrivacyAgreed: Joi.boolean().required().messages({
+    "any.required": "Data privacy consent must be checked.",
+  })
+})

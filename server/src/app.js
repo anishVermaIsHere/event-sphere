@@ -37,8 +37,6 @@ app.use("/api/v1/invitees", inviteeRouter);
 app.use("/api/v1/speakers", speakerRouter);
 
 
-// createUsers();
-
 app.get("/", (_, res) => {
   res.json({ 
     message: `Hi!, this is Event Sphere Server`,

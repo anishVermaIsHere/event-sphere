@@ -13,7 +13,8 @@ export const eventController = {
   async findByFilter(req, res) {
     try {
       const requestedUser = decodedUser(req);
-      const events = await EventModel.find({ speakers: { $in: [requestedUser.id] } })
+      // const events = await EventModel.find({ speakers: { $in: [requestedUser.id] } })
+      const events = await EventModel.find()
         .populate("guests", ["-__v", "-password", "-createdAt", "-updatedAt"])
         .populate("speakers", ["-__v", "-password", "-createdAt", "-updatedAt"])
         .populate("location")

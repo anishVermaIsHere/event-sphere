@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import CachedIcon from "@mui/icons-material/Cached";
 import { queryClient } from "../../../providers/query-provider";
 import { AttendeeList } from "./attendee-list";
-import userAPI from "../../../shared/services/api/user";
 
 
 
@@ -18,7 +17,7 @@ const style = {
 };
 
 const fetchAttendees = async () => {
-  return await userAPI.find();
+  return await ticketAPI.find();
 };
 
 const Attendees = () => {
@@ -27,7 +26,6 @@ const Attendees = () => {
     queryFn: fetchAttendees,
   });
   const attendees = data?.data || [];
-  console.log(attendees)
 
   return (
     <Box sx={{ position: "relative", width: "100%" }}>

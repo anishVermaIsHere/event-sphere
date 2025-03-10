@@ -1,11 +1,10 @@
 import { faker } from '@faker-js/faker';
 import { generatePassCode } from './other-token.js';
-import { demoTickets } from './data.jst';
-
+import { demoTickets } from './data.js';
 
 export const generateAttendees = () => {
   const attendees = [];
-  for (let i = 0; i < 4; i++) { 
+  for (let i = 0; i < 2; i++) { 
     const name = faker.person.fullName(); 
     const passCode = generatePassCode()
     attendees.push({

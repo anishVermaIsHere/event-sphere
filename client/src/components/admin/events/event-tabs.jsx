@@ -17,6 +17,7 @@ import CustomTabPanel from "../../common/tab-panel";
 const fetchEvents = async (query) => {
   const res = await eventAPI.findByFilter(query);
   const auth = getAuth();  
+
   return {
     rows: res.data.map((e) => {
       const startDate = dateTimeParser(e.startTime);

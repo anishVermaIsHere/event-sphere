@@ -18,7 +18,8 @@ import {
   SpeakerEventDetails,
   SpeakerAttendees,
   SpeakerDashboard,
-  ProtectedPage
+  ProtectedPage,
+  EventRegisterDetails
 } from "./lazy-components";
 import Spinner from "../components/common/spinner";
 import AppLayout from "../components/layout/app-layout";
@@ -133,6 +134,14 @@ const appRoutes = [
                 <EventsOfGuest />
               </Suspense>
             ),
+          },
+          {
+            path: GUEST.APPLY,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <EventRegisterDetails />
+              </Suspense>
+            ),
           }
         ]
       },
@@ -168,6 +177,14 @@ const appRoutes = [
             element: (
               <Suspense fallback={<Spinner />}>
                 <SpeakerAttendees />
+              </Suspense>
+            ),
+          },
+          {
+            path: SPEAKER.APPLY,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <EventRegisterDetails />
               </Suspense>
             ),
           }

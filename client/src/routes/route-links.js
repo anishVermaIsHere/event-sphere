@@ -28,12 +28,14 @@ export const ROUTES = {
   GUEST: {
     EVENTS: "guest/events",
     EVENT: "guest/events/:id",
+    APPLY: "guest/events/apply/:id"
   },
   SPEAKER: {
     EVENTS: "speaker/events",
     EVENT: "speaker/events/:id",
     ATTENDEES: "speaker/attendees",
-    ATTENDEE: "speaker/attendees/:slug",
-    DASHBOARD: "speaker/dashboard"
+    ATTENDEE: "speaker/attendees/:id",
+    DASHBOARD: "speaker/dashboard",
+    APPLY: "speaker/events/apply/:id"
   }
 };

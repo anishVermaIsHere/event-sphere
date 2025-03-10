@@ -45,7 +45,6 @@ const AttendeeCard = ({
 }) => {
   const navigate = useNavigate();
   const arrived = attendees?.filter((att) => att.arrived).length;
-  const fullName = user?.firstName + " " + user?.lastName;
 
   const onCardOpen = () => {
     navigate(`${user?._id}`);
@@ -53,9 +52,7 @@ const AttendeeCard = ({
 
   return (
     <Card sx={{ ...styles.card, cursor: "pointer" }} elevation={0} onClick={onCardOpen}>
-      <CardContent
-        sx={{ ...styles.card, justifyContent: "start", alignItems: "start" }}
-      >
+      <CardContent sx={{ ...styles.card, justifyContent: "start", alignItems: "start" }}>
         <Box sx={{ width: "100%" }}>
           <Typography
             title={name}
@@ -70,7 +67,7 @@ const AttendeeCard = ({
               overflow: "hidden",
             }}
           >
-            {fullName}
+            {user?.fullName}
           </Typography>
           <Typography component="p" variant="div" color="text.secondary" sx={{ 
             display: "flex",
@@ -116,7 +113,7 @@ const AttendeeCard = ({
             />
             <Chip
               icon={<ConfirmationNumberIcon />}
-              label={status.toUpperCase()}
+              label={status?.toUpperCase()}
               variant="outlined"
               size="small"
               color={status === "confirmed" ? "success" : "error"}

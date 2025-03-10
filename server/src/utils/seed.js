@@ -39,7 +39,7 @@ export async function createEvents(){
   try {
     const events = eventsData.map((ev)=>({
       ...ev,
-      createdBy: "67cc79ec430b86aeb2404373"
+      createdBy: "67cc8bebf2a3eb61600c144c"
     }));
     await EventModel.insertMany(events);
   } catch (error) {
@@ -64,8 +64,7 @@ export async function createTickets (){
       user: t.userId,
       date: new Date(t.date)
     }));
-    console.log(demoTicketsData);
-    await TicketModel.insertMany(demoTicketsData);
+    // await TicketModel.insertMany(demoTicketsData);
   } catch (error) {
     console.log("api error", error);
   }

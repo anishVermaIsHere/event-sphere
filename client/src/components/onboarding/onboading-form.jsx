@@ -71,7 +71,6 @@ export default function OnboardingForm({ recipientEmail }) {
 
   const searchCountries = () => {
     const countries = getCountries();
-    console.log("cll", countries);
     if (Array.isArray(countries)) {
       setLocation({ countries });
       return;
