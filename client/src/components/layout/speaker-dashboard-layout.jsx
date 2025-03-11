@@ -4,6 +4,7 @@ import InviteModal from '../invite'
 import Header from '../admin/dashboard/header'
 import AppNavbar from '../common/app-navbar'
 import SideMenu from '../admin/dashboard/side-menu'
+import Footer from '../common/footer'
 
 
 const SpeakerLayout = () => {
@@ -34,6 +35,7 @@ const SpeakerLayout = () => {
           >
             <Header />
             <Outlet />
+            <Footer />
           </Stack>
         </Box>
       </Box>

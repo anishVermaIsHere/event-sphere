@@ -14,6 +14,7 @@ import ticketRouter from "./routes/ticket/index.js";
 import inviteeRouter from "./routes/invitee/index.js";
 import speakerRouter from "./routes/speaker/index.js";
 
+
 const app = express();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false, limit: "1mb" }));
@@ -34,9 +35,6 @@ app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/tickets", ticketRouter);
 app.use("/api/v1/invitees", inviteeRouter);
 app.use("/api/v1/speakers", speakerRouter);
-
-
-
 
 
 app.get("/", (_, res) => {

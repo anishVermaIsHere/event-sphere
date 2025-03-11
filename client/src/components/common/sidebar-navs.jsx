@@ -4,6 +4,7 @@ import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import FeedIcon from '@mui/icons-material/Feed';
 import { ROUTES } from "../../routes/route-links";
 
 
@@ -18,6 +19,7 @@ export const navLinkItems = {
             { text: 'Events', icon: <AnalyticsRoundedIcon />, path: ADMIN.EVENTS },
             { text: 'Users', icon: <PeopleRoundedIcon />, path: ADMIN.USERS },
             { text: 'Attendees', icon: <PeopleRoundedIcon />, path: ADMIN.ATTENDEES },
+            { text: 'Applications', icon: <FeedIcon />, path: ADMIN.APPLICATIONS },
         ],
         secondaryListItems: [
             { text: 'Invite Members', icon: <PersonAddIcon />, handler: () => {} },

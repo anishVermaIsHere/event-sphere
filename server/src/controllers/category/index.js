@@ -1,4 +1,4 @@
-import CategoryModel from "../../database/models/category.model.js";
+import { CategoryModel } from "../../database/models/index.js";
 import { HTTP_CODES } from "../../utils/constants.js";
 
 

@@ -4,8 +4,7 @@ import Spinner from "../../common/spinner";
 import AttendeeCard from "./attendee-card";
 
 
-export function AttendeeList({ isLoading, isError, attendees }) {
-
+export function AttendeeList({ isLoading, isError, attendees }) {    
     if(isError){
       <AlertCard message="Error data fetching" color="error" />;
     }

@@ -7,6 +7,7 @@ import {
   Stack,
   Chip,
   Divider,
+  Button,
 } from "@mui/material";
 import { useState } from "react";
 import { dateTimeParser, formatCurrency, getAuth } from "../../shared/utils";
@@ -24,9 +25,13 @@ import Spinner from "../common/spinner";
 import speakerAPI from "../../shared/services/api/speaker";
 import { useNavigate } from "react-router-dom";
 
+
+
+
 const fetchEvents = async (query) => {
   const res = await speakerAPI.events(query);
   const auth = getAuth();
+
   return {
     rows: res.data.map((e) => {
       const startDate = dateTimeParser(e.startTime);
@@ -71,6 +76,7 @@ const styles = {
 
 function EventCard({
   id,
+  slug,
   name,
   category,
   isPrivate,
@@ -86,9 +92,7 @@ function EventCard({
   createdBy
 }) {
   const [expanded, setExpanded] = useState(false);
-  const {
-    event: { setEventId, setIsEditOpen },
-  } = useFormStore((state) => state);
+  const { event: { setEventId, setIsEditOpen } } = useFormStore((state) => state);
   const { setSnackbar } = useAppStore((state) => state);
   const navigate = useNavigate();
 
@@ -110,8 +114,13 @@ function EventCard({
     navigate(id);
   }
 
+  const onRegister = () => {
+    navigate(`apply/${id}`)
+    
+  };
+
   return (
-    <Card sx={{ ...styles.card,  bgcolor:"#fff" }} elevation={0} onClick={onCardOpen}>
+    <Card sx={{ ...styles.card,  bgcolor:"#fff" }} elevation={0}>
       <CardContent
         sx={{ ...styles.card, justifyContent: "start", alignItems: "start" }}
       >
@@ -237,7 +246,15 @@ function EventCard({
           <Divider />
         </Box>
         {!isStarted ? 
-        <LockIcon color="disabled"/>: 
+
+        <Box>
+          <div style={{ marginBottom: 4 }}>
+            <LockIcon color="disabled"/>
+          </div>
+          <Button variant="contained" size="small" color="secondary" sx={{ mr: 2 }} onClick={onRegister}>Register</Button>
+          <Button variant="contained" size="small" onClick={onCardOpen}>View</Button>
+        </Box>
+        : 
         <Box>
            <Stack
             sx={{ display: "flex", justifyContent: "space-between" }}
@@ -281,7 +298,7 @@ function EventCard({
             ""
           )}
 
-          {!isPrivate && (
+          {!isPrivate && speakers?.length ? (
             <Box>
               <Typography gutterBottom variant="body2" component="div">
                 Speakers:
@@ -304,7 +321,7 @@ function EventCard({
                   : speakerList}
               </Typography>
             </Box>
-          )}
+          ) : ""}
 
           {!expanded && guestList?.length >= chars ? (
             <Chip

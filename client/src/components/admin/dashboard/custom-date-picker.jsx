@@ -17,6 +17,7 @@ export default function CustomDatePicker({ label,name, setValue }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
+        sx={{ width: "100%"}}
         name={name}
         value={date}
         label={label}

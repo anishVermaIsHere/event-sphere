@@ -12,7 +12,7 @@ const userAPI={
     async findByRole(role){
         const roleEndPoints = {
             guest: "guests",
-            speaker: "speakers"
+            speaker: "speakers",
         }
         return await axiosInstance.get(`${URL}/${roleEndPoints[role]}`);
     },

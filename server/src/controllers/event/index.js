@@ -1,4 +1,4 @@
-import { EventModel } from "../../database/models/index.js";
+import { EventModel, EventRegisterModel } from "../../database/models/index.js";
 import { HTTP_CODES } from "../../utils/constants.js";
 import slugify from "slugify";
 
@@ -40,7 +40,13 @@ const eventController = {
         .populate("guests", ["-__v", "-password", "-createdAt", "-updatedAt"])
         .populate("speakers", ["-__v", "-password", "-createdAt", "-updatedAt"])
         .populate("location")
-        .populate("createdBy", ["-__v", "-password", "-createdAt", "-updatedAt"]).sort();
+        .populate("createdBy", [
+          "-__v",
+          "-password",
+          "-createdAt",
+          "-updatedAt",
+        ])
+        .sort();
 
       return res.status(SUCCESS).json(events);
     } catch (error) {
@@ -48,26 +54,35 @@ const eventController = {
       throw new Error(error.message);
     }
   },
-    /**
+  /**
    * @route GET /events/:id
    * @desc Find event by id
    * @access Private
    */
-  async findById(req, res){
+  async findById(req, res) {
     try {
+      let query = {};
       const eventId = req.params.id;
-      const event = await EventModel.findById({ _id: eventId })
+      if (eventId) {
+        query = { _id: eventId };
+      }
+      const event = await EventModel.find(query)
         .populate("guests", ["-__v", "-password", "-createdAt", "-updatedAt"])
         .populate("speakers", ["-__v", "-password", "-createdAt", "-updatedAt"])
         .populate("location")
-        .populate("createdBy", ["-__v", "-password", "-createdAt", "-updatedAt"]);
+        .populate("createdBy", [
+          "-__v",
+          "-password",
+          "-createdAt",
+          "-updatedAt",
+        ]);
       return res.status(SUCCESS).json(event);
     } catch (error) {
       console.log("API: event find error", error.message);
       throw new Error(error.message);
     }
   },
-    /**
+  /**
    * @route GET /events
    * @desc Find events
    * @access Private
@@ -86,8 +101,26 @@ const eventController = {
     }
   },
   /**
+   * @route GET /events/applied
+   * @desc Find applied events
+   * @access Private
+   */
+  async appliedEvents(req, res) {
+    try {
+      const events = await EventRegisterModel.find()
+        .populate("event", ["-__v", "-createdAt", "-updatedAt"])
+        .populate("user", ["-__v", "-password", "-createdAt", "-updatedAt"])
+        .sort();
+
+      return res.status(SUCCESS).json(events);
+    } catch (error) {
+      console.log("API: applied events find error", error.message);
+      throw new Error(error.message);
+    }
+  },
+  /**
    * @route POST /events
-   * @desc Create event 
+   * @desc Create event
    * @access Private
    */
   async create(req, res) {
@@ -149,7 +182,7 @@ const eventController = {
       const eventId = req.params.id;
       const event = {
         ...req.body,
-        slug: slugify(req.body.name.toLowerCase())
+        slug: slugify(req.body.name.toLowerCase()),
       };
       await EventModel.updateOne({ _id: eventId }, event);
       return res.status(SUCCESS).json({ message: "Event update successfully" });

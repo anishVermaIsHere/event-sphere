@@ -4,7 +4,8 @@ dotenv.config();
 const { 
     SERVER_PORT,
     SERVER_HOST,
-    CORS_ORIGIN,
+    CORS_ORIGIN_1,
+    CORS_ORIGIN_2,
     DB_URI,
     APP_NAME,
     SALT,
@@ -25,7 +26,7 @@ const {
 const AppConfig={
     port: SERVER_PORT,
     host: SERVER_HOST,
-    corsOrigin: CORS_ORIGIN,
+    corsOrigin: [CORS_ORIGIN_1, CORS_ORIGIN_2],
     dbUri: DB_URI,
     appName: APP_NAME,
     salt: SALT,
