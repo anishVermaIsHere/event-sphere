@@ -24,6 +24,7 @@
 - **Speaker Events**
 - **Speaker Attendees**
 - **Event Register/Apply Form to participate for Guest & Speakers**
+- **Event Applications Page** 
 
 
 

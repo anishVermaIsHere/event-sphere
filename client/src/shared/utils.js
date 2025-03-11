@@ -5,6 +5,10 @@ import userAPI from "./services/api/user";
 import ticketAPI from "./services/api/ticket";
 import dayjs from "dayjs";
 import { Country, State, City }  from 'country-state-city';
+import rehypeParse from 'rehype-parse'
+import rehypeRemark from 'rehype-remark'
+import remarkStringify from 'remark-stringify'
+import {unified} from 'unified'
 
 
 
@@ -15,6 +19,16 @@ import { Country, State, City }  from 'country-state-city';
 //   return countries;
 // }
 
+
+export async function htmlToMarkdown(htmlTemplateString){
+  const markdownString = await unified()
+  .use(rehypeParse)
+  .use(rehypeRemark)
+  .use(remarkStringify)
+  .process(htmlTemplateString);
+
+  return String(markdownString);
+}
 
 export function getCountries(){
   return Country.getAllCountries();

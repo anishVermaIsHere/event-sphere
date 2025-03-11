@@ -24,6 +24,7 @@ export const ROUTES = {
     ATTENDEE: "admin/attendees/:id",
     TICKETS: "admin/tickets",
     MANAGE: "admin/manage",
+    APPLICATIONS: "admin/applications"
   },
   GUEST: {
     EVENTS: "guest/events",

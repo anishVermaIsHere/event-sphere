@@ -14,7 +14,6 @@ const otherInfoSchema = new Schema({
 });
 
 const presentationSchema = new Schema({
-    docsLinks: [{ type: String }],
     content: { type: String }
 });
 
@@ -24,15 +23,16 @@ const consentSchema = new Schema({
 });
 
 const eventRegistrationSchema = {
-    eventId: { type: SchemaTypes.ObjectId, ref: 'Events', required: true },
-    userId: { type: SchemaTypes.ObjectId, ref: 'Users', required: true },
+    event: { type: SchemaTypes.ObjectId, ref: 'Events', required: true },
+    user: { type: SchemaTypes.ObjectId, ref: 'Users', required: true },
     participantInfo: { type: participantInfoSchema, required: true },
     otherInfo: { type: otherInfoSchema },
     presentations: { type: presentationSchema },
     consent: { type: consentSchema, required: true },
     registrationDate: { type: Date, default: Date.now },
+    isApproved: { type: Boolean, default: false }
 };
 
-const EventRegisterModel = createDBModel(eventRegistrationSchema, "SpeakerRegisteredEvents");
+const EventRegisterModel = createDBModel(eventRegistrationSchema, "RegisteredEvents");
 
 export default EventRegisterModel;

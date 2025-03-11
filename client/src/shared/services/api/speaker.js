@@ -9,6 +9,9 @@ const speakerAPI = {
     async attendees(query) {
         return await axiosInstance.get(`${URL}/attendees`, { params: query });        
     },
+    async applyEvent(application){
+        return await axiosInstance.post(`${URL}/apply`, application);
+    }
 };
 
 export default speakerAPI;

@@ -9,6 +9,7 @@ const { requestParams, requestSlugParams } = validator;
 const eventRouter = Router();
 
 eventRouter.get("/", authTokenVerify, eventController.findByFilter);
+eventRouter.get("/applied", authTokenVerify, eventController.appliedEvents);
 eventRouter.get("/:id", authTokenVerify, requestParams, eventController.findById);
 eventRouter.post("/", authTokenVerify, eventController.create);
 eventRouter.delete("/:id", authTokenVerify, requestParams, eventController.delete);

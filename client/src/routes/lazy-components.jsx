@@ -19,6 +19,9 @@ const EventsOfSpeaker = lazy(()=>import("../components/speaker/speaker-events"))
 const SpeakerEventDetails = lazy(()=>import("../components/speaker/speaker-event-details"));
 const SpeakerAttendees = lazy(()=>import("../components/speaker/speaker-attendees"));
 const EventRegisterDetails = lazy(()=>import("../components/registers/event-register-details"));
+const EventApplications = lazy(()=>import("../components/admin/applications"));
+
+
 
 export {
     ProtectedPage,
@@ -39,5 +42,6 @@ export {
     EventsOfSpeaker,
     SpeakerEventDetails,
     SpeakerAttendees,
-    EventRegisterDetails
+    EventRegisterDetails,
+    EventApplications
 }

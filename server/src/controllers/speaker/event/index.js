@@ -1,5 +1,5 @@
 import { decodedUser } from "../../../utils/token.js";
-import { EventModel } from "../../../database/models/index.js";
+import { EventModel, EventRegisterModel } from "../../../database/models/index.js";
 import { HTTP_CODES } from "../../../utils/constants.js";
 
 const { SUCCESS } = HTTP_CODES;
@@ -14,14 +14,27 @@ export const eventController = {
     try {
       const requestedUser = decodedUser(req);
       // const events = await EventModel.find({ speakers: { $in: [requestedUser.id] } })
-      const events = await EventModel.find()
+      const regdEvents = EventRegisterModel.find({ user: req.decode.id })
+      const events = EventModel.find()
         .populate("guests", ["-__v", "-password", "-createdAt", "-updatedAt"])
         .populate("speakers", ["-__v", "-password", "-createdAt", "-updatedAt"])
         .populate("location")
         .populate("createdBy", [ "-__v", "-password", "-createdAt", "-updatedAt"])
         .sort();
 
-      return res.status(SUCCESS).json(events);
+      const [ allEvents, appliedEvents ] = await Promise.all([ events, regdEvents ]);
+
+      // const che = await EventModel.aggregate([
+      //   {
+      //     $lookup: {
+      //       from: "speakerregisteredevents",
+      //       localField: "event",
+      //       foreignField: ""
+      //     }
+      //   }
+      // ])
+
+      return res.status(SUCCESS).json(allEvents);
     } catch (error) {
       console.log("API: speakers events filtering error", error.message);
       throw new Error(error.message);

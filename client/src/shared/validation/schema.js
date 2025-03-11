@@ -176,7 +176,6 @@ export const applyEventSchema = Joi.object({
     "string.empty": "Reason for attend must not be empty.",
   }),
   specialRequirements: Joi.string(),
-  docsLinks: Joi.array().items(Joi.string()),
   content: Joi.string(),
   termsAgreed: Joi.boolean().required().messages({
     "any.required": "Terms consent must be checked.",

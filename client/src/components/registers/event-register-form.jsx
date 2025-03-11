@@ -5,38 +5,53 @@ import {
   Typography,
   Grid2,
   TextField,
-  InputLabel,
   Button,
-  Checkbox, 
-  FormControlLabel
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
-import React from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { applyEventSchema } from "../../shared/validation/schema";
+import RichTextEditor from "../miscellaneous/rich-editor";
+import { useEffect } from "react";
+import { htmlToMarkdown } from "../../shared/utils";
+import speakerAPI from "../../shared/services/api/speaker";
 
-const EventRegisterForm = () => {
+const EventRegisterForm = ({ eventId }) => {
   const {
     register,
-    control,
     handleSubmit,
+    watch,
+    setValue,
+    reset,
     formState: { errors },
-  } = useForm({
-    resolver: joiResolver(applyEventSchema),
-  });
+  } = useForm({ resolver: joiResolver(applyEventSchema) });
 
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
-    control, // control props comes from useForm (optional: if you are using FormProvider)
-    name: "docsLinks", // unique name for your Field Array
-  });
+  const onSubmit = async (data) => {
+    const formData = {
+      eventId,
+      topicsOfInterest: data.topicsOfInterest,
+      bio: await htmlToMarkdown(data.bio),
+      previousExperience: await htmlToMarkdown(data.previousExperience),
+      reasonForAttend: data.reasonForAttend,
+      specialRequirements: data.specialRequirements,
+      content: await htmlToMarkdown(data.content),
+      termsAgreed: data.termsAgreed,
+      dataPrivacyAgreed: data.dataPrivacyAgreed,
+    };
+    await speakerAPI.applyEvent(formData);
+    reset();
+  };
 
-  const onSubmit = (data) => {};
+  useEffect(() => {
+    register("bio", { required: true, minLength: 15 });
+  }, [register]);
 
   return (
     <Box sx={{ display: "flex", width: "100%" }}>
       <FormControl
         component="form"
         onSubmit={handleSubmit(onSubmit)}
-        sx={{ mx: "auto" }}
+        sx={{ mx: "auto", width: { xs: "100%", md: "768px" } }}
       >
         <Grid2 container spacing={3}>
           <Grid2 item size={{ xs: 12 }}>
@@ -53,35 +68,26 @@ const EventRegisterForm = () => {
             />
           </Grid2>
           <Grid2 item size={{ xs: 12 }}>
-            <TextField
-              // required
-              error={errors?.bio?.message && true}
-              id="bio"
+            <Typography mb={2}>Biography</Typography>
+            <RichTextEditor
+              setValue={setValue}
+              value={watch("bio")}
               name="bio"
-              label="Bio"
-              size="small"
-              helperText={errors?.bio?.message}
-              multiline
-              fullWidth
-              maxRows={6}
-              minRows={6}
-              {...register("bio")}
             />
+            <Typography
+              component="p"
+              variant="body2"
+              className=".css-1ylo5ag-MuiFormHelperText-root.Mui-error "
+            >
+              {errors?.bio?.message}
+            </Typography>
           </Grid2>
           <Grid2 item size={{ xs: 12 }}>
-            <TextField
-              // required
-              error={errors?.description?.message && true}
-              id="previousExperience"
+            <Typography mb={2}>Previous Experience</Typography>
+            <RichTextEditor
+              setValue={setValue}
+              value={watch("previousExperience")}
               name="previousExperience"
-              label="Previous Experience"
-              size="small"
-              helperText={errors?.description?.message}
-              multiline
-              fullWidth
-              maxRows={6}
-              minRows={6}
-              {...register("previousExperience")}
             />
           </Grid2>
           <Grid2 item size={{ xs: 12 }}>
@@ -117,43 +123,25 @@ const EventRegisterForm = () => {
             />
           </Grid2>
 
-          <Grid2 item size={{ xs: 12 }} sx={{ position: "relative" }}>
-            <Typography mb={2}>Document Links</Typography>
-            <TextField
-              // required
-              error={errors?.description?.message && true}
-              id="docsLinks"
-              name="docsLinks"
-              label="Docs links"
-              size="small"
-              helperText={errors?.description?.message}
-              multiline
-              fullWidth
-            //   maxRows={6}
-            //   minRows={6}
-              {...register("docsLinks")}
-            />
-          </Grid2>
-
           <Grid2 item size={{ xs: 12 }}>
-            <TextField
-              // required
-              error={errors?.description?.message && true}
-              id="content"
+            <Typography mb={2}>Content</Typography>
+            <RichTextEditor
+              setValue={setValue}
+              value={watch("content")}
               name="content"
-              label="Content"
-              size="small"
-              helperText={errors?.description?.message}
-              multiline
-              fullWidth
-              maxRows={6}
-              minRows={6}
-              {...register("content")}
             />
           </Grid2>
           <Grid2 item size={{ xs: 12 }}>
-             <FormControlLabel control={<Checkbox />} label="Terms agree" {...register('termsAgreed')} />
-             <FormControlLabel control={<Checkbox />} label="Data privacy agree" {...register('dataPrivacyAgreed')} />
+            <FormControlLabel
+              control={<Checkbox />}
+              label="Terms agree"
+              {...register("termsAgreed")}
+            />
+            <FormControlLabel
+              control={<Checkbox />}
+              label="Data privacy agree"
+              {...register("dataPrivacyAgreed")}
+            />
           </Grid2>
         </Grid2>
 

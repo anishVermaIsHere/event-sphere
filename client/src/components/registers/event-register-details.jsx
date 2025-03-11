@@ -10,6 +10,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 import { dateTimeParser } from "../../shared/utils";
 import Spinner from "../common/spinner";
+import RichTextEditor from "../miscellaneous/rich-editor";
 
 
 
@@ -74,7 +75,8 @@ const EventRegisterDetails = () => {
             <Typography variant="p" component="p"> <CalendarMonthIcon sx={{ verticalAlign: "middle" }}/> {startDate.date} {startDate.time}</Typography>
             <Typography variant="p" component="p" mb={4}> <CalendarMonthIcon sx={{ verticalAlign: "middle" }}/> {endDate.date} {endDate.time}</Typography>
         </Box>
-      <EventRegisterForm />
+
+      <EventRegisterForm eventId={event?._id}/>
     </Box>
   );
 };

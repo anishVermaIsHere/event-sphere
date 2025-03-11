@@ -19,7 +19,8 @@ import {
   SpeakerAttendees,
   SpeakerDashboard,
   ProtectedPage,
-  EventRegisterDetails
+  EventRegisterDetails,
+  EventApplications
 } from "./lazy-components";
 import Spinner from "../components/common/spinner";
 import AppLayout from "../components/layout/app-layout";
@@ -29,7 +30,7 @@ const {
   LOGIN,
   ONBOARD,
   VERIFY,
-  ADMIN: { DASHBOARD, EVENTS, USERS, ATTENDEES, ATTENDEE },
+  ADMIN: { DASHBOARD, EVENTS, USERS, ATTENDEES, ATTENDEE, APPLICATIONS },
   GUEST,
   SPEAKER
 } = ROUTES;
@@ -111,6 +112,14 @@ const appRoutes = [
             element: (
               <Suspense fallback={<Spinner />}>
                 <AttendeeDetails />
+              </Suspense>
+            ),
+          },
+          {
+            path: APPLICATIONS,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <EventApplications />
               </Suspense>
             ),
           },

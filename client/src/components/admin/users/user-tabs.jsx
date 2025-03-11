@@ -83,9 +83,8 @@ const UserTabs = () => {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Permanent Guests/Speakers" {...tabProps(0)} />
-          <Tab label="New Guests/Speakers" {...tabProps(1)} />
-          <Tab label="Invitees" {...tabProps(2)} />
+          <Tab label="Guests/Speakers" {...tabProps(0)} />
+          <Tab label="Invitees" {...tabProps(1)} />
         </Tabs>
       </Box>
       <Suspense fallback={<Spinner />}>
@@ -108,14 +107,8 @@ const UserTabs = () => {
           </Box>
         </CustomTabPanel>
       </Suspense>
-
       <Suspense fallback={<Spinner />}>
       <CustomTabPanel value={value} index={1}>
-        No data
-      </CustomTabPanel>
-      </Suspense>
-      <Suspense fallback={<Spinner />}>
-      <CustomTabPanel value={value} index={2}>
         <Box component="div" mb={2}>
           <Box sx={style}>
             <Tooltip title="Refetch">
