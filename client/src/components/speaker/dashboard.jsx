@@ -1,7 +1,8 @@
+import AlertCard from "../common/alert-card"
 
 const SpeakerDashboard = () => {
   return (
-    <div>Speaker Dashboard</div>
+    <AlertCard color="info" message="In Development..." reload={false} />
   )
 }
 

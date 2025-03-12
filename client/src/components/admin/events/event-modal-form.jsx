@@ -19,13 +19,14 @@ import { Controller, useForm } from "react-hook-form";
 import CustomDateTimePicker from "../dashboard/custom-date-time-picker";
 import CancelIcon from "@mui/icons-material/Cancel";
 import dayjs from "dayjs";
-import { fetchEventsData } from "../../shared/utils";
+import { fetchEventsData } from "../../../shared/utils";
 import { useQuery } from "@tanstack/react-query";
-import eventAPI from "../../shared/services/api/event";
-import { queryClient } from "../../providers/query-provider";
-import { eventSchema } from "../../shared/validation/schema";
+import eventAPI from "../../../shared/services/api/event";
+import { queryClient } from "../../../providers/query-provider";
+import { eventSchema } from "../../../shared/validation/schema";
 import { formBoxStyle, SelectMenuProps as MenuProps } from "./styles";
-import useAppStore from "../../store/app.store";
+import useAppStore from "../../../store/app.store";
+import GoogleMaps from "./g-map";
 
 
 
@@ -80,6 +81,7 @@ const LazyEventForm = ({ handleClose, open }) => {
         onClose={handleClose}
         aria-labelledby="add event form"
         aria-describedby="add event form"
+        sx={{ overflowY: "auto" }}
       >
         <Box sx={formBoxStyle}>
           <FormControl
@@ -199,8 +201,6 @@ const LazyEventForm = ({ handleClose, open }) => {
                   {data?.locations?.length === 0 && "No locations"}
                 </Typography>
               </Grid2>
-
-              
 
               <Grid2
                 item

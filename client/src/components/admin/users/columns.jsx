@@ -36,7 +36,7 @@ export const columns = [
     minWidth: 100 
   },
   {
-    field: "username",
+    field: "userName",
     headerName: "Username",
     headerAlign: "left",
     align: "left",

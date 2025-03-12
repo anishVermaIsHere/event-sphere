@@ -405,7 +405,8 @@ export const inputsCustomizations = {
               size: 'small',
             },
             style: {
-              height: '2.25rem',
+              // height: '2.25rem',
+              overflowY: 'auto'
             },
           },
           {
@@ -413,7 +414,8 @@ export const inputsCustomizations = {
               size: 'medium',
             },
             style: {
-              height: '2.5rem',
+              // height: '2.5rem',
+              overflowY: 'auto'
             },
           },
         ],

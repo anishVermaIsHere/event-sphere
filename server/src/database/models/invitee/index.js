@@ -1,5 +1,5 @@
 import { Schema, SchemaTypes, model } from "mongoose";
-import AppConfig from "../../config/app.config.js";
+import AppConfig from "../../../config/app.config.js";
 
 const inviteeSchema = new Schema(
   {

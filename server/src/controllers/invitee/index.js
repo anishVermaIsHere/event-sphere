@@ -65,7 +65,7 @@ const inviteeController = {
       const token = req.params.token;
       const invitee = await InviteeModel.findOne({ token, consumed: false });
       if(!invitee){
-        return res.json({ message: "Invalid token or expired" });
+        return res.json({ message: "Invalid link" });
       } 
       return res.json({ success: true, recipientEmail: invitee?.recipientEmail });
     } catch (error) {

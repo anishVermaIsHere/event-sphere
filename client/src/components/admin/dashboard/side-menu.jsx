@@ -26,12 +26,9 @@ const Drawer = styled(MuiDrawer)({
   },
 });
 
-export default function SideMenu({
-  mainListItems,
-  secondaryListItems
-}) {
+export default function SideMenu() {
   const { user } = useAuthStore(state=>state);
-  
+
   return (
     <Drawer
       variant="permanent"
@@ -55,7 +52,7 @@ export default function SideMenu({
         <CardMedia component="img" image={AppConfig.logoUrl} alt="logo" sx={{ width: 100, display: 'block' }} />
       </Box>
       <Divider />
-      <MenuContent mainListItems={mainListItems} secondaryListItems={secondaryListItems}/>
+      <MenuContent />
       {/* <CardAlert /> */}
       <Stack
         direction="row"

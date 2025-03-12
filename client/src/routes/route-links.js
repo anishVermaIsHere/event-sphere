@@ -24,16 +24,19 @@ export const ROUTES = {
     ATTENDEE: "admin/attendees/:id",
     TICKETS: "admin/tickets",
     MANAGE: "admin/manage",
+    APPLICATIONS: "admin/applications"
   },
   GUEST: {
     EVENTS: "guest/events",
     EVENT: "guest/events/:id",
+    APPLY: "guest/events/apply/:id"
   },
   SPEAKER: {
     EVENTS: "speaker/events",
     EVENT: "speaker/events/:id",
     ATTENDEES: "speaker/attendees",
     ATTENDEE: "speaker/attendees/:id",
-    DASHBOARD: "speaker/dashboard"
+    DASHBOARD: "speaker/dashboard",
+    APPLY: "speaker/events/apply/:id"
   }
 };

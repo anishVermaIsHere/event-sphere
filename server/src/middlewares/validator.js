@@ -19,9 +19,11 @@ const requestValidator = (schema, value) => {
 
 export const validator = {
     sendInvitation: requestValidator(inviteeSchema, "body"),
-    deleteInvitation: requestValidator(requestParamsSchema("id"), "params"),
+    requestParams: requestValidator(requestParamsSchema("id"), "params"),
     verifyInvitation: requestValidator(requestParamsSchema("token"), "params"),
-    registerUser: requestValidator(registerSchema, "body")
+    registerUser: requestValidator(registerSchema, "body"),
+    requestSlugParams: requestValidator(requestParamsSchema("slug"), "params"),
+
 }
 
 

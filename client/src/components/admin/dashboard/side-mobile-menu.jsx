@@ -10,11 +10,19 @@ import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import MenuButton from './menu-button';
 import MenuContent from '../../common/menu-content';
 import useAuthStore from '../../../store/auth.store';
+import authAPI from '../../../shared/services/api/auth';
 
 
 
 function SideMenuMobile({ open, toggleDrawer }) {
-  const { user } = useAuthStore(state=>state);
+  const { user, clearUser, clearTokens } = useAuthStore(state=>state);
+
+  const handleLogout = async () => {
+    await authAPI.logout();
+    clearTokens();
+    clearUser();
+  }
+
   return (
     <Drawer
       anchor="right"
@@ -60,7 +68,7 @@ function SideMenuMobile({ open, toggleDrawer }) {
         </Stack>
         {/* <CardAlert /> */}
         <Stack sx={{ p: 2 }}>
-          <Button variant="outlined" fullWidth startIcon={<LogoutRoundedIcon />}>
+          <Button variant="outlined" fullWidth onClick={handleLogout} startIcon={<LogoutRoundedIcon />}>
             Logout
           </Button>
         </Stack>

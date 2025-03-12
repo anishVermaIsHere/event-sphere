@@ -21,9 +21,20 @@
 - **Send Invites - by email** 
 - **Invitees List**
 - **Onboarding page**
+- **Speaker Events**
+- **Speaker Attendees**
+- **Event Register/Apply Form to participate for Guest & Speakers**
+- **Event Applications Page** 
 
 
-https://github.com/user-attachments/assets/0e5bea54-0fae-4823-bfa0-d47b0dba0a7a
+
+ADMIN PORTAL
+
+https://github.com/user-attachments/assets/44ae27ca-2734-4254-9b40-c2566459183d
+
+SPEAKER PORTAL
+
+https://github.com/user-attachments/assets/833ca315-9813-45d3-9e70-ca068de3b471
 
 
 

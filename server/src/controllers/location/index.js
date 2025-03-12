@@ -1,10 +1,15 @@
-import LocationModel from "../../database/models/location.model.js";
+import { LocationModel } from "../../database/models/index.js";
 import { HTTP_CODES } from "../../utils/constants.js";
 
 
 const { SUCCESS, CREATE, CONFLICT, UNAUTHORIZE } = HTTP_CODES;
 
 const locationController = {
+    /**
+   * @route GET /locations
+   * @desc Fetch locations
+   * @access Private
+   */
   async find(req, res) {
     try {
       const locations = await LocationModel.find();

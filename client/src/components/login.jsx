@@ -28,7 +28,7 @@ import Spinner from "../components/common/spinner";
 import AppConfig from "../config/app.config";
 import useAuthStore from "../store/auth.store";
 import useAppStore from "../store/app.store";
-
+import LockIcon from '@mui/icons-material/Lock';
 
 
 
@@ -68,10 +68,11 @@ export default function Login() {
       const res = await authAPI.login(data);
       if (res.status === 200) {
         const data = res.data;
-        setUser(data.user);
-        setAccessToken(data.accessToken);
-        setRefreshToken(data.refreshToken);
-        navigate(`/${ROUTES.ADMIN.DASHBOARD}`);
+        const role = data?.user?.role;
+        setUser(data?.user);
+        setAccessToken(data?.accessToken);
+        setRefreshToken(data?.refreshToken);
+        navigate(`/${role}/events`);
       }
       setTimeout(() => {
         setLoading(false);
@@ -101,8 +102,8 @@ export default function Login() {
           src={AppConfig.logoUrl}
           alt={AppConfig.appName}
         />
-        <Typography component="h1" variant="h5">
-          Login
+        <Typography component="h1" variant="h5" color="text.secondary">
+          <LockIcon sx={{ verticalAlign: "text-top" }} /> Login
         </Typography>
         <Box
           component="form"

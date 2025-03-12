@@ -73,8 +73,8 @@ const authController = {
      */
     async logOut(req, res){
         try {
-            console.log('request', req);
-
+            res.setHeader('Authorization', '');
+            res.status(SUCCESS).json({ message: 'Logged out successfully' });
         } catch (error) {
             console.log('API: logout error', error.message);
             throw Error("Logout Error >>");

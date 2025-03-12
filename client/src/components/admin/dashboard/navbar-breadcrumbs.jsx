@@ -24,7 +24,7 @@ export default function NavbarBreadcrumbs() {
       aria-label="breadcrumb"
       separator={<NavigateNextRoundedIcon fontSize="small" />}
     >
-      {paths.map((p, i)=>(<Typography key={p} variant="body1" sx={ paths.length-1 === i && { color: 'text.primary', fontWeight: 600 }}>
+      {paths.map((p, i)=>(<Typography key={p} variant="body1" sx={ paths.length-1 === i ? { color: 'text.primary', fontWeight: 600 } : {} }>
          { p ==="" ? 'Home' : p.replace(/(^|-)([a-z])/g, (match, p1, p2) => p2.toUpperCase())}
       </Typography>))}
     </StyledBreadcrumbs>

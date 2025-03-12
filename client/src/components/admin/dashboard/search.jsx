@@ -10,6 +10,7 @@ export default function Search() {
       <OutlinedInput
         size="small"
         id="search"
+        type="search"
         placeholder="Search…"
         autoComplete="off"
         sx={{ flexGrow: 1 }}

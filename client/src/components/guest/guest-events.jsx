@@ -1,6 +1,6 @@
 import { useState } from "react";
-import useFormStore from "../../../store/form.store";
-import useAppStore from "../../../store/app.store";
+import useFormStore from "../../store/form.store";
+import useAppStore from "../../store/app.store";
 import { Box, Grid2 as Grid, Chip, Divider, Stack, Typography, Card, CardContent, CardActions } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ScheduleIcon from "@mui/icons-material/Schedule";
