@@ -8,25 +8,28 @@ import {
   Chip,
   Divider,
   Button,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { dateTimeParser, formatCurrency, getAuth } from "../../shared/utils";
 import useAppStore from "../../store/app.store";
 import useFormStore from "../../store/form.store";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ScheduleIcon from "@mui/icons-material/Schedule";
+import CachedIcon from "@mui/icons-material/Cached";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import GroupsIcon from "@mui/icons-material/Groups";
-import LockIcon from '@mui/icons-material/Lock';
+import LockIcon from "@mui/icons-material/Lock";
 import dayjs from "dayjs";
 import { useQuery } from "@tanstack/react-query";
 import AlertCard from "../common/alert-card";
 import Spinner from "../common/spinner";
 import speakerAPI from "../../shared/services/api/speaker";
-import { useNavigate } from "react-router-dom";
-
-
-
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import FilterElement from "../common/filter";
+import categoryAPI from "../../shared/services/api/category";
+import { queryClient } from "../../providers/query-provider";
 
 const fetchEvents = async (query) => {
   const res = await speakerAPI.events(query);
@@ -36,19 +39,24 @@ const fetchEvents = async (query) => {
     rows: res.data.map((e) => {
       const startDate = dateTimeParser(e.startTime);
       const endDate = dateTimeParser(e.endTime);
-      const isLive = dayjs().unix() >= dayjs(e.startTime).unix() && dayjs().unix() <= dayjs(e.endTime).unix();
+      const isLive =
+        dayjs().unix() >= dayjs(e.startTime).unix() &&
+        dayjs().unix() <= dayjs(e.endTime).unix();
       const isStarted = dayjs().unix() >= dayjs(e.startTime).unix();
       return {
         ...e,
         id: e._id,
         location: e.location.venueName,
-        createdBy: e.createdBy._id === auth.user.id ? "You" : e.createdBy.firstName+" "+e.createdBy.lastName,
+        createdBy:
+          e.createdBy._id === auth.user.id
+            ? "You"
+            : e.createdBy.firstName + " " + e.createdBy.lastName,
         startDateTime: startDate.date + " " + startDate.time,
         endDateTime: endDate.date + " " + endDate.time,
         createdAt: dayjs(e.createdAt).format("DD/MM/YYYY HH:mm"),
         isEditable: !isLive,
         isLive,
-        isStarted
+        isStarted,
       };
     }),
   };
@@ -89,10 +97,12 @@ function EventCard({
   capacity,
   priceInCents,
   isStarted,
-  createdBy
+  createdBy,
 }) {
   const [expanded, setExpanded] = useState(false);
-  const { event: { setEventId, setIsEditOpen } } = useFormStore((state) => state);
+  const {
+    event: { setEventId, setIsEditOpen },
+  } = useFormStore((state) => state);
   const { setSnackbar } = useAppStore((state) => state);
   const navigate = useNavigate();
 
@@ -110,17 +120,16 @@ function EventCard({
     setExpanded(!expanded);
   };
 
-  const onCardOpen = () =>{
+  const onCardOpen = () => {
     navigate(id);
-  }
+  };
 
   const onRegister = () => {
-    navigate(`apply/${id}`)
-    
+    navigate(`apply/${id}`);
   };
 
   return (
-    <Card sx={{ ...styles.card,  bgcolor:"#fff" }} elevation={0}>
+    <Card sx={{ ...styles.card, bgcolor: "#fff" }} elevation={0}>
       <CardContent
         sx={{ ...styles.card, justifyContent: "start", alignItems: "start" }}
       >
@@ -213,50 +222,39 @@ function EventCard({
           >
             <LocationOnIcon sx={{ mr: 1 }} /> {location}
           </Typography>
-          {isStarted && <Typography
-            variant="body"
-            component="div"
-            color="text.secondary"
-            sx={{
-              mb: 2,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 4,
-              flexDirection: "row",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <GroupsIcon sx={{ mr: 1 }} />
-              {capacity}
-            </div>
+          {isStarted && (
+            <Typography
+              variant="body"
+              component="div"
+              color="text.secondary"
+              sx={{
+                mb: 2,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 4,
+                flexDirection: "row",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <GroupsIcon sx={{ mr: 1 }} />
+                {capacity}
+              </div>
 
-            <Chip
-              label={
-                priceInCents > 0
-                  ? formatCurrency({ amount: priceInCents / 100 })
-                  : "Free"
-              }
-              // sx={{ fontSize: "1rem" }}
-              size="large"
-              variant="outlined"
-            />
-          </Typography>}
+              <Chip
+                label={
+                  priceInCents > 0
+                    ? formatCurrency({ amount: priceInCents / 100 })
+                    : "Free"
+                }
+                // sx={{ fontSize: "1rem" }}
+                size="large"
+                variant="outlined"
+              />
+            </Typography>
+          )}
 
-          <Divider />
-        </Box>
-        {!isStarted ? 
-
-        <Box>
-          <div style={{ marginBottom: 4 }}>
-            <LockIcon color="disabled"/>
-          </div>
-          <Button variant="contained" size="small" color="secondary" sx={{ mr: 2 }} onClick={onRegister}>Register</Button>
-          <Button variant="contained" size="small" onClick={onCardOpen}>View</Button>
-        </Box>
-        : 
-        <Box>
-           <Stack
+          <Stack
             sx={{ display: "flex", justifyContent: "space-between" }}
             direction="row"
             spacing={1}
@@ -264,11 +262,40 @@ function EventCard({
           >
             <Chip
               sx={{ mr: 2, mb: 2 }}
-              label={`Organised by: ${createdBy}`}
+              label={`Organiser: ${createdBy}`}
               color="default"
               size="small"
             />
           </Stack>
+
+          <Divider />
+        </Box>
+        {!isStarted ? (
+          <Box>
+            <div style={{ marginBottom: 4 }}>
+              <LockIcon color="disabled" />
+            </div>
+            <Button
+              variant="contained"
+              size="small"
+              color="secondary"
+              sx={{ mr: 2 }}
+              onClick={onRegister}
+            >
+              Register
+            </Button>
+            <Button variant="contained" size="small" onClick={onCardOpen}>
+              View
+            </Button>
+          </Box>
+        ) : (
+          <Box>
+            <Button variant="contained" size="small" onClick={onCardOpen}>
+              View
+            </Button>
+          </Box>
+        )}
+        <Box>
           {guests?.length ? (
             <>
               <Box>
@@ -321,7 +348,9 @@ function EventCard({
                   : speakerList}
               </Typography>
             </Box>
-          ) : ""}
+          ) : (
+            ""
+          )}
 
           {!expanded && guestList?.length >= chars ? (
             <Chip
@@ -340,17 +369,52 @@ function EventCard({
               />
             )
           )}
-        </Box>}
+        </Box>
       </CardContent>
     </Card>
   );
 }
 
 const EventsOfSpeaker = () => {
-  const { isLoading, isError, data: events } = useQuery({ queryKey: ["events"], queryFn: async () => await fetchEvents({}) });
+  const [filterList, setFilterList] = useState([]);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = {
+    category: queryParams.get("category"),
+  };
 
-  if(isLoading){
-    return <Spinner />
+  const {
+    isLoading,
+    isError,
+    data: events,
+  } = useQuery({
+    queryKey: ["events", { category: query.category }],
+    queryFn: async () => await fetchEvents(query),
+  });
+
+  useEffect(() => {
+    if (searchParams.get("category") === "All") {
+      searchParams.delete("category");
+    }
+    setSearchParams(searchParams);
+  }, [searchParams]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await categoryAPI.find();
+        setFilterList(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchData();
+    return () => {};
+  }, []);
+
+  if (isLoading) {
+    return <Spinner />;
   }
   if (isError) {
     return <AlertCard color="error" message="Something error" />;
@@ -360,12 +424,36 @@ const EventsOfSpeaker = () => {
       <Typography variant="h5" component="h5" sx={{ fontWeight: 600, mb: 2 }}>
         Events
       </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 1,
+          mb:2
+        }}
+      >
+          <Tooltip title="Refetch">
+            <IconButton
+              size="small"
+              color="default"
+              onClick={async () => {
+                queryClient.invalidateQueries("events");
+              }}
+            >
+              <CachedIcon />
+            </IconButton>
+          </Tooltip>
+        <FilterElement filterList={filterList} />
+
+      </Box>
       <Grid container spacing={2} columns={12}>
         {events?.rows.map((event) => (
           <Grid key={event._id} size={{ xs: 12, sm: 6, lg: 4 }}>
             <EventCard {...event} />
           </Grid>
         ))}
+        
+        {!events?.rows.length && <Typography variant="body2">No data</Typography>}
       </Grid>
     </Box>
   );

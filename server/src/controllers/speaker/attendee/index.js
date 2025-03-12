@@ -60,6 +60,9 @@ export const attendeeController = {
                 user: {
                     firstName: '$user.firstName',
                     lastName: '$user.lastName',
+                    fullName: "$user.fullName",
+                    email: "$user.email",
+                    _id: "$user._id"
                 },
                 event: {
                     $mergeObjects: ['$event', { location: '$location' }]

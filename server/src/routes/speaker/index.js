@@ -10,7 +10,6 @@ const speakerRouter = Router();
 
 speakerRouter.get("/events", authTokenVerify, eventController.findByFilter);
 speakerRouter.get("/attendees", authTokenVerify, attendeeController.find);
-// speakerRouter.post("/apply", authTokenVerify, eventApplyController.find);
 speakerRouter.post("/apply", authTokenVerify, eventApplyController.register);
 
 export default speakerRouter;

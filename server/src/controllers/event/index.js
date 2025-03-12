@@ -101,24 +101,6 @@ const eventController = {
     }
   },
   /**
-   * @route GET /events/applied
-   * @desc Find applied events
-   * @access Private
-   */
-  async appliedEvents(req, res) {
-    try {
-      const events = await EventRegisterModel.find()
-        .populate("event", ["-__v", "-createdAt", "-updatedAt"])
-        .populate("user", ["-__v", "-password", "-createdAt", "-updatedAt"])
-        .sort();
-
-      return res.status(SUCCESS).json(events);
-    } catch (error) {
-      console.log("API: applied events find error", error.message);
-      throw new Error(error.message);
-    }
-  },
-  /**
    * @route POST /events
    * @desc Create event
    * @access Private

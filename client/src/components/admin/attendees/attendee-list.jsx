@@ -5,6 +5,8 @@ import AttendeeCard from "./attendee-card";
 
 
 export function AttendeeList({ isLoading, isError, attendees }) {    
+
+  console.log(attendees, 'real');
     if(isError){
       <AlertCard message="Error data fetching" color="error" />;
     }

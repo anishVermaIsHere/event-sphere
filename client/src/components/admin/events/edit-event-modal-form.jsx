@@ -37,6 +37,7 @@ const LazyEditEventForm = ({ handleClose, open }) => {
   const { data } = useQuery({ queryKey: ["event-data"], queryFn: fetchEventsData });
   const [isLoading, setIsLoading] = useState(false);
 
+
   const {
     control,
     register,
@@ -84,7 +85,7 @@ const LazyEditEventForm = ({ handleClose, open }) => {
   useEffect(() => {
     async function fetchEvent() {
       setIsLoading(true);
-      const event = (await eventAPI.findById(eventId)).data;
+      const event = (await eventAPI.findById(eventId)).data[0];
       if (event !== null) {
         setValue("name", event.name);
         setValue("description", event.description);

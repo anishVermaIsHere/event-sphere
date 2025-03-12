@@ -1,4 +1,3 @@
-import React from "react";
 import EventRegisterForm from "./event-register-form";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -7,29 +6,23 @@ import { Box, Chip, IconButton, Tooltip, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-
 import { dateTimeParser } from "../../shared/utils";
 import Spinner from "../common/spinner";
-import RichTextEditor from "../miscellaneous/rich-editor";
-
-
-
+import AlertCard from "../common/alert-card";
 
 const style = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "start",
-    gap: 1,
-    mb: 1
-  };
-
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "start",
+  gap: 1,
+  mb: 1,
+};
 
 const EventRegisterDetails = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const path = pathname.split("/");
   const eventId = path[path.length - 1];
-
 
   async function fetchEvent() {
     return await eventAPI.findById(eventId);
@@ -47,8 +40,12 @@ const EventRegisterDetails = () => {
   const startDate = dateTimeParser(event?.startTime);
   const endDate = dateTimeParser(event?.endTime);
 
-  if(isLoading){
-    return <Spinner />
+  if (isError) {
+    return <AlertCard message="Error data fetching" color="error" />;
+  }
+
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (
@@ -57,26 +54,48 @@ const EventRegisterDetails = () => {
         Register for event
       </Typography>
       <Box sx={style}>
-          <Tooltip title="Back">
-            <IconButton
-              size="small"
-              color="default"
-              onClick={goBack}
-            >
-              <ArrowBackIcon />
-            </IconButton>
-          </Tooltip>
-        </Box>
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-            <Chip variant="outline" label={event?.category} />
-            <Typography variant="h6" component="h6" color="primary"> {event?.name}</Typography>
-            <Typography variant="p" component="p" > <LocationOnIcon sx={{ verticalAlign: "middle" }}/> {event?.location?.venueName}</Typography>
-            <Typography variant="p" component="p" mb={2}> {event?.location?.city}, {event?.location?.state}, {event?.location?.country}</Typography>
-            <Typography variant="p" component="p"> <CalendarMonthIcon sx={{ verticalAlign: "middle" }}/> {startDate.date} {startDate.time}</Typography>
-            <Typography variant="p" component="p" mb={4}> <CalendarMonthIcon sx={{ verticalAlign: "middle" }}/> {endDate.date} {endDate.time}</Typography>
-        </Box>
+        <Tooltip title="Back">
+          <IconButton size="small" color="default" onClick={goBack}>
+            <ArrowBackIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Chip variant="outline" label={event?.category} />
+        <Typography variant="h6" component="h6" color="primary">
+          {" "}
+          {event?.name}
+        </Typography>
+        <Typography variant="p" component="p">
+          {" "}
+          <LocationOnIcon sx={{ verticalAlign: "middle" }} />{" "}
+          {event?.location?.venueName}
+        </Typography>
+        <Typography variant="p" component="p" mb={2}>
+          {" "}
+          {event?.location?.city}, {event?.location?.state},{" "}
+          {event?.location?.country}
+        </Typography>
+        <Typography variant="p" component="p">
+          {" "}
+          <CalendarMonthIcon sx={{ verticalAlign: "middle" }} />{" "}
+          {startDate.date} {startDate.time}
+        </Typography>
+        <Typography variant="p" component="p" mb={4}>
+          {" "}
+          <CalendarMonthIcon sx={{ verticalAlign: "middle" }} /> {endDate.date}{" "}
+          {endDate.time}
+        </Typography>
+      </Box>
 
-      <EventRegisterForm eventId={event?._id}/>
+      <EventRegisterForm eventId={event?._id} />
     </Box>
   );
 };

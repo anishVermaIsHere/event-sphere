@@ -44,6 +44,7 @@ const EventActionBar = () => {
       }
     };
     fetchData();
+    return () => {}
   }, []);
 
   return (

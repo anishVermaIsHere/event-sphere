@@ -45,14 +45,13 @@ const SpeakerEventDetails = () => {
   };
 
   const { isLoading, isError, data } = useQuery({ queryKey: ["event", params?.id], queryFn: fetchEvent });
-  const event = data?.data;
+  const event = data?.data[0] || [];
   const isLive = dayjs().unix() >= dayjs(event?.startTime).unix() && dayjs().unix() <= dayjs(event?.endTime).unix();
   const startDate = dateTimeParser(event?.startTime);
   const endDate = dateTimeParser(event?.endTime);
 
   const goBack = () => navigate(-1);
   const refetch = () => queryClient.invalidateQueries("event");
-
 
   const handleChatToggle = (value) => {
     setOpenChat(value);
@@ -224,7 +223,7 @@ const SpeakerEventDetails = () => {
           </Stack>
 
         </Typography>
-        <Typography
+        {event?.speakers?.length ? <Typography
           variant="body"
           component="div"
           color="text.secondary"
@@ -263,7 +262,7 @@ const SpeakerEventDetails = () => {
             </Typography>
           ))}
 
-        </Typography>
+        </Typography> : ""}
 
         {event?.guests?.length ? <Typography
           variant="body"

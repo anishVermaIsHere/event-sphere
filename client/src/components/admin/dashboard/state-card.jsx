@@ -22,7 +22,7 @@ AreaGradient.propTypes = {
   id: PropTypes.string.isRequired,
 };
 
-function StatCard({ title, value, data }) {
+function StatCard({ title, value, icon: Icon }) {
   const theme = useTheme();
   const { daysInMonth } = useMainStore(state=>state);
 
@@ -53,6 +53,7 @@ function StatCard({ title, value, data }) {
     <Card variant="outlined" sx={{ height: '100%', flexGrow: 1 }}>
       <CardContent>
         <Typography component="h2" variant="subtitle2" gutterBottom>
+          <Icon style={{ verticalAlign: "middle", marginRight: 4, color: "grey", height: 40, width:40 }} />
           {title}
         </Typography>
         <Stack

@@ -9,7 +9,12 @@ import rehypeParse from 'rehype-parse'
 import rehypeRemark from 'rehype-remark'
 import remarkStringify from 'remark-stringify'
 import {unified} from 'unified'
-
+import registerEventAPI from "./services/api/registerevent";
+import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
+import WalletIcon from '@mui/icons-material/Wallet';
+import AnalyticsRoundedIcon from '@mui/icons-material/AnalyticsRounded';
+import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
+import FeedIcon from '@mui/icons-material/Feed';
 
 
 // export function getCountryByName(countryName){
@@ -138,12 +143,14 @@ export const fetchDashboardData = async (query, daysInMonth) => {
   const prom = await Promise.all([
     eventAPI.findByFilter(query),
     ticketAPI.find(query),
-    userAPI.find()
+    userAPI.find(),
+    registerEventAPI.events()
   ]);
   const ticketSales=[];
   const events = prom[0];
   const tickets = prom[1];
   const users = prom[2];
+  const applications = prom[3];
   const totalRevenue = tickets?.data?.reduce((a,p)=>{ 
     ticketSales.push({[dayjs(p.date).format('MMM D')]: p.event.priceInCents/100});
     return a+p.event.priceInCents
@@ -161,19 +168,28 @@ export const fetchDashboardData = async (query, daysInMonth) => {
       {
         title: "Total Revenue",
         value: formattedAmount(totalRevenue),
+        icon: WalletIcon
       },
       {
         title: "Events",
         value: formattedValue(events.data.length),
+        icon: AnalyticsRoundedIcon
       },
       {
         title: "Attendees",
         value: formattedValue(tickets.data.length),
+        icon: PeopleRoundedIcon
       },
       {
         title: "Tickets",
         value: formattedValue(tickets.data.length),
+        icon: ConfirmationNumberIcon 
       },
+      {
+        title: "Applications",
+        value: formattedValue(applications.data.length),
+        icon: FeedIcon 
+      }
     ]
   }
   

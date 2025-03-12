@@ -18,7 +18,7 @@ const style = {
     px:2,
     gap: 1,
     mb: 1
-  };
+};
 
 const SpeakerAttendees = () => {
     const { isLoading, isError, data } = useQuery({ queryKey: ["attendees"], queryFn: fetchAttendees });

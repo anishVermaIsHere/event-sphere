@@ -7,6 +7,9 @@ const registerEventAPI = {
     async events() {
         return await axiosInstance.get(`${URL}`);        
     },
+    async acceptOrReject(eventId, value){
+        return await axiosInstance.put(`${URL}/${eventId}`, value);
+    },
 };
 
 export default registerEventAPI;

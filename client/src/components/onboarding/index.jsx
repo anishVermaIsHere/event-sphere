@@ -30,9 +30,9 @@ const Onboarding = () => {
       }
     }, [params?.token, verified]);
   
-  // if(!verified && message){
-  //     return <Box><AlertCard message={message} color="error" reload={false} /></Box>;
-  // }
+  if(!verified && message){
+      return <Box><AlertCard message={message} color="error" reload={false} /></Box>;
+  }
   if(!verified){
     return <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", }}>

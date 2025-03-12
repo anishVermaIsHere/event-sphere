@@ -190,6 +190,14 @@ const appRoutes = [
             ),
           },
           {
+            path: SPEAKER.ATTENDEE,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <AttendeeDetails />
+              </Suspense>
+            ),
+          },
+          {
             path: SPEAKER.APPLY,
             element: (
               <Suspense fallback={<Spinner />}>
