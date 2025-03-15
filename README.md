@@ -27,7 +27,6 @@
 - **Event Applications Page** 
 
 
-Demo video
 [Watch the video](https://drive.google.com/file/d/18I-eOIdyuVlsEwzsxH6zLbiVbuNlymkC/view)
 
 
