@@ -28,7 +28,8 @@
 
 
 Demo video
-https://drive.google.com/file/d/18I-eOIdyuVlsEwzsxH6zLbiVbuNlymkC/view?usp=drive_link
+[Watch the video](https://drive.google.com/file/d/18I-eOIdyuVlsEwzsxH6zLbiVbuNlymkC/view)
+
 
 
 
