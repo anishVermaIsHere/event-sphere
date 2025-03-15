@@ -27,14 +27,8 @@
 - **Event Applications Page** 
 
 
-
-ADMIN PORTAL
-
-https://github.com/user-attachments/assets/44ae27ca-2734-4254-9b40-c2566459183d
-
-SPEAKER PORTAL
-
-https://github.com/user-attachments/assets/833ca315-9813-45d3-9e70-ca068de3b471
+Demo video
+https://drive.google.com/file/d/18I-eOIdyuVlsEwzsxH6zLbiVbuNlymkC/view?usp=drive_link
 
 
 
